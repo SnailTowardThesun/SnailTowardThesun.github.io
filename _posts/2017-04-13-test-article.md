@@ -1,3 +1,10 @@
+---
+layout: article
+title: test article
+tags: test_tag1 test_tag2
+category: test_ca1 test_ca2
+---
+
 # Test Article
 ## second title
 ### third title

@@ -1,15 +1,12 @@
 ---
-title: index page
-permalink: index.html
+layout: default
+title: Me
 ---
-<!DOCTYPE>
-<html>
-    <head>
-        {% include header.html %}
-        <title>Me</title>
-    </head>
-    <body>
-        {% include navgation.html %}
-        {% include footer.html %}
-    </body>
-</html>
+
+<div class="container">
+    {% for post in paginator.posts %}
+    <h2>{{ post.title }}</h2>
+    <h2>{{ post.tags }}</h2>
+    <h2>{{ post.category }}
+    {% endfor %}
+</div>
