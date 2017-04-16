@@ -1,6 +1,6 @@
 ---
 layout: article
-title: test article9
+title: test article2
 tags: test_tag1 test_tag2
 ---
 

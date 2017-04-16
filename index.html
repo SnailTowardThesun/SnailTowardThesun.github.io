@@ -2,3 +2,59 @@
 layout: default
 title: Me
 ---
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-8">
+            <h2>for good future</h2>
+            <hr>
+            {% for post in paginator.posts %}
+                <h2>
+                    <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+                </h2>
+                <p>
+                    <span class="glyphicon glyphicon-time"> Posted on {{ post.date | date: "%F" }}</span>
+                </p>
+                <p>
+                    Key words:&nbsp
+                    {% for key in post.tags%}
+                         <span class="label label-info">{{ key }}</span>
+                    {% endfor %}
+                </p>
+                <a class="btn btn-primary" href="{{ post.url | prepend: site.baseurl }}" >
+                    Read More
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                </a>
+                <hr>
+            {% endfor %}
+            <!-- Pagination links -->
+            <nav aria-label="Page navigation">
+                <ul class="pager">
+                        <li><a href="{{ paginator.previous_page_path }}">Previous</a></li>
+                        <li><a href="{{ paginator.next_page_path }}">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-xs-6 col-md-4">
+            <div class="well">
+                <h4>Blog Search</h4>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for ...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">
+                            Search
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <div class="well">
+                <h4>Tags</h4>
+            </div>
+            <div class="well">
+                <h4>Recent post</h4>
+            </div>
+            <div class="well">
+                <h4>Archives</h4>
+            </div>
+        </div>
+    </div>
+</div>
