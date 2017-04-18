@@ -16,7 +16,7 @@ title: Me
                 </p>
                 <p>
                     Key words:&nbsp
-                    {% for key in post.tags%}
+                    {% for key in post.categories%}
                          <span class="label label-info">{{ key }}</span>
                     {% endfor %}
                 </p>
@@ -36,24 +36,23 @@ title: Me
         </div>
         <div class="col-xs-6 col-md-4">
             <div class="well">
-                <h4>Blog Search</h4>
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for ...">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="button">
-                            Search
-                        </button>
-                    </span>
-                </div>
-            </div>
-            <div class="well">
-                <h4>Tags</h4>
+                <h4>Categories</h4>
+                {% for category in site.categories %}
+                    <li>
+                        <a href="{{ root_url }}/{{ site.category_dir }}#{{ category | first }}" cate="{{ category | first }}">
+                            <span class="name">
+                                {{ category | first }} 
+                            </span>
+                            <span class="badge">{{ category | last | size }}</span>
+                        </a>
+                    </li>
+                {% endfor %}
             </div>
             <div class="well">
                 <h4>Recent post</h4>
-            </div>
-            <div class="well">
-                <h4>Archives</h4>
+                {% for post in site.posts offset:0 limit:10 %}
+                    <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+                {% endfor %}
             </div>
         </div>
     </div>

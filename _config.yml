@@ -6,3 +6,5 @@ permalink: /:year/:month/:day/:title/
 gems: [jekyll-paginate]
 paginate: 6
 paginate_path: "/page:num/"
+
+category_dir: category/

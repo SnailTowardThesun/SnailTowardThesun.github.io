@@ -1,7 +1,7 @@
 ---
 layout: article
 title: test article4
-tags: test_tag1 test_tag2
+categories: test_tag1 test_tag2
 ---
 
 # Test Article
