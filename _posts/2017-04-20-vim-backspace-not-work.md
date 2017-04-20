@@ -1,3 +1,8 @@
+---
+layout: article
+title: vim 退格键不可用
+categories: vim tool
+---
 # vim 退格键不可用
 两个步骤：
 
