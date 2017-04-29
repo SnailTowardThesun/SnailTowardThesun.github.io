@@ -6,8 +6,6 @@ permalink: /:year/:month/:day/:title/
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://SnailTowardThesun.github.io" # the base hostname & protocol for your site
 
-markdown: redcarpet
-
 gems: [jekyll-paginate]
 paginate: 6
 paginate_path: "/page:num/"
