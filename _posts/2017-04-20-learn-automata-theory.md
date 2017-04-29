@@ -10,7 +10,7 @@ categories: automata
 * Introduction to Automata Theory, Languages, and Computation
 
 
-## 有限状态机（Finite Autolllata）
+## 有限状态机（Finite Automata）
 
 ### Deterministic Finite Automata
 
