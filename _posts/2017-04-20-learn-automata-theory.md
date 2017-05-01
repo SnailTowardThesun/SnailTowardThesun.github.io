@@ -27,3 +27,24 @@ categories: automata
      $$A=(Q,\Sigma, \delta, q_0, F)$$
 
     where A is the name of DFA, Q is its set of states, $$\Sigma$$ its input symbols, \delta its transition function, $$q_0$$ its start state, and F its set of acception states.
+
+### NonDeterministic Finite Automata
+1. defination: an NFA is represented essentially like a DFA:
+
+    $$
+    A = (Q, \Sigma, \delta, q_0, F)
+    $$
+
+    where:
+    1. Q is a finite set of states
+    1. $$\Sigma$$ is a finite set of input symblos.
+    1. $$q_0$$, a member of Q, is the start state
+    1. F, a subset of Q, is the set of final (or accepting) states.
+    1. $$\delta$$, the transition function is a function that takes a state in Q and an input symbol in $$\Sigma$$ as arguments and returns a subset of Q. Notice that the only difference between an NFA and DFA is in the type of value that $$\delta$$ returns: a set of states in the case of an NFA and a single state in the case of DFA.
+
+### $$\epsilon$$-NFA
+1. defination: 
+
+    we may represent an $$\epsilon$$-NFA exactly as we do an NFA, with one exception: the transition function must include information about transitions on $$\epsilon$$. Formally, we represent an $$\epsilon$$-NFA A by $$A=(Q, \Sigma, \delta, q_0, F)$$, where all components have their same interpretation as for an NFA, except that $$\delta$$ is now a function that takes as arguments:
+    1. A state in Q, and
+    1. A member of $$\Sigma \cup {\epsilon}$$, that is either an input symbol, or the symbol $$\epsilon$$. We require that $$\epsilon$$, the symbol for the empty string, cannot be a member of alphabet $$\Sigma$$, the symbol for the empty string, cannot be a member of the alphabet $$\Sigma$$, so no confusion results.
