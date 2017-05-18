@@ -132,6 +132,125 @@ categories: Android
 > 1. 用于生成hls流的工具，可以使用开源工具[SRS](https://github.com/ossrs/srs)。
 > 1. 使用android模拟器不能够显示视频，需要使用真机，也是让人挺不开心呢。
 
+## MediaPlayer 与TextureView配合使用
+
+像上文中提到的MediaPlayer的最简单用法，封装的十分严密，基本上不知道发生了啥。尤其是当我们想要拿到视频的某一幅画面的时候，就变得更加困难。因此我们就需要使用TextureView这个控件了。废话不多说，直接贴代码
+
+1. 布局文件
+    ```
+    <?xml version="1.0" encoding="utf-8"?>
+    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.example.hankun.myapplication.MainActivity">
+
+        <TextureView
+            android:id="@+id/text_screen"
+            android:layout_width="380dp"
+            android:layout_height="204dp"
+            android:layout_weight="1"
+            tools:layout_editor_absoluteY="0dp"
+            tools:layout_editor_absoluteX="0dp" />
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            tools:layout_editor_absoluteX="0dp"
+            android:id="@+id/button"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/text_screen" />
+        <ImageView
+            android:id="@+id/image_screen"
+            android:layout_width="380dp"
+            android:layout_height="250dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/button"
+            android:layout_marginRight="0dp" />
+    </android.support.constraint.ConstraintLayout>
+    ```
+    * 我们设定了一个TextureView用来显示和抓取图像
+    * 添加一个按钮，每次点击按钮就抓图
+    * 设立了一个ImageView，用于显示抓到的图片
+1. 代码部分
+    ```
+    public class MainActivity extends AppCompatActivity {
+
+        private MediaPlayer player;
+        private TextureView ttv;
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
+
+            player = new MediaPlayer();
+            player.setVolume(0, 0);
+
+            ttv = (TextureView) findViewById(R.id.text_screen);
+            ttv.setVisibility(0);
+            ttv.setSurfaceTextureListener(new TextureListen());
+            try {
+                String stream_url = "http://192.168.199.245:8080/live/livestream.m3u8";
+                player.setDataSource(this, Uri.parse(stream_url));
+                player.prepare();
+                player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        player.start();
+                        player.setLooping(true);
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            Button btn_image = (Button)findViewById(R.id.button);
+            btn_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ImageView img = (ImageView) findViewById(R.id.image_screen);
+                    img.setImageBitmap(ttv.getBitmap());
+                }
+            });
+
+        }
+        private class TextureListen implements TextureView.SurfaceTextureListener {
+
+            @Override
+            public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i1) {
+                try {
+                    player.setSurface(new Surface(surfaceTexture));
+                } catch (Exception e) {
+                    e.printStackTrace();;
+                }
+            }
+
+            @Override
+            public void onSurfaceTextureSizeChanged(SurfaceTexture surfaceTexture, int i, int i1) {
+
+            }
+
+            @Override
+            public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
+                return false;
+            }
+
+            @Override
+            public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
+            }
+        }
+    }
+    ```
+
+    > 在使用TextureView的时候，不再调用MediaPlayer 的`setDisplay`函数，而是调用了`setSurface`函数。因为SurfaceTexture那里涉及到了很多OpenGL ES的东西，还没来得及看，就先略过不说了。
+
+> Tips: 在不能够理OpenGL ES的时候，我们还想获取到一个视频中的画面，那么不妨使用这种形式：将TextureView置于最底层并使用控件遮住。然后开启独立线程去刷新（就是代码中按钮的操作），这样就能获取到Bitmap，然后进行操作。虽然会浪费一些性能，但是最起码可用。
+
+## MediaPlayer 与SurfaceTexture配合使用
+
 ## MediaPlayer 的高阶使用方式
 >我还没研究，待续吧
 
