@@ -104,8 +104,10 @@ void CMergeSort::merge_array(vector<long> &array, int lo, int mid, int hi)
 void CMergeSort::merge_sort_bottom2top(vector<long> &data)
 {
     auto N = data.size();
-    for (auto sz = 1; sz  < N; sz += sz) {
-        for (auto lo = 0; lo < N-sz; lo += sz + sz) {
+    for (auto sz = 1; sz  < N; sz += sz) 
+    {
+        for (auto lo = 0; lo < N-sz; lo += sz + sz) 
+        {
             auto hi = (lo+sz+sz-1 < N - 1) ? lo+sz+sz-1 : N-1;
             merge_array(data, lo, lo+sz-1, hi);
         }
@@ -117,7 +119,8 @@ void CMergeSort::merge_sort_bottom2top(vector<long> &data)
 ```
 bool CQuickSort::quick_sort(vector<long>& array, int start, int end)
 {
-    if (start < end) {
+    if (start < end)
+    {
         int q = Partition(array, start, end); // divide into two parts
         quick_sort(array, start, q - 1);
         quick_sort(array, q + 1, end);
@@ -129,8 +132,10 @@ int CQuickSort::Partition(vector<long>& data, int start, int end)
 {
     long x = data[start];
     int i = start;
-    for (int j = start + 1; j <= end; j++) {
-        if (data[j] <= x) {
+    for (int j = start + 1; j <= end; j++)
+    {
+        if (data[j] <= x)
+        {
             i++;
             swap(data[i], data[j]);
         }
