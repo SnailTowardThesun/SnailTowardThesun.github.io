@@ -28,6 +28,7 @@ $gulp release
       
 1. 创建播放器
       1. 修改`/path/videoPlayer/src/app/app.component.html`
+      
       ```
         <!--The content below is only a placeholder and can be replaced.-->
         <div style="text-align:center">
@@ -37,7 +38,9 @@ $gulp release
           </h1>
         </div>
       ```
+      
      2. 修改`/path/videoPlayer/app/src/app.component.ts`:
+     
       ```
       import { Component, OnInit } from '@angular/core';
       import 'flv.js';
@@ -64,6 +67,7 @@ $gulp release
         }
       }
       ```
+      
 1. 启动SRS
     ```
     $git clone https://github.com/ossrs/srs.git
