@@ -82,12 +82,7 @@ $gulp release
 
 1. 确认播放地址正确，启动angular，访问页面就能够看到了。
 
- 注意：
-srs的配置文件中，需要添加跨域配置
-```
-http_api {
-    crossdomain on;
-}
-```
+ 注意：srs 3.0 版本
+
 
 videoPlayer的代码：https://github.com/SnailTowardThesun/videoPlayer
