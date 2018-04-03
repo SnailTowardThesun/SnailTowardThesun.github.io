@@ -16,6 +16,8 @@ public:
 
     singleton &operator=(singleton const &) = delete;
 
+    singleton(singleton &&) = delete;
+
     virtual ~singleton() = default;
 public:
     static std::shared_ptr<singleton> get_instance() {
