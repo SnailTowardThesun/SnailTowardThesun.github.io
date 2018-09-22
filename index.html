@@ -1,12 +1,9 @@
 ---
-layout: layout: root_template
+layout: default
 title: Me
 ---
-<div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-8">
-            <h2>for good future</h2>
-            <hr>
             {% for post in paginator.posts %}
                 <h2>
                     <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
@@ -56,4 +53,3 @@ title: Me
             </div>
         </div>
     </div>
-</div>

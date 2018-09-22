@@ -13,3 +13,5 @@ paginate_path: "/page:num/"
 category_dir: category/
 
 theme: jekyll-theme-slate
+
+title: For Good Future
