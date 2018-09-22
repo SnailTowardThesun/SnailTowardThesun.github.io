@@ -11,3 +11,5 @@ paginate: 6
 paginate_path: "/page:num/"
 
 category_dir: category/
+
+theme: jekyll-theme-architect
