@@ -1,6 +1,6 @@
 ---
 layout: article
-title: tensorflow tutorial
+title: tensorflow学习笔记
 categories: machine-learning
 ---
 
