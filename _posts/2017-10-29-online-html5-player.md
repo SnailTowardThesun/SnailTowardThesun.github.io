@@ -1,6 +1,6 @@
 ---
 layout: article
-title: angular4 + flv.js + srs 搭建一个简单的基于html5的直播平台
+title: 搭建一个简单的基于html5的直播平台
 categories: media streaming
 ---
 ## 简要说明
