@@ -1,6 +1,6 @@
 ---
 layout: article
-authro: SnailTowardThesun
+author: SnailTowardThesun
 title: android mediaplayer
 categories: 流媒体相关
 ---
