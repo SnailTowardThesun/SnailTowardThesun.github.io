@@ -1,7 +1,8 @@
 ---
 layout: article
+author: SnailTowardThesun
 title: ijkplayer demo
-categories: android
+categories: 流媒体相关
 ---
 
 

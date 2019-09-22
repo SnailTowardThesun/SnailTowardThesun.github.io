@@ -7,7 +7,7 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://SnailTowardThesun.github.io" # the base hostname & protocol for your site
 
 gems: [jekyll-paginate]
-paginate: 6
+paginate: 10
 paginate_path: "/page:num/"
 
 category_dir: category/

@@ -1,7 +1,8 @@
 ---
 layout: article
+author: SnailTowardThesun
 title: 搭建一个简单的基于html5的直播平台
-categories: media streaming
+categories: 流媒体相关
 ---
 ## 简要说明
 直播的风头基本都已经过去了，写这个文章的目的就是为了记录，所以废话少说，开始正题。

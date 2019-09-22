@@ -5,23 +5,21 @@ title: Me
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-8">
             {% for post in paginator.posts %}
+                <div class="row" style="margin-bottom: 15px">
                 <h2>
                     <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
                 </h2>
-                <p>
-                    <span class="glyphicon glyphicon-time"> Posted on {{ post.date | date: "%F" }}</span>
-                </p>
-                <p>
-                    Key words:&nbsp
-                    {% for key in post.categories%}
-                         <span class="label label-info">{{ key }}</span>
-                    {% endfor %}
-                </p>
-                <a class="btn btn-primary" href="{{ post.url | prepend: site.baseurl }}" >
-                    Read More
-                    <span class="glyphicon glyphicon-chevron-right"></span>
-                </a>
+                    <div class="col-md-8">
+                        <p class="glyphicon text-center">by {{ post.author }} / {{ post.date | date: "%F" }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <a class="btn btn-primary pull-right" href="{{ post.url | prepend: site.baseurl }}" >
+                            阅读更多
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                        </a>
+                    </div>
                 <hr>
+                </div>
             {% endfor %}
             <!-- Pagination links -->
             <nav aria-label="Page navigation">
@@ -33,7 +31,13 @@ title: Me
         </div>
         <div class="col-xs-6 col-md-4">
             <div class="well">
-                <h4>Categories</h4>
+                <h4>近期文章</h4>
+                {% for post in site.posts offset:0 limit:10 %}
+                    <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+                {% endfor %}
+            </div>
+            <div class="well">
+                <h4>分类目录</h4>
                 {% for category in site.categories %}
                     <li>
                         <a href="{{ root_url }}/{{ site.category_dir }}#{{ category | first }}" cate="{{ category | first }}">
@@ -45,11 +49,6 @@ title: Me
                     </li>
                 {% endfor %}
             </div>
-            <div class="well">
-                <h4>Recent post</h4>
-                {% for post in site.posts offset:0 limit:10 %}
-                    <li><a href="{{ post.url }}">{{ post.title }}</a></li>
-                {% endfor %}
-            </div>
+
         </div>
     </div>
