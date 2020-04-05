@@ -240,15 +240,16 @@ public:
 ```
 
 child obj 内存布局
+
 | location | member | member |  member|
 | --- | --- |  --- | --- |
 | obj  | base1 | base1::vptr | pointer to chlid::print() |
 |  |  | base1::a1 | --- |
 |  |  base2 | base1::vptr | pointer to base2::print() |
 |  |  | base2::a2 | --- |
-|  | c | --- |
-| out of obj | base1::get_1() |
-| | base2::get_2() |
+|  | c | --- | --- |
+| out of obj | base1::get_1() | --- | --- |
+| | base2::get_2() | --- | --- |
 
 
 ### 菱形继承下的C++对象模型
@@ -297,12 +298,13 @@ public:
 ```
 
 child obj内存布局
-| location | member | member | member | member
+
+| location | member | member | member | 
 | --- | --- |  --- | --- | --- |
-| obj | base1 | vbptr, point to child::base |
+| obj | base1 | vbptr, point to child::base | ---|
 |  |  | base1::vptr | pointer to child::print() |
-|  | base2 |  vbptr, point to child::base | 
+|  | base2 |  vbptr, point to child::base | --- |
 |  |  | base2::vptr | pointer to base2::print() |
-|  | base | a |
-|  |  | b |
-|  | c |
+|  | base | a | ---|
+|  |  | b | --- |
+|  | c | --- | --- |
