@@ -1,7 +1,5 @@
 _site
 .sass-cache
+.jekyll-cache
 .jekyll-metadata
-Gemfile
-Gemfile.lock
-*Ds_store
-exec.sh
+vendor
