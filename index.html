@@ -2,53 +2,70 @@
 layout: default
 title: Me
 ---
-    <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-8">
-            {% for post in paginator.posts %}
-                <div class="row" style="margin-bottom: 15px; padding: 10px">
-                <h2>
-                    <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-                </h2>
-                    <div class="col-md-8">
-                        <p class="glyphicon text-center">by {{ post.author }} / {{ post.date | date: "%F" }}</p>
-                    </div>
-                    <div class="col-md-4">
-                        <a class="btn btn-primary pull-right" href="{{ post.url | prepend: site.baseurl }}" >
-                            阅读更多
-                            <span class="glyphicon glyphicon-chevron-right"></span>
-                        </a>
-                    </div>
-                <hr>
-                </div>
-            {% endfor %}
-            <!-- Pagination links -->
-            <nav aria-label="Page navigation">
-                <ul class="pager">
-                        <li><a href="{{ paginator.previous_page_path }}">Previous</a></li>
-                        <li><a href="{{ paginator.next_page_path }}">Next</a></li>
-                </ul>
-            </nav>
-        </div>
-        <div class="col-xs-6 col-md-4">
-            <div class="well">
-                <h4>近期文章</h4>
-                {% for post in site.posts offset:0 limit:10 %}
-                    <li><a href="{{ post.url }}">{{ post.title }}</a></li>
-                {% endfor %}
+<div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-8">
+        {% for post in paginator.posts %}
+        <article class="post-item">
+            <h2>
+                <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+            </h2>
+            <div class="post-meta">
+                <span class="post-author">by {{ post.author | default: site.author }}</span>
+                <span class="post-date">{{ post.date | date: "%F" }}</span>
+                {% if post.categories %}
+                <span class="post-category">
+                    {% for category in post.categories %}
+                    <span class="badge">{{ category }}</span>
+                    {% endfor %}
+                </span>
+                {% endif %}
             </div>
-            <div class="well">
+            {% if post.excerpt %}
+            <p class="post-excerpt">{{ post.excerpt | strip_html | truncatewords: 50 }}</p>
+            {% endif %}
+            <a class="post-link-btn" href="{{ post.url | prepend: site.baseurl }}">
+                阅读更多
+                <span class="glyphicon glyphicon-chevron-right"></span>
+            </a>
+        </article>
+        {% endfor %}
+
+        {% if paginator.total_pages > 1 %}
+        <nav aria-label="Page navigation">
+            <ul class="pager">
+                {% if paginator.previous_page %}
+                <li><a href="{{ paginator.previous_page_path }}">← 上一页</a></li>
+                {% endif %}
+                {% if paginator.next_page %}
+                <li><a href="{{ paginator.next_page_path }}">下一页 →</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+    <aside class="col-xs-6 col-md-4">
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <h4>近期文章</h4>
+                <ul>
+                    {% for post in site.posts offset:0 limit:10 %}
+                    <li><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="sidebar-section">
                 <h4>分类目录</h4>
-                {% for category in site.categories %}
+                <ul>
+                    {% for category in site.categories %}
                     <li>
                         <a href="{{ root_url }}/{{ site.category_dir }}#{{ category | first }}" cate="{{ category | first }}">
-                            <span class="name">
-                                {{ category | first }} 
-                            </span>
+                            <span class="name">{{ category | first }}</span>
                             <span class="badge">{{ category | last | size }}</span>
                         </a>
                     </li>
-                {% endfor %}
+                    {% endfor %}
+                </ul>
             </div>
-
         </div>
-    </div>
+    </aside>
+</div>

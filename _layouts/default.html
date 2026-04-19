@@ -1,74 +1,59 @@
 <!DOCTYPE html>
 <html>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-162852282-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-162852282-1');
-</script>
-
 <head>
   <meta charset='utf-8'>
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
-  <meta name="viewport" content="width=device-width,maximum-scale=2">
+  <meta name="viewport" content="width=device-width, maximum-scale=2">
   <meta name="description" content="{{ site.title | default: site.github.repository_name }} : {{ site.description | default: site.github.project_tagline }}">
 
   <link rel="stylesheet" type="text/css" media="screen" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
   <title>{{ page.title }}</title>
   <link rel="shortcut icon" href="/favicon.ico?" type="image/x-icon">
   <link rel="icon" href="/favicon.ico?" type="image/x-icon">
-  <meta author="hanvskun@hotmail.com">
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-    crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-    crossorigin="anonymous">
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-    crossorigin="anonymous"></script>
+  <meta name="author" content="hanvskun@hotmail.com">
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
-
 </head>
 
 <body>
 
-  <!-- HEADER -->
-  <div id="header_wrap" class="outer">
-    <header class="inner">
-      <a id="forkme_banner" href="{{ site.github.repository_url }}">View on GitHub</a>
+  <header id="header_wrap" class="outer">
+    <div class="inner">
+      <h1 id="project_title">
+        <a href="{{ site.baseurl }}/">{{ site.title | default: site.github.repository_name }}</a>
+      </h1>
+      <nav class="site-nav">
+        <a href="{{ site.baseurl }}/">首页</a>
+        <a href="{{ site.baseurl }}/category/">分类</a>
+        <a href="{{ site.baseurl }}/about/">关于</a>
+      </nav>
+      <a id="forkme_banner" href="{{ site.github.repository_url }}">GitHub</a>
+    </div>
+  </header>
 
-      <h1 id="project_title">{{ site.title | default: site.github.repository_name }}</h1>
-
-      {% if site.show_downloads %}
-      <section id="downloads">
-        <a class="zip_download_link" href="{{ site.github.zip_url }}">Download this project as a .zip file</a>
-        <a class="tar_download_link" href="{{ site.github.tar_url }}">Download this project as a tar.gz file</a>
-      </section>
-      {% endif %}
-    </header>
-  </div>
-
-  <!-- MAIN CONTENT -->
-  <div id="main_content_wrap" class="outer">
+  <main id="main_content_wrap" class="outer">
     <section id="main_content" class="inner">
       {{ content }}
     </section>
-  </div>
+  </main>
 
-  <!-- FOOTER  -->
-  <div id="footer_wrap" class="outer">
-    <footer class="inner">
+  <footer id="footer_wrap" class="outer">
+    <div class="inner">
       {% if site.github.is_project_page %}
-      <p class="copyright">{{ site.title | default: site.github.repository_name }} maintained by <a href="{{ site.github.owner_url }}">{{
-          site.github.owner_name }}</a></p>
+      <p class="copyright">{{ site.title | default: site.github.repository_name }} maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a></p>
       {% endif %}
       <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
-    </footer>
-  </div>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.post-link').forEach(function(link) {
+      link.innerHTML = '<span class="post-link-text">' + link.textContent + '</span><span class="post-link-arrow">→</span>';
+    });
+  </script>
 </body>
 
 </html>

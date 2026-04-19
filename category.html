@@ -1,25 +1,73 @@
 ---
 layout: default
-title: category
+title: 分类
 permalink: /category/
 ---
 
-<div class="container">
-    <ul>
+<div class="category-page">
     {% for category in site.categories %}
-    <h2 id="{{category | first}}">{{category | first}}</h2>
-        {% for posts in category  %}
-            {% for post in posts %}
-                {% if post.url %}
-                <li>
-                    <time>
-                    {{ post.date | date:"%F" }} {{ post.date | date: "%a" }}.
-                    </time>
-                    <a class="title" href="{{ post.url }}">{{ post.title }}</a>
-                </li>
-                {% endif %}
+    <section class="category-section">
+        <h2 id="{{ category | first }}">{{ category | first }}</h2>
+        <ul class="category-posts">
+            {% for post in category.last %}
+            <li class="category-post-item">
+                <time class="post-time">{{ post.date | date: "%F" }}</time>
+                <a class="post-title" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+            </li>
             {% endfor %}
-        {% endfor %}
+        </ul>
+    </section>
     {% endfor %}
-</ul>
 </div>
+
+<style>
+.category-page {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.category-section {
+    margin-bottom: 40px;
+}
+
+.category-section h2 {
+    font-size: 22px;
+    color: var(--text-primary);
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border-color);
+    margin-bottom: 20px;
+}
+
+.category-posts {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.category-post-item {
+    display: flex;
+    align-items: baseline;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.category-post-item:last-child {
+    border-bottom: none;
+}
+
+.post-time {
+    flex-shrink: 0;
+    width: 100px;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.post-title {
+    color: var(--text-primary);
+    font-size: 15px;
+}
+
+.post-title:hover {
+    color: var(--accent-color);
+}
+</style>

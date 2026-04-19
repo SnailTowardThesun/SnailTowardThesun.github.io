@@ -1,0 +1,14 @@
+{
+  "name": "snailtowardthesun-blog",
+  "version": "1.0.0",
+  "description": "A Jekyll blog",
+  "scripts": {
+    "dev": "bundle exec jekyll serve --livereload --incremental",
+    "build": "bundle exec jekyll build",
+    "clean": "bundle exec jekyll clean",
+    "serve": "bundle exec jekyll serve"
+  },
+  "keywords": ["jekyll", "blog"],
+  "author": "",
+  "license": "MIT"
+}

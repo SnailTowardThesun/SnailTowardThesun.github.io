@@ -34,9 +34,35 @@ theme: minima
 plugins:
   - jekyll-feed
   - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-seo-tag
 paginate: 5
 
 category_dir: category/
+
+# Development settings
+livereload: true
+incremental: true
+port: 4000
+host: 0.0.0.0
+
+# Exclude from processing.
+exclude:
+  - .sass-cache/
+  - .jekyll-cache/
+  - gemfiles/
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - .vscode/
+  - docker/
+  - bootstrap.sh
+  - package.json
+  - package-lock.json
 
 # Exclude from processing.
 # The following items will not be processed, by default.
