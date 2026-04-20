@@ -43,6 +43,7 @@ docker run -p 4000:4000 blog
 
 - **博客文章**：使用Markdown格式，文件名格式为 `YYYY-MM-DD-title.md`
 - **LeetCode文章**：标题格式为 `LeetCode刷题的日子--No.<序号>: <题目名称>`，例如 `LeetCode刷题的日子--No.2078: Two Furthest Houses With Different Colors`
+- **YAML Front Matter**：标题中包含冒号（:）等特殊字符时，需要用双引号括起来，例如 `title: "LeetCode刷题的日子--No.2078: Two Furthest Houses With Different Colors"`
 - **趣味性知识**：在博客开头添加与题目相关的趣味性知识或实际应用场景，增强文章的可读性和吸引力
 - **代码块**：使用Markdown代码围栏，指定语言以获得语法高亮
 - **图片**：存放在 `assets/` 目录下，按年份/主题组织
