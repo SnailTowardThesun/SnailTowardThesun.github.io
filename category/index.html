@@ -1,0 +1,270 @@
+---
+layout: default
+title: 分类
+permalink: /category/
+---
+
+<div class="category-page">
+    <!-- 分类导航 -->
+    <div class="category-nav">
+        <h1 class="category-title">文章分类</h1>
+        <nav class="category-links">
+            {% for category in site.categories %}
+            <a href="#{{ category | first }}" class="category-link">{{ category | first }} <span class="category-count">({{ category.last.size }})</span></a>
+            {% endfor %}
+        </nav>
+    </div>
+
+    <!-- 分类文章列表 -->
+    <div class="category-content">
+        {% for category in site.categories %}
+        <section class="category-section" id="{{ category | first }}">
+            <h2 class="category-section-title">{{ category | first }} <span class="category-section-count">({{ category.last.size }})</span></h2>
+            <ul class="category-posts">
+                {% for post in category.last %}
+                <li class="category-post-item">
+                    <time class="post-time">{{ post.date | date: "%F" }}</time>
+                    <a class="post-title" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+/* 全局样式变量 */
+:root {
+    --primary-color: #333;
+    --accent-color: #0066cc;
+    --light-color: #f5f5f5;
+    --border-color: #e0e0e0;
+    --text-muted: #666;
+}
+
+/* 分类页面容器 */
+.category-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+/* 分类导航 */
+.category-nav {
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.category-title {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.category-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.category-link {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: var(--light-color);
+    border-radius: 20px;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.category-link:hover {
+    background-color: var(--accent-color);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.category-count {
+    font-size: 12px;
+    opacity: 0.8;
+    margin-left: 4px;
+}
+
+/* 分类内容 */
+.category-content {
+    margin-top: 40px;
+}
+
+/* 分类章节 */
+.category-section {
+    margin-bottom: 60px;
+    padding: 30px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.category-section-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--accent-color);
+}
+
+.category-section-count {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--text-muted);
+    margin-left: 10px;
+}
+
+/* 文章列表 */
+.category-posts {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.category-post-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.category-post-item:last-child {
+    border-bottom: none;
+}
+
+.category-post-item:hover {
+    background-color: var(--light-color);
+    padding-left: 10px;
+    border-radius: 4px;
+}
+
+.post-time {
+    flex-shrink: 0;
+    width: 120px;
+    font-size: 14px;
+    color: var(--text-muted);
+    font-family: monospace;
+}
+
+.post-title {
+    color: var(--primary-color);
+    font-size: 16px;
+    text-decoration: none;
+    flex: 1;
+    transition: color 0.3s ease;
+}
+
+.post-title:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .category-page {
+        padding: 20px 15px;
+    }
+
+    .category-title {
+        font-size: 24px;
+    }
+
+    .category-links {
+        gap: 10px;
+    }
+
+    .category-link {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+
+    .category-section {
+        padding: 20px;
+        margin-bottom: 40px;
+    }
+
+    .category-section-title {
+        font-size: 20px;
+    }
+
+    .post-time {
+        width: 100px;
+        font-size: 13px;
+    }
+
+    .post-title {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .category-post-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .post-time {
+        width: auto;
+    }
+}
+</style>
+
+<script>
+// 平滑滚动到分类区域
+document.addEventListener('DOMContentLoaded', function() {
+    // 获取所有分类导航链接
+    const categoryLinks = document.querySelectorAll('.category-link');
+    
+    // 为每个链接添加点击事件监听器
+    categoryLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // 获取目标分类的ID
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            // 平滑滚动到目标元素
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 100, // 减去导航栏高度
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+    
+    // 固定导航栏
+    const categoryNav = document.querySelector('.category-nav');
+    const navOffsetTop = categoryNav.offsetTop;
+    
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > navOffsetTop) {
+            categoryNav.style.position = 'sticky';
+            categoryNav.style.top = '0';
+            categoryNav.style.backgroundColor = 'white';
+            categoryNav.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+            categoryNav.style.zIndex = '100';
+            categoryNav.style.padding = '20px';
+        } else {
+            categoryNav.style.position = 'static';
+            categoryNav.style.boxShadow = 'none';
+            categoryNav.style.padding = '';
+        }
+    });
+});
+</script>
