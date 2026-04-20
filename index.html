@@ -2,70 +2,302 @@
 layout: default
 title: Me
 ---
-<div class="row">
-    <div class="col-xs-12 col-sm-6 col-md-8">
-        {% for post in paginator.posts %}
-        <article class="post-item">
-            <h2>
-                <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-            </h2>
-            <div class="post-meta">
-                <span class="post-author">by {{ post.author | default: site.author }}</span>
-                <span class="post-date">{{ post.date | date: "%F" }}</span>
-                {% if post.categories %}
-                <span class="post-category">
-                    {% for category in post.categories %}
-                    <span class="badge">{{ category }}</span>
-                    {% endfor %}
-                </span>
+<div class="home-page">
+    <div class="posts-section">
+        <h1 class="section-title">文章列表</h1>
+        <div class="posts-list">
+            {% for post in paginator.posts %}
+            <article class="post-item">
+                <h2>
+                    <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+                </h2>
+                <div class="post-meta">
+                    <span class="post-author">by {{ post.author | default: site.author }}</span>
+                    <span class="post-date">{{ post.date | date: "%F" }}</span>
+                    {% if post.categories %}
+                    <span class="post-category">
+                        {% for category in post.categories %}
+                        <span class="badge">{{ category }}</span>
+                        {% endfor %}
+                    </span>
+                    {% endif %}
+                </div>
+                {% if post.excerpt %}
+                <p class="post-excerpt">{{ post.excerpt | strip_html | truncatewords: 50 }}</p>
                 {% endif %}
-            </div>
-            {% if post.excerpt %}
-            <p class="post-excerpt">{{ post.excerpt | strip_html | truncatewords: 50 }}</p>
-            {% endif %}
-            <a class="post-link-btn" href="{{ post.url | prepend: site.baseurl }}">
-                阅读更多
-                <span class="glyphicon glyphicon-chevron-right"></span>
-            </a>
-        </article>
-        {% endfor %}
+                <a class="post-link-btn" href="{{ post.url | prepend: site.baseurl }}">
+                    阅读更多
+                    <span class="arrow">→</span>
+                </a>
+            </article>
+            {% endfor %}
+        </div>
 
         {% if paginator.total_pages > 1 %}
-        <nav aria-label="Page navigation">
-            <ul class="pager">
+        <div class="pagination">
+            <div class="page-info">
+                第 {{ paginator.page }} / {{ paginator.total_pages }} 页
+            </div>
+            <div class="page-buttons">
                 {% if paginator.previous_page %}
-                <li><a href="{{ paginator.previous_page_path }}">← 上一页</a></li>
+                <a href="{{ paginator.previous_page_path }}" class="page-btn prev">← 上一页</a>
                 {% endif %}
                 {% if paginator.next_page %}
-                <li><a href="{{ paginator.next_page_path }}">下一页 →</a></li>
+                <a href="{{ paginator.next_page_path }}" class="page-btn next">下一页 →</a>
                 {% endif %}
-            </ul>
-        </nav>
+            </div>
+        </div>
         {% endif %}
     </div>
-    <aside class="col-xs-6 col-md-4">
-        <div class="sidebar">
-            <div class="sidebar-section">
-                <h4>近期文章</h4>
-                <ul>
-                    {% for post in site.posts offset:0 limit:10 %}
-                    <li><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div class="sidebar-section">
-                <h4>分类目录</h4>
-                <ul>
-                    {% for category in site.categories %}
-                    <li>
-                        <a href="{{ root_url }}/{{ site.category_dir }}#{{ category | first }}" cate="{{ category | first }}">
-                            <span class="name">{{ category | first }}</span>
-                            <span class="badge">{{ category | last | size }}</span>
-                        </a>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
+    <aside class="sidebar">
+        <div class="sidebar-section">
+            <h4>近期文章</h4>
+            <ul>
+                {% for post in site.posts offset:0 limit:10 %}
+                <li><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="sidebar-section">
+            <h4>分类目录</h4>
+            <ul>
+                {% for category in site.categories %}
+                <li>
+                    <a href="{{ root_url }}/{{ site.category_dir }}#{{ category | first }}" cate="{{ category | first }}">
+                        <span class="name">{{ category | first }}</span>
+                        <span class="badge">{{ category | last | size }}</span>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
         </div>
     </aside>
 </div>
+
+<style>
+:root {
+    --primary-color: #333;
+    --accent-color: #0066cc;
+    --light-color: #f5f5f5;
+    --border-color: #e0e0e0;
+    --text-muted: #666;
+}
+
+.home-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    display: flex;
+    gap: 40px;
+}
+
+.posts-section {
+    flex: 1;
+    min-width: 0;
+}
+
+.section-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--accent-color);
+}
+
+.posts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.post-item {
+    padding: 25px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.post-item:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.post-item h2 {
+    margin: 0 0 15px 0;
+    font-size: 20px;
+}
+
+.post-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.post-link:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
+.post-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.post-category .badge {
+    background-color: var(--accent-color);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+.post-excerpt {
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.post-link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--accent-color);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.post-link-btn:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+.post-link-btn .arrow {
+    transition: transform 0.3s ease;
+}
+
+.post-link-btn:hover .arrow {
+    transform: translateX(3px);
+}
+
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.page-info {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.page-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.page-btn {
+    padding: 10px 20px;
+    background-color: var(--light-color);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.page-btn:hover {
+    background-color: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+}
+
+.sidebar {
+    width: 280px;
+    flex-shrink: 0;
+}
+
+.sidebar-section {
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+.sidebar-section h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: 0 0 15px 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-section li {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-section li:last-child {
+    border-bottom: none;
+}
+
+.sidebar-section a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: color 0.3s ease;
+}
+
+.sidebar-section a:hover {
+    color: var(--accent-color);
+}
+
+.sidebar-section .badge {
+    background-color: var(--light-color);
+    color: var(--text-muted);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+
+@media (max-width: 768px) {
+    .home-page {
+        flex-direction: column;
+        padding: 20px 15px;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+
+    .pagination {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+</style>

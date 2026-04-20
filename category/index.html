@@ -5,36 +5,68 @@ permalink: /category/
 ---
 
 <div class="category-page">
-    <!-- 分类导航 -->
-    <div class="category-nav">
+    <div class="category-tabs">
         <h1 class="category-title">文章分类</h1>
-        <nav class="category-links">
+        <div class="tab-buttons">
             {% for category in site.categories %}
-            <a href="#{{ category | first }}" class="category-link">{{ category | first }} <span class="category-count">({{ category.last.size }})</span></a>
+            <button class="tab-btn{% if forloop.first %} active{% endif %}" data-tab="{{ category | first }}" data-category="{{ category | first }}">
+                {{ category | first }} <span class="category-count">({{ category.last.size }})</span>
+            </button>
             {% endfor %}
-        </nav>
+        </div>
     </div>
 
-    <!-- 分类文章列表 -->
-    <div class="category-content">
+    <div class="tab-content">
         {% for category in site.categories %}
-        <section class="category-section" id="{{ category | first }}">
-            <h2 class="category-section-title">{{ category | first }} <span class="category-section-count">({{ category.last.size }})</span></h2>
+        <div class="tab-panel{% if forloop.first %} active{% endif %}" id="tab-{{ category | first }}" data-category="{{ category | first }}">
+            <div class="category-header">
+                <h2 class="category-section-title">{{ category | first }}</h2>
+            </div>
             <ul class="category-posts">
-                {% for post in category.last %}
-                <li class="category-post-item">
-                    <time class="post-time">{{ post.date | date: "%F" }}</time>
-                    <a class="post-title" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-                </li>
+                {% assign posts = category.last %}
+                {% assign pageSize = 10 %}
+                {% assign totalPages = posts.size | divided_by: pageSize %}
+                {% if posts.size > pageSize %}
+                    {% assign totalPages = totalPages | plus: 1 %}
+                {% endif %}
+                {% for i in (0..totalPages) %}
+                    {% assign startIndex = i | times: pageSize %}
+                    {% assign endIndex = startIndex | plus: pageSize | minus: 1 %}
+                    {% if startIndex < posts.size %}
+                    <div class="post-page" data-page="{{ i }}" data-total="{{ totalPages }}" {% if i > 0 %}style="display: none;"{% endif %}>
+                        {% for j in (startIndex..endIndex) %}
+                            {% if j < posts.size %}
+                            {% assign post = posts[j] %}
+                            <li class="category-post-item">
+                                <time class="post-time">{{ post.date | date: "%F" }}</time>
+                                <a class="post-title" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+                            </li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if totalPages > 1 %}
+                        <div class="pagination">
+                            <span class="page-info">第 {{ i | plus: 1 }} / {{ totalPages }} 页</span>
+                            <div class="page-buttons">
+                                {% if i > 0 %}
+                                <button class="page-btn prev" data-page="{{ i | minus: 1 }}">上一页</button>
+                                {% endif %}
+                                {% assign lastPageIndex = totalPages | minus: 1 %}
+                                {% if i < lastPageIndex %}
+                                <button class="page-btn next" data-page="{{ i | plus: 1 }}">下一页</button>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
                 {% endfor %}
             </ul>
-        </section>
+        </div>
         {% endfor %}
     </div>
 </div>
 
 <style>
-/* 全局样式变量 */
 :root {
     --primary-color: #333;
     --accent-color: #0066cc;
@@ -43,16 +75,14 @@ permalink: /category/
     --text-muted: #666;
 }
 
-/* 分类页面容器 */
 .category-page {
     max-width: 900px;
     margin: 0 auto;
     padding: 40px 20px;
 }
 
-/* 分类导航 */
-.category-nav {
-    margin-bottom: 40px;
+.category-tabs {
+    margin-bottom: 30px;
     padding-bottom: 20px;
     border-bottom: 1px solid var(--border-color);
 }
@@ -65,29 +95,36 @@ permalink: /category/
     text-align: center;
 }
 
-.category-links {
+.tab-buttons {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 15px;
+    gap: 10px;
 }
 
-.category-link {
-    display: inline-block;
-    padding: 8px 16px;
+.tab-btn {
+    padding: 10px 20px;
     background-color: var(--light-color);
-    border-radius: 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
     color: var(--primary-color);
-    text-decoration: none;
     font-size: 14px;
     font-weight: 500;
+    cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.category-link:hover {
+.tab-btn:hover {
     background-color: var(--accent-color);
     color: white;
+    border-color: var(--accent-color);
     transform: translateY(-2px);
+}
+
+.tab-btn.active {
+    background-color: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
 }
 
 .category-count {
@@ -96,37 +133,35 @@ permalink: /category/
     margin-left: 4px;
 }
 
-/* 分类内容 */
-.category-content {
-    margin-top: 40px;
+.tab-content {
+    margin-top: 30px;
 }
 
-/* 分类章节 */
-.category-section {
-    margin-bottom: 60px;
+.tab-panel {
+    display: none;
     padding: 30px;
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
-.category-section-title {
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--primary-color);
-    margin-bottom: 25px;
+.tab-panel.active {
+    display: block;
+}
+
+.category-header {
+    margin-bottom: 20px;
     padding-bottom: 15px;
     border-bottom: 2px solid var(--accent-color);
 }
 
-.category-section-count {
-    font-size: 16px;
-    font-weight: 400;
-    color: var(--text-muted);
-    margin-left: 10px;
+.category-section-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: 0;
 }
 
-/* 文章列表 */
 .category-posts {
     list-style: none;
     padding: 0;
@@ -172,7 +207,42 @@ permalink: /category/
     text-decoration: underline;
 }
 
-/* 响应式设计 */
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.page-info {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.page-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.page-btn {
+    padding: 8px 16px;
+    background-color: var(--light-color);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--primary-color);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.page-btn:hover {
+    background-color: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+}
+
 @media (max-width: 768px) {
     .category-page {
         padding: 20px 15px;
@@ -182,18 +252,13 @@ permalink: /category/
         font-size: 24px;
     }
 
-    .category-links {
-        gap: 10px;
-    }
-
-    .category-link {
-        padding: 6px 12px;
+    .tab-btn {
+        padding: 8px 16px;
         font-size: 13px;
     }
 
-    .category-section {
+    .tab-panel {
         padding: 20px;
-        margin-bottom: 40px;
     }
 
     .category-section-title {
@@ -207,6 +272,11 @@ permalink: /category/
 
     .post-title {
         font-size: 15px;
+    }
+
+    .pagination {
+        flex-direction: column;
+        gap: 15px;
     }
 }
 
@@ -224,47 +294,57 @@ permalink: /category/
 </style>
 
 <script>
-// 平滑滚动到分类区域
 document.addEventListener('DOMContentLoaded', function() {
-    // 获取所有分类导航链接
-    const categoryLinks = document.querySelectorAll('.category-link');
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabPanels = document.querySelectorAll('.tab-panel');
     
-    // 为每个链接添加点击事件监听器
-    categoryLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const targetTab = this.getAttribute('data-tab');
             
-            // 获取目标分类的ID
-            const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
             
-            // 平滑滚动到目标元素
-            if (targetElement) {
-                window.scrollTo({
-                    top: targetElement.offsetTop - 100, // 减去导航栏高度
-                    behavior: 'smooth'
-                });
-            }
+            tabPanels.forEach(panel => {
+                if (panel.id === 'tab-' + targetTab) {
+                    panel.classList.add('active');
+                } else {
+                    panel.classList.remove('active');
+                }
+            });
+            
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         });
     });
     
-    // 固定导航栏
-    const categoryNav = document.querySelector('.category-nav');
-    const navOffsetTop = categoryNav.offsetTop;
-    
-    window.addEventListener('scroll', function() {
-        if (window.scrollY > navOffsetTop) {
-            categoryNav.style.position = 'sticky';
-            categoryNav.style.top = '0';
-            categoryNav.style.backgroundColor = 'white';
-            categoryNav.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
-            categoryNav.style.zIndex = '100';
-            categoryNav.style.padding = '20px';
-        } else {
-            categoryNav.style.position = 'static';
-            categoryNav.style.boxShadow = 'none';
-            categoryNav.style.padding = '';
-        }
+    document.querySelectorAll('.page-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const targetPage = parseInt(this.getAttribute('data-page'));
+            const parent = this.closest('.post-page');
+            const totalPages = parseInt(parent.getAttribute('data-total'));
+            const category = parent.closest('.tab-panel').getAttribute('data-category');
+            
+            document.querySelectorAll('#tab-' + category + ' .post-page').forEach(page => {
+                const pageNum = parseInt(page.getAttribute('data-page'));
+                if (pageNum === targetPage) {
+                    page.style.display = 'block';
+                } else {
+                    page.style.display = 'none';
+                }
+            });
+        });
     });
+    
+    const hash = window.location.hash;
+    if (hash) {
+        const targetTab = hash.substring(1);
+        const button = document.querySelector('.tab-btn[data-tab="' + targetTab + '"]');
+        if (button) {
+            button.click();
+        }
+    }
 });
 </script>
