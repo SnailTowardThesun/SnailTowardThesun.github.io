@@ -155,6 +155,7 @@ bool contains(int street, int dx, int dy) {
 
 ## 代码实现
 
+{% raw %}
 ```cpp
 class Solution {
 public:
@@ -214,9 +215,11 @@ public:
      }
 };
 ```
+{% endraw %}
 
 ## 测试用例
 
+{% raw %}
 ```cpp
 TEST(Daily, 1391) {
     Solution s;
@@ -226,6 +229,7 @@ TEST(Daily, 1391) {
     EXPECT_EQ(false, ret);  // 无法到达右下角
 }
 ```
+{% endraw %}
 
 ## 总结
 
