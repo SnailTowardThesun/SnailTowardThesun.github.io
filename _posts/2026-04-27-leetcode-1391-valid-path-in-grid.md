@@ -112,6 +112,7 @@ bool contains(int street, int dx, int dy) {
 
 等等，让我重新推演：
 
+{% raw %}
 ```
 从 (0,0)=2 (上↔下) 出发，2 允许：上(-1,0)、下(1,0)
 
@@ -134,6 +135,7 @@ bool contains(int street, int dx, int dy) {
             
 等等，grid 是 2x3，终点是 (1,2)，已经到达了！
 ```
+{% endraw %}
 
 但实际上示例 1 的答案是 true，说明路径确实存在。让我再仔细验证一下：
 
