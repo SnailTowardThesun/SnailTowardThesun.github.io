@@ -49,6 +49,36 @@ docker run -p 4000:4000 blog
 - **图片**：存放在 `assets/` 目录下，按年份/主题组织
 - **链接**：使用相对路径或完整URL，确保可访问性
 
+## Jekyll/Liquid 模板注意事项 ⚠️
+
+**重要**：Jekyll 使用 Liquid 模板引擎，会将 `{{` 解释为变量起始标记。
+
+### 问题场景
+当博客文章中包含 C++/Java 等使用双大括号 `{{}}` 初始化语法的代码时（如 `vector<vector<int>> dirs = {{0, 1}, {0, -1}}`），Jekyll 构建会报错：
+```
+Liquid Exception: Variable '{{0, 1}' was not properly terminated with regexp: /\}\}/
+```
+
+### 解决方案
+在包含 `{{` 的代码块前后使用 `{% raw %}` 和 `{% endraw %}` 标签：
+
+```markdown
+{% raw %}
+```cpp
+vector<vector<int>> dirs = {{0, 1}, {0, -1}};
+```
+{% endraw %}
+```
+
+### 需要注意的场景
+- C++ STL 容器初始化：`vector<vector<int>>{{...}, {...}}`
+- Java Collections初始化
+- 任何使用双大括号的代码示例
+- 即使在行内代码中（反引号包裹）也会触发此错误
+
+### 建议
+编写完博客后，使用 `bundle exec jekyll build` 本地验证构建成功后再推送。
+
 ## 部署信息
 
 - **部署平台**：GitHub Pages
