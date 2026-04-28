@@ -37,6 +37,12 @@ docker build -f Dockerfile.local -t blog .
 
 # Docker运行
 docker run -p 4000:4000 blog
+
+# Podman构建（替代Docker）
+podman build -f Dockerfile.local -t blog .
+
+# Podman运行（替代Docker）
+podman run -p 4000:4000 blog
 ```
 
 ## 编码规范
