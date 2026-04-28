@@ -57,16 +57,16 @@ podman run -p 4000:4000 blog
 
 ## Jekyll/Liquid 模板注意事项 ⚠️
 
-**重要**：Jekyll 使用 Liquid 模板引擎，会将 `{{` 解释为变量起始标记。
+**重要**：Jekyll 使用 Liquid 模板引擎，会将 `{% raw %}{{% endraw %}` 解释为变量起始标记。
 
 ### 问题场景
-当博客文章中包含 C++/Java 等使用双大括号 `{{}}` 初始化语法的代码时（如 `vector<vector<int>> dirs = {{0, 1}, {0, -1}}`），Jekyll 构建会报错：
+当博客文章中包含 C++/Java 等使用双大括号 `{% raw %}{{% endraw %}}` 初始化语法的代码时（如 `{% raw %}vector<vector<int>> dirs = {{0, 1}, {0, -1}}{% endraw %}`），Jekyll 构建会报错：
 ```
-Liquid Exception: Variable '{{0, 1}' was not properly terminated with regexp: /\}\}/
+Liquid Exception: Variable '{% raw %}{{0, 1}{% endraw %}' was not properly terminated with regexp: /\}\}/
 ```
 
 ### 解决方案
-在包含 `{{` 的代码块前后使用 `{% raw %}` 和 `{% endraw %}` 标签：
+在包含 `{% raw %}{{% endraw %}` 的代码块前后使用 `{% raw %}` 和 `{% endraw %}` 标签：
 
 ```markdown
 {% raw %}
@@ -77,7 +77,7 @@ vector<vector<int>> dirs = {{0, 1}, {0, -1}};
 ```
 
 ### 需要注意的场景
-- C++ STL 容器初始化：`vector<vector<int>>{{...}, {...}}`
+- C++ STL 容器初始化：`{% raw %}vector<vector<int>>{{...}, {...}}{% endraw %}`
 - Java Collections初始化
 - 任何使用双大括号的代码示例
 - 即使在行内代码中（反引号包裹）也会触发此错误
