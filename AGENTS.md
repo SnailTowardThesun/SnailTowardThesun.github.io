@@ -1,109 +1,297 @@
-# AGENTS.md: Vibe Coding 多智能体协作框架
+# AGENTS.md — 单仓库双项目协作指南
 
-本项目开发遵循 **"Vibe Coding, Logical Execution"** 原则，采用多Agent协作框架进行内容创作和系统开发。
+本仓库是一个 **Monorepo**，包含两个独立项目。AI Agent 在操作前必须先确认当前工作目录属于哪个项目，并遵循对应规范。
+
+---
+
+## 项目概览
+
+| 项目 | 路径 | 类型 | 语言/技术 | 用途 |
+|------|------|------|-----------|------|
+| **LeetCode_MyAns** | `LeetCode_MyAns/` | 算法题解 | C++17, Rust | LeetCode 题目解答与测试 |
+| **SnailTowardThesun.github.io** | `SnailTowardThesun.github.io/` | 技术博客 | Jekyll, Markdown, SCSS | 刷题笔记与技术文档 |
+
+---
 
 ## 核心原则
 
-| 原则 | 说明 |
-|------|------|
-| Logic over Tokens | 优先生成逻辑严密的短代码，而非冗长的 AI 生成片段 |
-| Vibe First, Structure Second | 先捕捉创作灵感和氛围，再通过结构化流程将其转化为可执行的代码 |
-| Collaborative Synergy | 不同领域的 Agent 协同工作，确保从灵感到实现的无缝过渡 |
+- **Logic over Tokens** — 优先生成逻辑严密的短代码，而非冗长的 AI 生成片段
+- **精确操作** — 修改文件前先确认路径归属哪个项目，避免跨项目污染
+- **注释即文档** — 新题和博客必须包含完整注释/说明，缺一不可
+- **本地验证** — 推送前必须通过构建和测试验证
 
-## 角色定义
+---
 
-| 角色 | 职责 | 核心能力 | 否决权 |
-|------|------|----------|--------|
-| **全栈架构师** | 系统建模、代码分层、Schema 设计 | 代码架构设计, 微服务拆分, 跨语言通信 | 强力否决：拒绝违反"单点事实"原则的架构改动 |
-| **页面设计师** | UI/UX 实现、响应式系统、CSS 架构 | Tailwind CSS, 视觉一致性评估, 交互原型转代码 | 视觉否决：拒绝破坏视觉 vibe 或响应式断点的代码 |
-| **文档编辑** | 内容校对、文档结构优化、语言风格统一 | 语法纠错, 风格一致性检查, 文档结构设计 | 表达否决：拒绝语言模糊、逻辑混乱的内容 |
-| **垂直领域专家** | 博客内容（AI、C++、Warhammer）专业校对 | 领域知识检索, 技术术语纠偏, 内容深度推演 | 事实否决：拒绝存在事实错误或技术硬伤的内容 |
-| **交互动效专家** | 微互动、加载状态、滚动体验 | 动效设计, 性能预算控制, 状态过渡逻辑 | 体验否决：拒绝导致页面卡顿或反馈不直观的动效 |
-| **一致性审查官** | 全局质量门禁、代码风格审计、安全性扫描 | 静态代码分析, 回归测试集成, 依赖风险评估 | 终极否决：对任何降低系统稳定性的操作拥有一票否决权 |
-| **SEO 与传播黑客** | 结构化数据、社交媒体摘要、转化优化 | JSON-LD 配置, 关键词密度分析, 自动化摘要生成 | 转化否决：拒绝不符合搜索引擎收录标准的内容 |
-| **内容策划师** | 内容主题规划、受众分析、内容日历管理 | 内容趋势分析, 受众画像构建, 内容策略制定 | 策略否决：拒绝不符合内容策略或受众需求的方向 |
-| **数据分析师** | 网站流量分析、用户行为洞察、性能监控 | 数据分析工具集成, 可视化报告, A/B 测试设计 | 数据否决：拒绝没有数据支持或与趋势不符的决策 |
+## 项目一：LeetCode_MyAns（算法题解）
 
-## 协作流程
+### 项目结构
 
-### 灵感转化流
-1. **Vibe Input** → 用户描述期望的功能感受和创作灵感
-2. **Content Strategy** → **内容策划师**制定内容策略和主题方向
-3. **Architectural Blueprint** → **全栈架构师**定义数据流动路径和系统架构
-4. **Visual Scaffolding** → **页面设计师**快速搭建 UI 框架
-5. **Content Development** → **垂直领域专家**和**文档编辑**协作创建专业内容
-6. **Interactive Enhancement** → **交互动效专家**添加微互动和动效设计
-7. **Growth Optimization** → **SEO 与传播黑客**优化内容和页面结构
-8. **Data-Driven Refinement** → **数据分析师**提供数据洞察
-9. **Quality Assurance** → **一致性审查官**进行质量审计
+```
+LeetCode_MyAns/
+├── cplusplus/                    # C++ 题解（CMake + Google Test）
+│   ├── questions/                # 每日一题（按编号命名，如 1.cpp）
+│   ├── top150/                   # 面试经典 150 题
+│   │   ├── array/                # 数组类题目
+│   │   ├── double_pointer/       # 双指针类题目（如有）
+│   │   └── string/               # 字符串类题目
+│   ├── CMakeLists.txt            # CMake 构建配置
+│   └── README.md
+├── rust/                         # Rust 题解（Cargo Workspace）
+│   ├── ans/                      # 主答案模块
+│   │   └── questions/            # 按题号命名的 .rs 文件
+│   ├── baseAlgorithm/            # 基础算法练习
+│   │   └── src/main.rs           # 排序等基础算法
+│   └── Cargo.toml                # Workspace 配置
+├── .clang-format                 # C++ 格式化配置
+├── package.json                  # Turborepo 根配置
+├── turbo.json                    # Turbo 任务定义
+└── README.md
+```
 
-### 冲突解决
-- **设计师** vs **交互动效专家** → **全栈架构师**裁决
-- **内容策划师** vs **垂直领域专家** → **垂直领域专家**为准
-- **一致性审查官**否决权最高，除非用户 Override
-- **数据分析师**洞察作参考，不直接参与否决
+### 构建与测试命令
 
-## 技术栈
+```bash
+# === Turborepo 顶层命令（在 LeetCode_MyAns/ 下执行）===
+npm install                          # 安装依赖
+npm run build                       # 构建所有子项目
+npm run test                        # 运行所有测试
+npm run lint                        # 运行所有格式化
 
-| 类别 | 技术 | 说明 |
+# === C++ 项目（在 cplusplus/ 下执行）===
+mkdir -p build && cd build
+cmake ..
+make
+./tests                            # 运行测试
+ctest --verbose                    # 详细测试输出
+clang-format -i questions/*.cpp    # 格式化代码
+
+# === Rust 项目（在 rust/ 下执行）===
+cargo build                        # 构建
+cargo test                         # 运行测试
+cargo test test_two_sum            # 运行指定测试
+cargo fmt                          # 格式化代码
+cargo clippy                       # 代码检查
+```
+
+### C++ 编码规范
+
+- **标准**: C++17，编译标志 `-g -std=c++17 -Wall`
+- **CMake**: 最低版本 3.28，通过 FetchContent 自动下载 Google Test
+- **缩进**: 4 空格，不使用 Tab（遵循 `.clang-format` 的 Google 风格）
+- **行宽**: 120 字符
+- **命名**:
+  - 类名: `PascalCase`（如 `Solution`）
+  - 函数/变量: `snake_case`（如 `two_sum`, `max_length`）
+- **文件命名**:
+  - 每日一题: `题号.cpp`（如 `1.cpp`, `3643.cpp`）
+  - Top150: `top150_题号.cpp`（如 `top150_no121_best_time_to_buy_sell_stock.cpp`）
+- **注释要求**（文件头部，中文）:
+  - `@题目描述`: 完整题目内容
+  - `@示例`: 输入输出示例
+  - `@解题思路`: 算法思路、步骤、复杂度分析
+- **测试**: 使用 `TEST(Daily, 题号)` 格式，包含基本和边界用例
+
+### C++ 避免事项
+
+- 不要在头文件中使用 `using namespace std;`
+- 避免裸指针，优先使用智能指针
+- 不要提交编译产物（`.gitignore` 已配置）
+- 避免硬编码魔法数字
+- 不要使用已废弃的 C++ 特性
+
+### Rust 编码规范
+
+- **标准**: 最新稳定版 Rust
+- **缩进**: 4 空格
+- **命名**:
+  - 函数/变量: `snake_case`
+  - 结构体/枚举: `PascalCase`
+  - 常量: `SCREAMING_SNAKE_CASE`
+- **文件组织**: 按题号命名 `.rs` 文件（如 `2389.rs`），放在 `ans/questions/`
+- **测试**: 使用 `#[test]` 属性，测试函数与源码放在同一文件
+- **文档**: 使用 `///` 为公共 API 添加文档注释
+- **Workspace**: `ans` 和 `baseAlgorithm` 两个成员
+
+### 新题提交 Checklist
+
+- [ ] 代码注释完整（题目描述 + 解题思路 + 示例，中文）
+- [ ] 测试用例包含基本场景和边界条件
+- [ ] C++ 代码通过 `clang-format` 格式化
+- [ ] Rust 代码通过 `cargo fmt` 和 `cargo clippy` 检查
+- [ ] 构建通过且测试全部通过
+- [ ] 文档文件命名为 `README.md`（不是 `readme.md`）
+
+---
+
+## 项目二：SnailTowardThesun.github.io（技术博客）
+
+### 项目结构
+
+```
+SnailTowardThesun.github.io/
+├── _posts/                       # 博客文章（Markdown）
+├── _layouts/                     # 页面布局模板
+├── _sass/                        # Sass 样式
+├── assets/                       # 静态资源（图片、CSS）
+├── category/                     # 分类页面
+├── docker/                       # Docker 配置
+├── _config.yml                   # Jekyll 配置
+├── Gemfile / Gemfile.lock        # Ruby 依赖
+├── index.html                    # 首页
+├── 404.html                      # 404 页面
+├── Dockerfile.local              # 本地 Docker 镜像
+├── .editorconfig                 # 编辑器配置
+└── README.md
+```
+
+### 技术栈
+
+| 技术 | 版本 | 用途 |
 |------|------|------|
-| 前端框架 | React, Vue | 现代化前端框架 |
-| 样式系统 | Tailwind CSS | 快速构建响应式界面 |
-| 内容管理 | Markdown | 便于内容创作和版本控制 |
-| 分析工具 | Google Analytics | 数据收集和分析 |
-| SEO | JSON-LD | 结构化数据，优化搜索引擎收录 |
-| 性能 | 懒加载、代码分割 | 性能优化策略 |
-| 安全 | Web 安全最佳实践 | 防止常见安全漏洞 |
+| Jekyll | ~> 4.3 | 静态站点生成器 |
+| Minima | ~> 2.5 | 默认主题 |
+| Ruby | 3.4 | 运行环境 |
+| Sass | - | CSS 预处理器 |
+| Docker/Podman | - | 容器化开发 |
+| GitHub Pages | - | 自动部署 |
 
-## 扩展指令
+### 构建与部署命令
+
+```bash
+# === 本地开发（需 Ruby 环境）===
+bundle exec jekyll serve           # 启动开发服务器（含 live reload）
+bundle exec jekyll build           # 构建静态站点
+bundle exec jekyll clean           # 清理构建产物
+
+# === Docker 方式（推荐）===
+docker run --rm -v "$PWD:/app" -w /app -p 4000:4000 \
+  ruby:3.4 /bin/bash -c "bundle install && bundle exec jekyll serve --host 0.0.0.0 --port 4000"
+
+# === 构建验证（推送前必做）===
+docker run --rm -v "$PWD:/app" -w /app ruby:3.4 \
+  /bin/bash -c "bundle exec jekyll build"
+
+# === Podman 替代方案 ===
+podman run --rm -v "$PWD:/app" -w /app -p 4000:4000 \
+  ruby:3.4 /bin/bash -c "bundle install && bundle exec jekyll serve --host 0.0.0.0 --port 4000"
+```
+
+### 博客文章规范
+
+**文件名格式**: `YYYY-MM-DD-title.md`（如 `2026-05-05-leetcode-61-rotate-list.md`）
+
+**YAML Front Matter**:
+```yaml
+---
+layout: article
+author: SnailTowardThesun
+title: "LeetCode刷题的日子--No.61: 旋转链表"
+categories: LeetCode
+---
+```
+
+**文章结构**（按顺序，每篇必须遵循）:
+1. **小知识** — YAML Front Matter 之后、正文之前，以 Markdown 引用块（`>`）形式呈现，不超过 100 字，内容与题目相关（应用场景、趣味知识、历史背景等）
+2. `## 题目` — 题目名称、难度、题目描述
+3. `### 示例` — 输入输出示例
+4. `## 解题思路` — 算法思路、步骤详解、复杂度分析
+5. `## 代码实现` — 代码块
+6. （可选）扩展讨论
+
+### 小知识格式示例
 
 ```markdown
-To Architect: "根据当前系统架构，为新功能设计一个模块化的实现方案，确保可扩展性。"
-To Stylist: "为这个页面设计一个符合品牌调性的视觉风格，确保响应式布局在所有设备上都能良好显示。"
-To Wordsmith: "编辑这篇内容，确保语言表达清晰流畅，风格一致，并优化文档结构。"
-To Subject Expert: "审查这篇关于 [特定领域] 的内容，确保技术准确性和专业深度。"
-To Motion Master: "为这个交互添加适当的微动效，提升用户体验但不影响性能。"
-To Guardian: "分析这段代码，检查是否存在安全隐患、性能问题或代码风格违规。"
-To Growth Hacker: "优化这篇内容的 SEO 元素，包括标题、Meta 描述和关键词分布。"
-To Curator: "基于当前内容趋势，为博客策划一个月度内容日历。"
-To Analyst: "分析最近一个月的网站流量数据，提供用户行为洞察和优化建议。"
+---
+layout: article
+author: SnailTowardThesun
+title: "LeetCode刷题的日子--No.61: 旋转链表"
+categories: LeetCode
+---
+
+> 链表旋转操作在轮询调度、循环队列等场景中经常使用，可以用来实现资源的循环分配。
+
+## 题目
+
+...
 ```
 
-## 博客内容质量检查清单
+**小知识要求**:
+- 以 `>` 引用块格式出现
+- 不超过 100 个中文字符
+- 内容必须与题目相关（应用场景、趣味知识、算法背景等）
+- 位置：YAML Front Matter 之后、第一个正文标题之前
+- 非 LeetCode 技术文章同样适用（如算法笔记、技术总结等）
 
-### ⚠️ Jekyll/Liquid 模板兼容性检查（必须）
+**标题格式**: `LeetCode刷题的日子--No.<序号>: <题目名称>`
+- 含冒号时，YAML 中需用双引号包裹：`title: "LeetCode刷题的日子--No.61: 旋转链表"`
 
-**一致性审查官**在审核博客文章时，必须检查以下内容：
+### ⚠️ Jekyll/Liquid 模板兼容（必须）
 
-- [ ] **双大括号检查**：代码中是否存在 `{% raw %}{{% endraw %}` 模式？
-  - C++ STL 容器初始化：`{% raw %}vector<vector<int>>{{...}, {...}}{% endraw %}`
-  - Java/C++ 匿名对象初始化
-  - 如果存在，是否已用 `{% raw %}...{% endraw %}` 包裹？
-- [ ] **趣味性知识格式检查**：
-  - 位置：是否在示例之后、解题思路之前？
-  - 格式：是否以单行形式存在？
-  - 标题：是否没有「趣味性知识」的标题？
-  - 字数：是否简洁精炼？
-- [ ] **本地构建验证**：推送前是否运行 `bundle exec jekyll build` 确认无错误？
-- [ ] **容器构建验证**：如本地环境未安装Ruby，可使用Docker/Podman构建：
-  - Docker: `docker build -f Dockerfile.local -t blog . && docker run -p 4000:4000 blog`
-  - Podman: `podman build -f Dockerfile.local -t blog . && podman run -p 4000:4000 blog`
+Jekyll 使用 Liquid 模板引擎，会将 `{{` 解释为变量起始标记。包含双大括号的代码必须用 `{% raw %}...{% endraw %}` 包裹：
 
-**常见错误**：
-```
-Liquid Exception: Variable '{% raw %}{{0, 1}{% endraw %}' was not properly terminated with regexp: /\}\}/
-```
-
-**修复方法**：在包含 `{% raw %}{{% endraw %}` 的代码块前后添加：
 ```markdown
 {% raw %}
 ```cpp
-// 包含 {{}} 的代码
+vector<vector<int>> dirs = {{0, 1}, {0, -1}};
 ```
 {% endraw %}
 ```
 
----
+**需包裹的场景**:
+- C++ STL 容器初始化: `vector<vector<int>>{{...}, {...}}`
+- Java/C++ 匿名对象初始化
+- 任何使用 `{{` 的代码（即使行内反引号也触发）
+
+**常见错误**:
+```
+Liquid Exception: Variable '{{0, 1}}' was not properly terminated
+```
+
+### 编辑器配置
+
+`.editorconfig` 定义了全局格式规则:
+- 编码: UTF-8，换行: LF
+- 缩进: 2 空格
+- Markdown 文件保留尾部空格（用于排版控制）
+
+### 新文章发布 Checklist
+
+- [ ] YAML Front Matter 格式正确（冒号用双引号包裹）
+- [ ] 文件名符合 `YYYY-MM-DD-title.md` 格式
+- [ ] 代码块中 `{{` 已用 `{% raw %}...{% endraw %}` 包裹
+- [ ] 小知识在 YAML Front Matter 之后以 `>` 引用块格式出现，不超过 100 字
+- [ ] 本地构建验证通过（`bundle exec jekyll build` 或 Docker）
+- [ ] 图片存放在 `assets/` 目录，使用相对路径引用
+- [ ] 链接使用相对路径或完整 URL
 
 ---
-*Generated for Vibe Coding Agent Collaborative Framework.*
+
+## 跨项目协作规范
+
+### 代码与博客联动
+
+当在 LeetCode_MyAns 中完成新题解答后，可选择在博客中发布对应的文章：
+1. 先在 `LeetCode_MyAns/` 中完成代码编写和测试
+2. 确保代码注释完整（题目描述 + 解题思路 + 复杂度分析）
+3. 在博客中创建新文章，复用代码和思路
+4. 博客代码注意 Liquid 模板兼容性
+
+### 提交规范
+
+- **提交信息**: 简洁明了，包含项目标识前缀
+  - `[algo] Add solution for LeetCode 61` — 算法题解
+  - `[blog] Post LeetCode No.61: Rotate List` — 博客文章
+- **分支策略**: 直接在主分支提交（个人仓库）
+- **文件命名**: 只使用 `README.md`（大写），不使用 `readme.md`
+
+### Agent 操作指南
+
+1. **确认路径**: 每次修改前先确认当前文件属于哪个项目
+2. **遵循对应规范**: 严格按所属项目的编码规范执行
+3. **最小变更**: 只修改必要文件，不引入无关改动
+4. **验证先行**: 涉及代码变更时优先验证构建和测试
+5. **不创建多余文件**: 不添加 LICENSE、版权头等已有或多余文件
+
+---
+
+*Generated for Monorepo Agent Collaboration. 遵循 "Vibe Coding, Logical Execution" 原则.*

@@ -5,6 +5,8 @@ title: ijkplayer demo
 categories: 流媒体相关
 ---
 
+> ijkplayer是B站开源的安卓播放器，基于FFmpeg，有助移动端视频开发。
+
 
 # ijkplayer 播放器，android平台使用说明
 

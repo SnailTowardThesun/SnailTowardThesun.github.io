@@ -5,6 +5,8 @@ title: "LeetCode刷题的日子--No.1391: 网格中是否存在有效路径"
 categories: LeetCode
 ---
 
+> 网格路径问题是图论经典应用，判断图连通性用BFS或并查集。
+
 ## 题目
 
 LeetCode 1391. Check if There is a Valid Path in a Grid (网格中是否存在有效路径)

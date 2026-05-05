@@ -5,6 +5,8 @@ title: "LeetCode刷题的日子--No.48: 旋转图像"
 categories: LeetCode
 ---
 
+> 旋转图像用原地操作，先转置再翻转，避免额外空间分配。
+
 ## 题目
 
 LeetCode 48. Rotate Image (旋转图像)

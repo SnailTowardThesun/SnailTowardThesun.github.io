@@ -5,6 +5,8 @@ title: "LeetCode刷题的日子--No.396: 旋转函数"
 categories: LeetCode
 ---
 
+> 旋转函数最大值用前缀和优化，避免每次旋转重新计算总和。
+
 ## 题目
 
 LeetCode 396. Rotate Function (旋转函数)
