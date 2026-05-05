@@ -227,6 +227,7 @@ categories: LeetCode
 
 ### ⚠️ Jekyll/Liquid 模板兼容（必须）
 
+{% raw %}
 Jekyll 使用 Liquid 模板引擎，会将 `{{` 解释为变量起始标记。包含双大括号的代码必须用 `{% raw %}...{% endraw %}` 包裹：
 
 ```markdown
@@ -246,6 +247,7 @@ vector<vector<int>> dirs = {{0, 1}, {0, -1}};
 ```
 Liquid Exception: Variable '{{0, 1}}' was not properly terminated
 ```
+{% endraw %}
 
 ### 编辑器配置
 
