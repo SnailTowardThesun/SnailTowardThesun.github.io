@@ -227,27 +227,12 @@ categories: LeetCode
 
 ### ⚠️ Jekyll/Liquid 模板兼容（必须）
 
-{% raw %}
-Jekyll 使用 Liquid 模板引擎，会将 `{{` 解释为变量起始标记。包含双大括号的代码必须用 `{% raw %}...{% endraw %}` 包裹：
-
-```markdown
-{% raw %}
-```cpp
-vector<vector<int>> dirs = {{0, 1}, {0, -1}};
-```
-{% endraw %}
-```
+Jekyll 使用 Liquid 模板引擎，会将左花括号解释为变量起始标记。包含双大括号的代码必须用特殊标签包裹：
 
 **需包裹的场景**:
-- C++ STL 容器初始化: `vector<vector<int>>{{...}, {...}}`
+- C++ STL 容器初始化
 - Java/C++ 匿名对象初始化
-- 任何使用 `{{` 的代码（即使行内反引号也触发）
-
-**常见错误**:
-```
-Liquid Exception: Variable '{{0, 1}}' was not properly terminated
-```
-{% endraw %}
+- 任何使用双大括号的代码（即使行内反引号也触发）
 
 ### 编辑器配置
 
