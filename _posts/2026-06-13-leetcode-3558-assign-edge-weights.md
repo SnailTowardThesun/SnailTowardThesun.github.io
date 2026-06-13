@@ -103,6 +103,7 @@ public:
 
 ## 测试用例
 
+{% raw %}
 ```cpp
 TEST(Daily, 3558) {
     Solution s;
@@ -113,6 +114,7 @@ TEST(Daily, 3558) {
     EXPECT_EQ(s.assign_edge_weights(edges2), 4);
 }
 ```
+{% endraw %}
 
 ## 总结
 
