@@ -42,8 +42,6 @@ words = ["This","is","an","example","of","text","justification."], maxWidth = 16
      - 前 `spaces % gaps` 个间隔多分一个。
 3. 拼出整行加入结果。
 
-注意：本地源文件中该函数目前为占位实现（返回空），下文为标准参考实现。
-
 ### 复杂度分析
 
 - **时间复杂度**：O(n)，每个单词处理常数次（拼接字符数与 maxWidth 成正比）。
@@ -110,16 +108,33 @@ public:
 
 ## 测试用例
 
+{% raw %}
 ```cpp
 TEST(Daily, 68) {
     Solution s;
-    vector<string> words = {"This", "is", "an", "example", "of", "text", "justification."};
-    auto ret = s.fullJustify(words, 16);
-    EXPECT_EQ(ret.size(), 3);
-    EXPECT_EQ(ret[0].size(), 16);
-    EXPECT_EQ(ret[0], "This    is    an");
+
+    // 用例 1：普通行均匀分配 + 余数左置
+    vector<string> words1 = {"This", "is", "an", "example", "of", "text", "justification."};
+    auto ret1 = s.fullJustify(words1, 16);
+    EXPECT_EQ(ret1.size(), 3);
+    EXPECT_EQ(ret1[0], "This    is    an");
+    EXPECT_EQ(ret1[2], "justification.  ");
+
+    // 用例 2：单个单词的行左对齐补尾空格
+    vector<string> words2 = {"Listen", "to", "many,", "speak", "to", "a", "few."};
+    auto ret2 = s.fullJustify(words2, 6);
+    EXPECT_EQ(ret2.size(), 6);
+    EXPECT_EQ(ret2[1], "to    ");
+    EXPECT_EQ(ret2[4], "to   a");
+
+    // 用例 3：最后一行左对齐
+    vector<string> words3 = {"Science", "is", "what", "we", "understand", "well", "enough",
+                             "to", "explain", "to", "a", "computer."};
+    auto ret3 = s.fullJustify(words3, 20);
+    EXPECT_EQ(ret3.back(), "a computer.         ");
 }
 ```
+{% endraw %}
 
 ## 总结
 
