@@ -5,9 +5,9 @@ title: "LeetCode刷题的日子--No.1096: 花括号展开 II"
 categories: LeetCode
 ---
 
-{% raw %}
-
 > 括号展开的本质是「上下文栈 + 两种运算」：并列做笛卡尔积、逗号做并集。同一套模型也是 shell glob、JSON 模板、DSL 解析器的基础结构。
+
+{% raw %}
 
 ## 题目
 
