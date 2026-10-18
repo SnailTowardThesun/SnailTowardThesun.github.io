@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.33: 搜索旋转排序数组"
 categories: LeetCode
-tags: 中等
+tags: [中等, 数组, 二分查找]
 ---
 
 > 二分查找是面试中最常考的算法之一，理解其变体对于应对各种场景至关重要。旋转排序数组是二分查找的重要扩展。

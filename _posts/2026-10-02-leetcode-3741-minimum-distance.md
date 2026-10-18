@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.3741: 最小距离"
 categories: LeetCode
-tags: 简单
+tags: [简单, 哈希表, 数组]
 ---
 
 > 相同元素的「最小距离」可以通过哈希表按值分组、再对位置列表做差来求；本题的特殊在于取间隔一个位置的距离乘 2。

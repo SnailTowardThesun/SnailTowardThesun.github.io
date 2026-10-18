@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.45: 跳跃游戏 II"
 categories: LeetCode
-tags: 中等
+tags: [中等, 数组, 贪心]
 ---
 
 > 当前源文件用 DP 求每个位置的最小跳跃数，思路直观但为 O(n²)；本题最优解是「边界 + 最远点」的 O(n) 贪心，文末一并给出。

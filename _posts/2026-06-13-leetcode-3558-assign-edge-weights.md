@@ -2,6 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.3558: Assign Edge Weights"
 categories: LeetCode
+tags: [图, 数学]
 ---
 
 > 树的边权重分配问题在网络路由、分布式系统负载均衡等领域有重要应用。

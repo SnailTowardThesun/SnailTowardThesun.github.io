@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.219: 存在重复元素 II"
 categories: LeetCode
-tags: 简单
+tags: [简单, 数组, 哈希表, 滑动窗口]
 ---
 
 > "最近重复元素"检测是风控系统识别短时间重复操作的简化模型，哈希表一维化是标准手法。

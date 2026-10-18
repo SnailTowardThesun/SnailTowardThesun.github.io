@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.20: 有效的括号"
 categories: LeetCode
-tags: 简单
+tags: [简单, 栈, 字符串]
 ---
 
 > 括号匹配是编译器词法分析的第一课，JSON、XML 校验器内部都在做同样的事。

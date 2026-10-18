@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.3474: 生成满足条件的字符串"
 categories: LeetCode
-tags: 中等
+tags: [中等, 贪心, 字符串]
 ---
 
 > 贪心构造题的两个要点：先满足强约束（T），再处理弱约束（F），修改时尽量靠右以保证字典序最小。

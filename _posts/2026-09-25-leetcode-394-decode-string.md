@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.394: 字符串解码"
 categories: LeetCode
-tags: 中等
+tags: [中等, 栈, 字符串]
 ---
 
 > 「遇到嵌套就想栈」是字符串解析的第一直觉：HTML/XML 标签、括号匹配、表达式求值、压缩字符串解码，都靠一个栈保存「进入内层之前的上下文」。

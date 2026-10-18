@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.22: 括号生成"
 categories: LeetCode
-tags: 中等
+tags: [中等, 字符串, 回溯]
 ---
 
 > 括号组合数是卡特兰数，它在凸多边形三角剖分、二叉树形态计数等问题中反复出现。

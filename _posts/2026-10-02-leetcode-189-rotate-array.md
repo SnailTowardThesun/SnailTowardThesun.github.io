@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.189: 轮转数组"
 categories: LeetCode
-tags: 中等
+tags: [中等, 数组, 模拟]
 ---
 
 > 当前实现用额外数组按「尾段 + 头段」重排；O(1) 空间的经典解法是三次翻转，先整体、再前 k、再后 n-k。

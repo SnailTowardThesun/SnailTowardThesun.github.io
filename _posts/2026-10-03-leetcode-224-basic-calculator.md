@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.224: 基本计算器"
 categories: LeetCode
-tags: 困难
+tags: [困难, 栈, 数学]
 ---
 
 > 递归下降与栈式求值是表达式计算的两大经典思路，编译器、电子表格、SQL 解析器中都能看到它们的身影。

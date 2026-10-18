@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.28: 找出字符串中第一个匹配项的下标"
 categories: LeetCode
-tags: 简单
+tags: [简单, 字符串]
 ---
 
 > 先按首字符筛掉绝大多数起点，再对首字符相同的位置逐字符核对——朴素匹配在面试白板上最不容易写错。

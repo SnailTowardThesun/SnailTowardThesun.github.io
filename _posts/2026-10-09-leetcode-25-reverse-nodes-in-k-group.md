@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.25: K 个一组翻转链表"
 categories: LeetCode
-tags: 困难
+tags: [困难, 链表, 模拟]
 ---
 
 > 链表分组翻转是字节跳动、谷歌等大厂的高频面试题，考察指针操作与边界处理的双重功力。

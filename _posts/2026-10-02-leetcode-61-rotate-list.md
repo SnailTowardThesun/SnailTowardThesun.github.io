@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.61: 旋转链表"
 categories: LeetCode
-tags: 中等
+tags: [中等, 链表, 双指针]
 ---
 
 > 链表右转 k 位等价于把后 k 个节点整体挪到头部。先对长度取模去掉整圈旋转，再找切断点重连。

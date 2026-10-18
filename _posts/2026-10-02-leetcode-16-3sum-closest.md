@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.16: 最接近的三数之和"
 categories: LeetCode
-tags: 中等
+tags: [中等, 数组, 双指针, 排序]
 ---
 
 > 三数之和的变体：不收集答案，只维护与 target 差值最小的和，一旦差值为 0 可立即返回。

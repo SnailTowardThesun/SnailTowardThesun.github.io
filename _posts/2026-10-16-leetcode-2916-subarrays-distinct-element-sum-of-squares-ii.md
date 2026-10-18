@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.2916: 子数组不同元素数目的平方和 II"
 categories: LeetCode
-tags: 困难
+tags: [困难, 数组, 哈希表, 滑动窗口]
 ---
 
 > 把 f² 拆成 2×T(f) − f（T 为三角形数）后，平方和就能跟随「区间整体 +1」增量维护——这是 2913 的 O(n²) 暴力无法提速时，贡献法 + 线段树登场的关键一步。

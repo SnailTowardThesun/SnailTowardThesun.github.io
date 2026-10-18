@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.3548: 矩阵分割判断II"
 categories: LeetCode
-tags: 困难
+tags: [困难, 矩阵, 哈希表]
 ---
 
 > 分割成两部分使和相等，允许从其中一部分移除至多一个元素。关键公式：不删时 `2s = total`，删元素 x 时 `2s - total = x`，用哈希集合 O(1) 查找。

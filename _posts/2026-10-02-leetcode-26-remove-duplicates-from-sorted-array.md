@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.26: 删除有序数组中的重复项"
 categories: LeetCode
-tags: 简单
+tags: [简单, 数组, 双指针]
 ---
 
 > 快慢指针的经典场景：慢指针写、快指针探，发现不同值就把它复制到慢指针后一格。

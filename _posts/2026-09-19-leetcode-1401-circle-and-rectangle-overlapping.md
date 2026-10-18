@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.1401: 圆和矩形是否有重叠"
 categories: LeetCode
-tags: 中等
+tags: [中等, 数学]
 ---
 
 > 「点到矩形的最近距离」是几何碰撞检测的基石：粒子碰撞、UI 悬停命中、游戏拾取判定都在用它，一行 clamp 加勾股定理就够。

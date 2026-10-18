@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.1621: 大小为 K 的不重叠线段的数目"
 categories: LeetCode
-tags: 困难
+tags: [困难, 贪心, 数学]
 ---
 
 > 不重叠区间计数与任务调度、资源分配问题同源；本题还暗藏「隔板法」组合模型，答案恰好等价于组合数 C(n+k-1, 2k)。

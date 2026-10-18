@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.27: 移除元素"
 categories: LeetCode
-tags: 简单
+tags: [简单, 数组, 双指针]
 ---
 
 > 元素顺序可以改变，就不必用快慢指针整体搬移——把等于 val 的元素和末尾交换，相当于把垃圾统一扔到数组尾部。

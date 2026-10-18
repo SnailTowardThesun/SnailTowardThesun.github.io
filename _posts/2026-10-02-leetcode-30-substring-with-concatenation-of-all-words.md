@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.30: 串联所有单词的子串"
 categories: LeetCode
-tags: 困难
+tags: [困难, 字符串, 哈希表, 滑动窗口]
 ---
 
 > 窗口长度和每个单词长度都固定，按单词长度把窗口切成 n 份，用频率表逐份核对即可。难点不在算法而在细节边界。

@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.205: 同构字符串"
 categories: LeetCode
-tags: 简单
+tags: [简单, 字符串, 哈希表]
 ---
 
 > 同构要求映射双向唯一：一张表管 s→t，一张表管 t→s。只建单向表会漏掉「多个字符挤到同一个映射」的冲突。

@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.290: 单词规律"
 categories: LeetCode
-tags: 简单
+tags: [简单, 哈希表, 字符串]
 ---
 
 > 双向映射是判断"一一对应"的关键，它在编译器符号表和数据库字段映射中随处可见。

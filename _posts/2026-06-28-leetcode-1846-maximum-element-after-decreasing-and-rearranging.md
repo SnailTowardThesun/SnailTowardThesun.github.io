@@ -2,6 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.1846: 减小和重新排列数组后的最大元素"
 categories: LeetCode
+tags: [数组, 贪心, 排序]
 ---
 
 > 数组的重排和调整操作在数据处理和优化问题中经常出现，这道题展示了如何在约束条件下最大化目标值。

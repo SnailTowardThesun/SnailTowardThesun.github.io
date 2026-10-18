@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.56: 合并区间"
 categories: LeetCode
-tags: 中等
+tags: [中等, 数组, 排序]
 ---
 
 > 区间合并广泛应用于会议日程整理、基因组序列比对和数据库查询优化，是扫描线算法的入门基石。

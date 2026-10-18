@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.153: 寻找旋转排序数组中的最小值"
 categories: LeetCode
-tags: 中等
+tags: [中等, 数组, 二分查找]
 ---
 
 > 二分查找是计算机科学中最基础也最重要的算法之一，它在有序数据上的查找效率远超线性扫描，广泛应用于数据库索引、编译器设计等场景。

@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.2265: 统计值等于子树平均值的节点数"
 categories: LeetCode
-tags: 中等
+tags: [中等, 二叉树, 深度优先]
 ---
 
 > 子树求和与计数是树形聚合的经典场景，类似公司组织架构中逐级汇总部门人数与薪资总额，而后序遍历正是这类自底向上统计的利器。

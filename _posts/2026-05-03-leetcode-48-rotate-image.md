@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.48: 旋转图像"
 categories: LeetCode
-tags: 中等
+tags: [中等, 矩阵, 模拟]
 ---
 
 > 旋转图像用原地操作，先转置再翻转，避免额外空间分配。

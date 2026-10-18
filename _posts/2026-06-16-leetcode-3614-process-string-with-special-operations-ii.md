@@ -2,6 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.3614: 用特殊操作处理字符串 II"
 categories: LeetCode
+tags: [字符串, 模拟]
 ---
 
 > 逆向思维是算法设计中的利器：当正向构建代价过高时，从目标位置逆向回溯往往能将指数级问题降为线性。

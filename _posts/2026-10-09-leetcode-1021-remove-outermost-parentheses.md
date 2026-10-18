@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.1021: 删除最外层的括号"
 categories: LeetCode
-tags: 简单
+tags: [简单, 栈, 字符串]
 ---
 
 > 括号嵌套深度是解析器的核心概念，代码编辑器的自动缩进就是靠跟踪深度实现的。

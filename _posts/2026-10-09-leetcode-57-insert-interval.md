@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.57: 插入区间"
 categories: LeetCode
-tags: 中等
+tags: [中等, 数组, 排序]
 ---
 
 > 区间插入是日历应用的核心操作，日程合并、航班时刻冲突检测都依赖高效区间处理。

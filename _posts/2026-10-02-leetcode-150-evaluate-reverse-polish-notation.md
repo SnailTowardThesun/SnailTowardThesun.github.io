@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.150: 逆波兰表达式求值"
 categories: LeetCode
-tags: 中等
+tags: [中等, 栈, 数组]
 ---
 
 > 后缀表达式没有括号，运算符直接作用于它前面的两个操作数——用栈顺序处理即可，这也是虚拟机字节码执行的基本模型。

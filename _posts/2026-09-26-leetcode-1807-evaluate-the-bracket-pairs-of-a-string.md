@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.1807: 替换字符串中的括号内容"
 categories: LeetCode
-tags: 简单
+tags: [简单, 哈希表, 字符串]
 ---
 
 > 哈希表预处理 + 顺序扫描，是字符串模板替换最直接的组合。括号不嵌套时无需栈，找到配对的右括号即可。

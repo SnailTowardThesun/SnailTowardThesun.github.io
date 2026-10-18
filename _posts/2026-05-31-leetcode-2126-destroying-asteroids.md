@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.2126: 摧毁小行星"
 categories: LeetCode
-tags: 中等
+tags: [中等, 数组, 排序, 贪心]
 ---
 
 > 贪心算法是面试中常见的算法思想，它通过每一步的最优选择来期望达到全局最优。理解何时使用贪心以及如何证明其正确性是掌握贪心算法的关键。

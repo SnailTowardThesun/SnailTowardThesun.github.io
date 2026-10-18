@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.105: 从前序与中序遍历序列构造二叉树"
 categories: LeetCode
-tags: 中等
+tags: [中等, 二叉树, 分治]
 ---
 
 > 前序 + 中序重建二叉树是序列化的经典命题，笔试面试出场率极高，务必掌握到能徒手推导。

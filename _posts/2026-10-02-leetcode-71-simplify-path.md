@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.71: 简化路径"
 categories: LeetCode
-tags: 中等
+tags: [中等, 栈, 字符串]
 ---
 
 > ".." 的本质是撤销上一次入栈操作，"." 是空操作——把路径按斜杠切开后，这就是一个简单的栈处理问题。

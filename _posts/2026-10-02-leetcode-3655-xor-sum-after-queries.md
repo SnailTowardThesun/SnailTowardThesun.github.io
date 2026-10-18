@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.3655: 执行查询后的异或和"
 categories: LeetCode
-tags: 中等
+tags: [中等, 数组, 位运算, 模拟]
 ---
 
 > 区间内步长为 k 的乘法更新，直接暴力模拟即可；最后对整个数组求异或和。注意乘法取模防止溢出。

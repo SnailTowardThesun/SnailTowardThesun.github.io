@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.106: 从中序与后序遍历序列构造二叉树"
 categories: LeetCode
-tags: 中等
+tags: [中等, 二叉树, 分治]
 ---
 
 > 由遍历序列重建树是序列化与反序列化的理论基础，数据库索引恢复就依赖这类重建。

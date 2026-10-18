@@ -2,6 +2,7 @@
 author: SnailTowardThesun
 title: C++对象模型
 categories: C++
+tags: [C++]
 ---
 
 # C++ 对象模型

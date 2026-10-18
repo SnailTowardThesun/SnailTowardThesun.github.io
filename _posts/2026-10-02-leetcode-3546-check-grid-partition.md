@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.3546: 矩阵分割判断"
 categories: LeetCode
-tags: 简单
+tags: [简单, 矩阵, 前缀和]
 ---
 
 > 判断能否用一条水平或垂直分割线平分矩阵，核心是「前缀和 × 2 == 总和」，逐行逐列累加即可。

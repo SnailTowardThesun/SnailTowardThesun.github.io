@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.2913: 子数组不同元素数目的平方和 I"
 categories: LeetCode
-tags: 简单
+tags: [简单, 数组, 哈希表, 枚举]
 ---
 
 > 这道题的加强版 2914 把数组长度放宽到 10^5，逼你从 O(n^2) 暴力转向贡献法——先用暴力理清定义，再思考优化，是刷题的常见路径。

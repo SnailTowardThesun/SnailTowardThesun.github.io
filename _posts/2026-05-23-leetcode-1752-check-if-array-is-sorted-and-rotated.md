@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.1752: 检查数组是否经排序和轮转得到"
 categories: LeetCode
-tags: 简单
+tags: [简单, 数组]
 ---
 
 > 数组轮转是一个常见的操作，在循环队列、轮询调度等场景中经常用到。理解轮转数组的特性有助于解决相关问题。

@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.2751: 机器人碰撞"
 categories: LeetCode
-tags: 困难
+tags: [困难, 栈, 模拟]
 ---
 
 > 只有「向右的机器人」入栈，「向左的机器人」触发碰撞。按位置排序后用栈模拟，碰撞规则与 Asteroid Collision 如出一辙。

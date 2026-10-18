@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.33: 搜索旋转排序数组"
 categories: LeetCode
-tags: 中等
+tags: [中等, 数组, 二分查找]
 ---
 
 > 旋转数组二分的关键：每次中点都能保证至少一半是完全有序的，先判断有序区间是否包含 target，再决定往哪边走。

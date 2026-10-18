@@ -2,6 +2,7 @@
 author: SnailTowardThesun
 title: 算法系列--各种排序
 categories: 算法系列
+tags: [排序]
 ---
 
 > 排序算法是计算机科学的基石，理解优劣才能在实际中做出最佳选择。

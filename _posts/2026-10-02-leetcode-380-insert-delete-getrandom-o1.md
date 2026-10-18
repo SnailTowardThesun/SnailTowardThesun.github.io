@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.380: O(1) 时间插入、删除和获取随机元素"
 categories: LeetCode
-tags: 中等
+tags: [中等, 哈希表, 数组]
 ---
 
 > 等概率取随机值依赖连续存储的数组；数组删中间又是 O(n)——解法是「待删元素与末尾交换后删尾」，哈希表负责 O(1) 定位。

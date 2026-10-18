@@ -2,6 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.2095: 删除链表的中间节点"
 categories: LeetCode
+tags: [链表, 双指针]
 ---
 
 > 快慢指针是处理链表问题的经典技巧，常用于寻找链表的中点、检测循环链表等场景。这种方法只需要一次遍历就能找到目标位置。

@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.121: 买卖股票的最佳时机"
 categories: LeetCode
-tags: 简单
+tags: [简单, 数组, 动态规划]
 ---
 
 > 每天只需要回答两个问题：历史最低价是多少？今天卖出能赚多少？答案天然是一次线性扫描。

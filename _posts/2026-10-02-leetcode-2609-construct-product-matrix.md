@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.2609: 构造乘积矩阵"
 categories: LeetCode
-tags: 中等
+tags: [中等, 矩阵, 前缀和]
 ---
 
 > 二维版「除自身以外数组的乘积」：把矩阵展平，用结果矩阵本身存后缀积，再乘前缀积，O(1) 额外空间。

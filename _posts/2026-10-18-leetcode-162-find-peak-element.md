@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.162: 寻找峰值"
 categories: LeetCode
-tags: 中等
+tags: [中等, 数组, 二分查找]
 ---
 
 > 山脉数组中只要一直往“上坡”走，即使不知道山顶在哪，也一定会遇到一个峰值。

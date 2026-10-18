@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.3488: 环形数组中最近的相同元素"
 categories: LeetCode
-tags: 中等
+tags: [中等, 哈希表, 二分查找]
 ---
 
 > 环形数组上的最近距离 = min(直接距离, 数组长度 - 直接距离)。配合「值→位置列表」+ 二分查找即可高效求解。

@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.3551: 按数位和排序的最少交换次数"
 categories: LeetCode
-tags: 中等
+tags: [中等, 排序, 贪心]
 ---
 
 > 置换环有一个优雅结论：长度为 k 的错位环最少只需 k−1 次交换；排序交换数问题因此变成「数环」，而不是每轮扫描找该归位的元素。

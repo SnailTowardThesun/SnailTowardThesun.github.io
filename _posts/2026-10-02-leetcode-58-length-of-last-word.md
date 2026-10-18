@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.58: 最后一个单词的长度"
 categories: LeetCode
-tags: 简单
+tags: [简单, 字符串]
 ---
 
 > 从末尾倒着走，先跳过空格再数字母，两段 while 即可，不用切分整个字符串。

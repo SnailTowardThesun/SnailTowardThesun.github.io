@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.12: 整数转罗马数字"
 categories: LeetCode
-tags: 中等
+tags: [中等, 字符串, 哈希表]
 ---
 
 > 按千、百、十、个位逐位处理，每一位只有 0-9 十种形态，用同一套符号数组按规则拼接即可。

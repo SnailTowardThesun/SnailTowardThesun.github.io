@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.2657: 找到两个数组的前缀公共数组"
 categories: LeetCode
-tags: 中等
+tags: [中等, 数组, 哈希表]
 ---
 
 > 前缀公共数组问题在数据流分析和协同过滤算法中有广泛应用，理解前缀概念有助于解决更多数组遍历类问题。

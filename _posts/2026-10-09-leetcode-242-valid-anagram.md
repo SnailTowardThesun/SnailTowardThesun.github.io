@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.242: 有效的字母异位词"
 categories: LeetCode
-tags: 简单
+tags: [简单, 字符串, 哈希表]
 ---
 
 > 异位词检测是拼写检查和词云生成的基础操作，排序法与计数法是它的两大经典解法。

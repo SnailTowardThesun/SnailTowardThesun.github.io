@@ -2,6 +2,7 @@
 author: SnailTowardThesun
 title: 搭建一个简单的基于html5的直播平台
 categories: 流媒体相关
+tags: [流媒体, 播放器]
 ---
 
 > HTML5视频是Web视频主流方案，理解格式兼容性是开发者必修课。

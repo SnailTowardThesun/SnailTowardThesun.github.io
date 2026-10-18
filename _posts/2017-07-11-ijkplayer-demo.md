@@ -2,6 +2,7 @@
 author: SnailTowardThesun
 title: ijkplayer demo
 categories: 流媒体相关
+tags: [流媒体, 播放器]
 ---
 
 > ijkplayer是B站开源的安卓播放器，基于FFmpeg，有助移动端视频开发。

@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.35: 搜索插入位置"
 categories: LeetCode
-tags: 简单
+tags: [简单, 数组, 二分查找]
 ---
 
 > 本质是找第一个 >= target 的位置（lower_bound）。二分写法 O(log n)，循环结束时 left 就是答案。

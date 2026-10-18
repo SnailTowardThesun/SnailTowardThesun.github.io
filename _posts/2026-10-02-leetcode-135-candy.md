@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.135: 分发糖果"
 categories: LeetCode
-tags: 困难
+tags: [困难, 数组, 贪心]
 ---
 
 > 左扫满足「比左边高分就多一颗」，右扫满足「比右边高分就多一颗」，取两者最大值即同时满足双边约束。

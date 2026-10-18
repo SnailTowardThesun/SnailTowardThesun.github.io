@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.2573: 找出与LCP矩阵对应的字符串"
 categories: LeetCode
-tags: 困难
+tags: [困难, 贪心, 字符串]
 ---
 
 > LCP 矩阵的递推式：字符相同则 lcp[i][j] = lcp[i+1][j+1] + 1，不同则为 0。贪心赋最小字符再反向验证即可。

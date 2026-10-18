@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.796: 旋转字符串"
 categories: LeetCode
-tags: 简单
+tags: [简单, 字符串]
 ---
 
 > 字符串旋转判断用拼接技巧，s+s包含s的所有旋转结果，巧妙的线性解法。

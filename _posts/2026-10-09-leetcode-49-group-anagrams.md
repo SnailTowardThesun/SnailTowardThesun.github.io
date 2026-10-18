@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.49: 字母异位词分组"
 categories: LeetCode
-tags: 中等
+tags: [中等, 字符串, 哈希表]
 ---
 
 > 字母异位词检测在拼写检查、DNA 序列分析中有广泛应用，排序键法是它最简洁优雅的解法。

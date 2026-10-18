@@ -2,6 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.2196: 根据描述创建二叉树"
 categories: LeetCode
+tags: [二叉树, 哈希表, 深度优先]
 ---
 
 > 二叉树是一种重要的数据结构，广泛应用于搜索、排序和表达式解析等场景。根据父子关系描述重建二叉树是面试中的经典问题。

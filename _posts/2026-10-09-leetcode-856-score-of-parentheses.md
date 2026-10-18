@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.856: 括号的分数"
 categories: LeetCode
-tags: 中等
+tags: [中等, 栈]
 ---
 
 > "深度即权重"的思想同样出现在文件系统树形统计中，2 的幂让嵌套结构量化变得异常简洁。

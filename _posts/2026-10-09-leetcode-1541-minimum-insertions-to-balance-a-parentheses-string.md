@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.1541: 平衡括号字符串的最少插入次数"
 categories: LeetCode
-tags: 中等
+tags: [中等, 栈, 贪心]
 ---
 
 > 括号平衡问题在编译器语法检查、代码编辑器高亮和 XML 校验中无处不在，贪心计数是处理它的利器。

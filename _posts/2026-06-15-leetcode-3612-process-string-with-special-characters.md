@@ -2,6 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.3612: 使用特殊字符处理字符串"
 categories: LeetCode
+tags: [栈, 字符串]
 ---
 
 > 字符串处理是算法竞赛中的常见题型，通过自定义操作符可以实现丰富的文本变换逻辑。

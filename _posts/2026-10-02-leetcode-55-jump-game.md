@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.55: 跳跃游戏"
 categories: LeetCode
-tags: 中等
+tags: [中等, 数组, 贪心]
 ---
 
 > 不关心怎么跳，只关心最远能到哪——维护一个 right_most 最远可达位置，走不到的位置会提前暴露死局。

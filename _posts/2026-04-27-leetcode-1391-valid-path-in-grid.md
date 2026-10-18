@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.1391: 网格中是否存在有效路径"
 categories: LeetCode
-tags: 中等
+tags: [中等, 图, 并查集]
 ---
 
 > 网格路径问题是图论经典应用，判断图连通性用BFS或并查集。

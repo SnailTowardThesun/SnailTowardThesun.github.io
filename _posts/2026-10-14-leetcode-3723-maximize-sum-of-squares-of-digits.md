@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.3723: 数位平方和的最大值"
 categories: LeetCode
-tags: 中等
+tags: [中等, 贪心, 数学]
 ---
 
 > 同样和为 10，9+1 的平方和是 82，5+5 只有 50——平方函数的凸性让"集中"永远胜过"平均"，这正是本题贪心策略的数学根源。

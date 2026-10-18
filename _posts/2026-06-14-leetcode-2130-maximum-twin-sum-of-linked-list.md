@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.2130: Maximum Twin Sum of a Linked List"
 categories: LeetCode
-tags: 中等
+tags: [中等, 链表, 双指针]
 ---
 
 > 孪生链表的结构与字符串回文检测异曲同工——都将序列的对称性发挥到极致，只不过链表版本的"镜像翻转"通过指针反转而非数组索引来实现。

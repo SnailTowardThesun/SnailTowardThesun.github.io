@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.74: 搜索二维矩阵"
 categories: LeetCode
-tags: 中等
+tags: [中等, 矩阵, 二分查找]
 ---
 
 > 若矩阵每行有序且行首大于上一行行尾，它可看成一维有序数组；先二分行、再二分列也很清晰。

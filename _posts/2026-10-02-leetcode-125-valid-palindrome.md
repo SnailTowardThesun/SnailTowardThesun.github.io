@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.125: 验证回文串"
 categories: LeetCode
-tags: 简单
+tags: [简单, 字符串, 双指针]
 ---
 
 > 数据清洗后再判断：回文比较本身只有 O(n)，本题真正的工作量在「只保留字母数字并统一小写」的预处理。

@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.3661: 可以被机器人摧毁的最大墙壁数目"
 categories: LeetCode
-tags: 困难
+tags: [困难, 数组, 排序, 贪心]
 ---
 
 > 每个机器人向左或向右发射子弹，子弹会被相邻机器人阻挡。按位置排序后，每个方向的射程被相邻机器人截断，再用二分统计范围内的墙壁数。

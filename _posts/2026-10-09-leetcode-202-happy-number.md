@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.202: 快乐数"
 categories: LeetCode
-tags: 简单
+tags: [简单, 哈希表, 双指针]
 ---
 
 > 快慢指针判圈法源自弗洛伊德的循环检测算法，它同样用于检测链表环与重复序列。

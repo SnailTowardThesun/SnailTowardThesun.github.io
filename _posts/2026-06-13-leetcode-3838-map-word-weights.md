@@ -2,6 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.3838: Map Word Weights"
 categories: LeetCode
+tags: [哈希表, 字符串]
 ---
 
 > 字符权重映射在密码学和数据加密中广泛应用，通过字符频率分析可以破解简单的替换密码。

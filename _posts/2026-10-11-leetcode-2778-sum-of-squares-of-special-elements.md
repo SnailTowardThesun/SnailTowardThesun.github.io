@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.2778: 特殊元素平方和"
 categories: LeetCode
-tags: 简单
+tags: [简单, 数组, 枚举]
 ---
 
 > 因数总是成对出现，"下标整除长度"这道门槛恰好把数组切出了除数序列，平方和让每个因子都留下印记。

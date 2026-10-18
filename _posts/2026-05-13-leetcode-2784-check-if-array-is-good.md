@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.2784: 检查数组是否良好"
 categories: LeetCode
-tags: 简单
+tags: [简单, 数组]
 ---
 
 > 数组的"良序"概念在计算机科学中有着广泛的应用，比如验证数据的完整性、检查密码强度等场景。

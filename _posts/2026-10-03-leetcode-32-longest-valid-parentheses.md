@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.32: 最长有效括号"
 categories: LeetCode
-tags: 困难
+tags: [困难, 字符串, 栈, 动态规划]
 ---
 
 > 括号匹配是栈的经典应用：编译器语法分析、编辑器括号高亮与自动补全，背后都是类似的匹配思想。

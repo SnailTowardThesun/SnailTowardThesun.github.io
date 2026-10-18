@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.1260: 二维网格迁移"
 categories: LeetCode
-tags: 简单
+tags: [简单, 矩阵, 模拟]
 ---
 
 > 二维网格的循环移位等价于把矩阵展平成一维后做数组旋转，再按行序还原——降维是处理网格移位的常用技巧。

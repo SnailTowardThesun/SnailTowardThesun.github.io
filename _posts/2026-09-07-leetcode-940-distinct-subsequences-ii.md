@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.940: 不同的子序列 II"
 categories: LeetCode
-tags: 困难
+tags: [困难, 字符串, 动态规划]
 ---
 
 > 子序列计数在基因序列比对、文本指纹去重等场景中很常见。DNA 由 ATCG 四种字符组成，统计不同子序列数量正是生物信息学中的基础问题。

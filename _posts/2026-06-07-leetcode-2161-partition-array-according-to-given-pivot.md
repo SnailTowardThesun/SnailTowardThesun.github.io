@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.2161: 根据给定的枢轴分割数组"
 categories: LeetCode
-tags: 中等
+tags: [中等, 数组, 双指针]
 ---
 
 > 双指针法是数组分割问题的常用技巧，可以在一次遍历中完成多种操作。

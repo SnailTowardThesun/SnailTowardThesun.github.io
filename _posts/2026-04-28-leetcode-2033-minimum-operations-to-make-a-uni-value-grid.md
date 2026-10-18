@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.2033: 获取单值网格的最小操作数"
 categories: LeetCode
-tags: 中等
+tags: [中等, 矩阵, 排序]
 ---
 
 > 把所有元素拉平到同一值，本质是求中位数的曼哈顿距离，统计学思想在算法中的典型应用。

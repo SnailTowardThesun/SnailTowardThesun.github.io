@@ -2,6 +2,7 @@
 author: SnailTowardThesun
 title: android mediaplayer
 categories: 流媒体相关
+tags: [Android, 流媒体]
 ---
 
 # Android MediaPlayer

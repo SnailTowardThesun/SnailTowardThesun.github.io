@@ -2,6 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.1833: 雪糕的最大数量"
 categories: LeetCode
+tags: [数组, 排序, 贪心]
 ---
 
 > 贪心算法是一种在每一步选择中都采取在当前状态下最好或最优（即最有利）的选择，从而希望导致结果是全局最好或最优的算法。
