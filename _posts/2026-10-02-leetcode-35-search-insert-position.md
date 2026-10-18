@@ -78,3 +78,40 @@ TEST(Daily, 35) {
 1. 插入位置即 lower_bound；
 2. 二分收缩后 left 即答案，自动覆盖插在尾部的情况；
 3. O(log n) 时间 O(1) 空间。
+
+## 补充：Top 150 命中即返回实现
+
+Top 150 源文件保留了显式命中分支：当 `nums[mid] == target` 时直接返回 `mid`。它仍是 lower_bound 语义，但能在找到目标时提前结束；目标不存在时，循环退出后的 `left` 依然是插入位置。
+
+{% raw %}
+```cpp
+class Solution {
+public:
+    int searchInsert(vector<int>& nums, int target) {
+        int left = 0;
+        int right = static_cast<int>(nums.size()) - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] == target) {
+                return mid;
+            }
+
+            if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        return left;
+    }
+};
+```
+{% endraw %}
+
+### 补充要点
+
+- 命中提前返回可减少已存在目标下的比较次数。
+- 未命中时，`left` 始终指向第一个大于 `target` 的位置。
+- 空数组时 `right` 为 `-1`，循环不执行，`left` 为 `0`。

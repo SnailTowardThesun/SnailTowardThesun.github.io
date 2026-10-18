@@ -87,3 +87,50 @@ TEST(Daily, 33) {
 1. 旋转不破坏「至少一半有序」，这是二分的前提；
 2. 先识别有序半，再判断 target 是否落在其中；
 3. 全程保持 O(log n)。
+
+## 补充：Top 150 动态区间实现
+
+Top 150 源文件将有序区间判断改为使用当前区间的 `nums[left]` 与 `nums[right]`，而不是固定比较 `nums[0]` 与 `nums[n - 1]`。二者算法思想相同，但动态端点让每次判断直接描述当前闭区间，收缩后的边界更直观。
+
+{% raw %}
+```cpp
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int left = 0;
+        int right = static_cast<int>(nums.size()) - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] == target) {
+                return mid;
+            }
+
+            if (nums[left] <= nums[mid]) {
+                // 左半 [left, mid] 有序。
+                if (nums[left] <= target && target < nums[mid]) {
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
+            } else {
+                // 右半 [mid, right] 有序。
+                if (nums[mid] < target && target <= nums[right]) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            }
+        }
+
+        return -1;
+    }
+};
+```
+{% endraw %}
+
+### 补充要点
+
+- `nums[left] <= nums[mid]` 能同时覆盖单元素有序半和数组未旋转的情况。
+- 有序半的值域判断必须包含端点；因为 `nums[mid] == target` 已提前返回，左侧可用 `target < nums[mid]` 排除 mid。
+- 该版本同样为 `O(log n)` 时间、`O(1)` 空间。
