@@ -234,3 +234,5 @@ jekyll-archives:
   permalinks:
     tag: /tags/:name/
     category: /categories/:name/
+
+# 2026-10-18: Pages 部署模式切换为 GitHub Actions（原 legacy 分支部署）
