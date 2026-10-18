@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.41: 缺失的第一个正数"
 categories: LeetCode
+tags: 困难
 ---
 
 > 把数组本身当哈希表：数字 x 应该坐在下标 x-1 的位置。归位后第一个「坐错位置」的下标加一就是答案。

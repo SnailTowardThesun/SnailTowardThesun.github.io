@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.3740: 最小距离"
 categories: LeetCode
+tags: 简单
 ---
 
 > 相同元素的位置按值分组后，对位置列表做「间隔一位」的差分再乘 2，即可得到题目定义的最小距离。

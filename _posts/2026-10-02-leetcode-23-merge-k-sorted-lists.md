@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.23: 合并K个升序链表"
 categories: LeetCode
+tags: 困难
 ---
 
 > 最小堆始终维护 k 条链表的当前最小节点，每弹出一个就补上它的后继——多路归并的标准实现。

@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.2515: 到目标字符串的最短距离"
 categories: LeetCode
+tags: 简单
 ---
 
 > 环形数组上两点的最短距离 = min(顺时针距离, 逆时针距离)，即 `min(|i-j|, n - |i-j|)`。

@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.1190: 反转每对括号间的子串"
 categories: LeetCode
+tags: 简单
 ---
 
 > 括号与嵌套结构的第一反应应该是栈。本题中「弹栈顺序」本身就是反转，连 reverse 都可以省掉一次。

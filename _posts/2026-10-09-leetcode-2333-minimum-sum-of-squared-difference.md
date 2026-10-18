@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.2333: 最小平方差之和"
 categories: LeetCode
+tags: 中等
 ---
 
 > 「最小化平方误差」是统计学里最小二乘法的核心，机器学习中的 MSE 损失就是它。本题只能逐步微调数值，于是「把总预算花在最大的差值上」的贪心削峰就成了最优策略。

@@ -1,5 +1,4 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: ijkplayer demo
 categories: 流媒体相关

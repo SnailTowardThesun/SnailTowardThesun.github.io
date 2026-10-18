@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.88: 合并两个有序数组"
 categories: LeetCode
+tags: 简单
 ---
 
 > 本题的「正统」做法是从后往前填充，原地完成不占额外空间；当前实现借助临时容器归并，逻辑更直观。

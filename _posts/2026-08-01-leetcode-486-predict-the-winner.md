@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.486: 预测赢家"
 categories: LeetCode
+tags: 中等
 ---
 
 > 博弈论中的零和博弈与 minimax 思想广泛用于棋类 AI 与对局决策，核心是假设对手总采取最优策略来反推自身的最大收益。

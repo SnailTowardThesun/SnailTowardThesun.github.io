@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.2840: 检查字符串是否可以通过排序子字符串得到另一个字符串"
 categories: LeetCode
+tags: 中等
 ---
 
 > 「下标差为偶数才能交换」等价于「奇偶位置各自独立重排」，用频率计数一次遍历即可判断。

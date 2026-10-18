@@ -1,5 +1,4 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.1833: 雪糕的最大数量"
 categories: LeetCode

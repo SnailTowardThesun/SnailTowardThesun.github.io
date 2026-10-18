@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.3524: 求出数组的 X 值 I"
 categories: LeetCode
+tags: 中等
 ---
 
 > 周赛题的「操作包装」往往只是外壳：删前缀和后缀、剩下非空，本质就是枚举所有非空连续子数组。识破这层转化，题目立刻变成经典的「按结尾计数」DP。

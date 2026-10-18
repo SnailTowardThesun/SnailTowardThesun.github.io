@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.238: 除自身以外数组的乘积"
 categories: LeetCode
+tags: 中等
 ---
 
 > 答案天然是「左侧前缀积 × 右侧后缀积」，不用除法也能线性完成——与 2609 构造乘积矩阵是同一套思路的一维版本。

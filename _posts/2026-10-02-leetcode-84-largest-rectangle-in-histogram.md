@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.84: 柱状图中最大的矩形"
 categories: LeetCode
+tags: 困难
 ---
 
 > 单调递增栈存下标，遇到更矮的柱子就弹栈结算——弹出柱左右两侧第一个更矮的位置，就是它能扩展的宽度边界。

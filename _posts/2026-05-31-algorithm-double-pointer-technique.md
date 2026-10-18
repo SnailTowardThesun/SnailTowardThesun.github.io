@@ -1,5 +1,4 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--Top150双指针专题"
 categories: LeetCode

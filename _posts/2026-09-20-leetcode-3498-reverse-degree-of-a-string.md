@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.3498: 字符串的反转度"
 categories: LeetCode
+tags: 简单
 ---
 
 > 「字符值 × 位置」的加权求和是字符串统计的常见模型，Excel 列号、子串贡献计数、词频 TF-IDF 都是它的变体。

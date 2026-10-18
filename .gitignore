@@ -1,41 +1,32 @@
-# Jekyll
-_site/
-.sass-cache/
-.jekyll-cache/
+# Bundler cache
+.bundle
+vendor
+Gemfile.lock
+
+# Jekyll cache
+.jekyll-cache
 .jekyll-metadata
-vendor/
+_site
 
-# Ruby
+# RubyGems
 *.gem
-*.rbc
 
-# Node
-node_modules/
+# NPM dependencies
+node_modules
 package-lock.json
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
+# IDE configurations
+.idea
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/tasks.json
 
-# OS
+# Misc
+_sass/vendors
+assets/js/dist
+
+# Hidden system files
+*~
 .DS_Store
 Thumbs.db
-
-# Environment
-.env
-.env.local
-.env.*.local
-
-# Build
-*.log
-tmp/
-
-# Ruby Bundler
-.bundle/
-
-# Trae IDE
-.trae/
-

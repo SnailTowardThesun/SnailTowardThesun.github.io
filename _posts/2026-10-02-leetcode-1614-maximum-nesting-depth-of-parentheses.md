@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.1614: 括号的最大嵌套深度"
 categories: LeetCode
+tags: 简单
 ---
 
 > 括号深度的本质是「当前未闭合的左括号数量」，一个计数器就够，栈反而不是必须的。

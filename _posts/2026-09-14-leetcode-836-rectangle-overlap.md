@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.836: 矩形重叠"
 categories: LeetCode
+tags: 简单
 ---
 
 > 矩形重叠判定是游戏碰撞检测中 AABB（轴对齐包围盒）算法的核心，GUI 窗口命中测试、图形框选也都离不开它。

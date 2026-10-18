@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.76: 最小覆盖子串"
 categories: LeetCode
+tags: 困难
 ---
 
 > 用「需要满足的字符种类数 need」和「已达标种类数 matched」配对，窗口何时该扩、何时该缩就变得非常清晰。

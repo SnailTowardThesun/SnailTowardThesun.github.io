@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.169: 多数元素"
 categories: LeetCode
+tags: 简单
 ---
 
 > 当前实现是哈希表计数；本题最优雅的解法是摩尔投票法——不同元素两两抵消，最后剩下的必是多数元素，O(1) 空间。

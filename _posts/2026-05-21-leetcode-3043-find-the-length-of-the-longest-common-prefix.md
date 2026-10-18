@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.3043: 最长公共前缀的长度"
 categories: LeetCode
+tags: 中等
 ---
 
 > 前缀树（Trie）在字符串处理和搜索中有广泛应用，理解前缀概念有助于解决电话号码簿匹配、URL路由等实际问题。

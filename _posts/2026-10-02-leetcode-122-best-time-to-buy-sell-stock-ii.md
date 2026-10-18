@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.122: 买卖股票的最佳时机 II"
 categories: LeetCode
+tags: 中等
 ---
 
 > 当前实现用「持有 / 不持有」两状态 DP；本题还有更简洁的贪心视角：把每一段上涨的利润全部累加。

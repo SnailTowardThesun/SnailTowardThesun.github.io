@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.2069: 模拟行走机器人 II"
 categories: LeetCode
+tags: 中等
 ---
 
 > 机器人沿矩形边界走，本质是在一个周长为 `2*(w+h-2)` 的环上循环——用总步数对周长取模，再按区间判断位置和朝向。

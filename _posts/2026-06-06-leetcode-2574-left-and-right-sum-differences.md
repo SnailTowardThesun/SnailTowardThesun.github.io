@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.2574: 左右元素和的差值"
 categories: LeetCode
+tags: 简单
 ---
 
 > 前缀和技术常用于快速计算数组区间和，在数组运算中非常实用。

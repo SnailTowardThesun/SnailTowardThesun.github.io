@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.1569: 将子数组重新排列得到同一个二叉搜索树的方案数"
 categories: LeetCode
+tags: 困难
 ---
 
 > BST 的形状只由「根是谁、左右各分到哪些元素」决定，与左右子树元素在插入序列里如何交错无关——这个观察把「数排列」问题降维成了「组合数 × 子问题」的递归。

@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.167: 两数之和 II - 输入有序数组"
 categories: LeetCode
+tags: 中等
 ---
 
 > 无序版靠哈希表，有序版靠双指针——排序信息把空间从 O(n) 压到 O(1)，且解必然唯一。

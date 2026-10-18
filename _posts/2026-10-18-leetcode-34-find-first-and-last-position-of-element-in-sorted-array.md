@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.34: 在排序数组中查找元素的第一个和最后一个位置"
 categories: LeetCode
+tags: 中等
 ---
 
 > 二分查找不止能判断“有没有”，还能通过命中后继续向左或向右收缩，精确找到重复元素的边界。

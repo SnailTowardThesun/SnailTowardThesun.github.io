@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.1111: 有效括号的嵌套深度"
 categories: LeetCode
+tags: 中等
 ---
 
 > 把括号按「深度奇偶」交替分给两组，就能让两组的最大深度都不超过原深度的一半，从而使最大值最小。

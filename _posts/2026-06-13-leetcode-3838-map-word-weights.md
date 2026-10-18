@@ -1,5 +1,4 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.3838: Map Word Weights"
 categories: LeetCode

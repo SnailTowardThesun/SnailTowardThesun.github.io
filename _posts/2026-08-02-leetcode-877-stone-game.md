@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.877: 石子游戏"
 categories: LeetCode
+tags: 中等
 ---
 
 > 石子游戏是博弈论中典型的「先手必胜」问题，当堆数为偶数且总和为奇数时，先手可通过奇偶分组策略锁定胜局，无需模拟全过程。

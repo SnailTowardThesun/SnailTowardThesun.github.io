@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.68: 文本左右对齐"
 categories: LeetCode
+tags: 困难
 ---
 
 > 空格分配的两个特殊规则：普通行空格均匀摊、余数从左到右逐个多分一个；最后一行和单词行左对齐，空格全补尾部。

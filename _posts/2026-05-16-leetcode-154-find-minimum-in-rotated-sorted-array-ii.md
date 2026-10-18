@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.154: 寻找旋转排序数组中的最小值 II"
 categories: LeetCode
+tags: 困难
 ---
 
 > 重复元素的存在会影响二分查找的效率，这道题展示了如何在存在重复元素的情况下进行有效的二分搜索。

@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.3016: 输入单词的最少按键次数 II"
 categories: LeetCode
+tags: 中等
 ---
 
 > 贪心算法在资源分配问题中广泛应用，将高频资源优先放到最优位置是经典策略。

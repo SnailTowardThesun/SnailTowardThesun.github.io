@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.274: H 指数"
 categories: LeetCode
+tags: 中等
 ---
 
 > 升序排列后，位置 i 后面有 n-i 篇论文，只要第 i 篇引用数 >= n-i，h 指数就至少是 n-i——第一个满足的位置给出最大 h。

@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.73: 矩阵置零"
 categories: LeetCode
+tags: 中等
 ---
 
 > 用第一行第一列本身做标记位，先标记再置零；但两个标记位会互相污染，需额外两个 bool 记录它们自身是否有零。

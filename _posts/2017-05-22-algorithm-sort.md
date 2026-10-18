@@ -1,5 +1,4 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: 算法系列--各种排序
 categories: 算法系列

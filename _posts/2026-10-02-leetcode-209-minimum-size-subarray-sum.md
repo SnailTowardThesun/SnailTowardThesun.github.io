@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.209: 长度最小的子数组"
 categories: LeetCode
+tags: 中等
 ---
 
 > 所有元素均为正是滑动窗口有效的根基：纳入元素只增和、移出元素只减和，窗口才能单向收缩而不回头。

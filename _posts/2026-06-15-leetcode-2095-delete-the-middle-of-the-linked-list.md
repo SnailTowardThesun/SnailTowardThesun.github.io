@@ -1,5 +1,4 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.2095: 删除链表的中间节点"
 categories: LeetCode

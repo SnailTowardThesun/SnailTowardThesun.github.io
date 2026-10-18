@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.48: 旋转图像"
 categories: LeetCode
+tags: 中等
 ---
 
 > 原地旋转 90 度拆成两个可逆操作：先沿主对角线转置，再逐行反转，不需要任何额外矩阵。

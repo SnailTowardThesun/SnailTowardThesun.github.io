@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.1848: 到目标元素的最小距离"
 categories: LeetCode
+tags: 简单
 ---
 
 > 在普通（非环形）数组中，两点距离就是下标差的绝对值 `|i - j|`，一次遍历维护最小值即可。

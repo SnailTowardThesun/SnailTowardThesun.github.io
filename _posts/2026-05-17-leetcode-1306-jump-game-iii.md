@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.1306: 跳跃游戏 III"
 categories: LeetCode
+tags: 中等
 ---
 
 > 跳跃游戏问题在路径规划和图搜索算法中有广泛应用，理解这类问题有助于解决更复杂的网络遍历挑战。

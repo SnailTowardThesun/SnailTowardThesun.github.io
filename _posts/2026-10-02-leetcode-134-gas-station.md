@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.134: 加油站"
 categories: LeetCode
+tags: 中等
 ---
 
 > 从 i 出发开到 j 发现油不够，那么 [i, j] 之间的站全都不能作为起点——这个「失败区间整体跳过」的性质保证了线性时间。

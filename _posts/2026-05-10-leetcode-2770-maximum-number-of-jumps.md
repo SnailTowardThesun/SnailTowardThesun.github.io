@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.2770: 达到末尾下标所需的最大跳跃次数"
 categories: LeetCode
+tags: 中等
 ---
 
 > 跳跃游戏问题是动态规划的经典应用场景，这类问题可以用来模拟机器人路径规划、资源分配等实际问题。

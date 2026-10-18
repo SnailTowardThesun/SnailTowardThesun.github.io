@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.3653: 执行查询后的异或和"
 categories: LeetCode
+tags: 中等
 ---
 
 > 对区间内步长为 k 的元素做乘法更新并取模，最后求全数组异或和，是一道 straightforward 的模拟题。

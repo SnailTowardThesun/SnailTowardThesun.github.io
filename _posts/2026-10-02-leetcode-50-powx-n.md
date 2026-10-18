@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.50: Pow(x, n)"
 categories: LeetCode
+tags: 中等
 ---
 
 > 快速幂每次把指数折半、底数平方，O(log n) 完成 n 次幂；负指数先按正指数算再取倒数。

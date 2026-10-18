@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.80: 删除有序数组中的重复项 II"
 categories: LeetCode
+tags: 中等
 ---
 
 > 在去重双指针上加一个「是否已重复」开关：同值第二次出现仍保留，第三次开始跳过。逻辑推广到保留 k 次只需换成计数器。

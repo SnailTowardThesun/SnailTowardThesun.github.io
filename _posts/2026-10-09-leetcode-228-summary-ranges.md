@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.228: 汇总区间"
 categories: LeetCode
+tags: 简单
 ---
 
 > 区间汇总是日志分析系统的日常操作，把离散时间点合并成时间段能大幅压缩存储和提升可读性。

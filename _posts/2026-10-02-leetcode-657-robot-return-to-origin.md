@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.657: 机器人能否返回原点"
 categories: LeetCode
+tags: 简单
 ---
 
 > 上下抵消、左右抵消——只要 U 和 D 次数相等、L 和 R 次数相等，机器人就回到原点。

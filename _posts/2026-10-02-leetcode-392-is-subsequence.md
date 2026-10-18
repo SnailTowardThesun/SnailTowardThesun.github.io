@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.392: 判断子序列"
 categories: LeetCode
+tags: 简单
 ---
 
 > 子序列不要求连续，贪心匹配即可：每次在 t 中为 s 的当前字符找最早的出现位置，把后续空间留得最大。

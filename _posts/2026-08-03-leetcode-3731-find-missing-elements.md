@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.3731: 找出缺失的元素"
 categories: LeetCode
+tags: 简单
 ---
 
 > 找缺失元素是数据处理中的常见任务，如日志序列检查、ID 连续性校验等。排序后用指针扫描值域，能在不引入哈希表的前提下高效定位所有缺口。

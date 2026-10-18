@@ -1,5 +1,4 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: C++对象模型
 categories: C++

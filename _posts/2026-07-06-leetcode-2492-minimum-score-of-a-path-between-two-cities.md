@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.2492: 两个城市间路径的最小分数"
 categories: LeetCode
+tags: 中等
 ---
 
 > 图的连通性问题在网络规划和路径优化中有广泛应用，DFS是遍历连通分量的经典方法。

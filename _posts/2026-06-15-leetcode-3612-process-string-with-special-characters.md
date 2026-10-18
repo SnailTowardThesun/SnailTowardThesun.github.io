@@ -1,5 +1,4 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.3612: 使用特殊字符处理字符串"
 categories: LeetCode

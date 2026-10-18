@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.2540: 最小公共值"
 categories: LeetCode
+tags: 简单
 ---
 
 > 双指针法是处理有序数组问题的利器，利用数组有序的特性可以高效地找到公共元素。

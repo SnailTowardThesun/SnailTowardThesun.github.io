@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.24: 两两交换链表中的节点"
 categories: LeetCode
+tags: 中等
 ---
 
 > 交换一对节点需要同时改动三处指针，pre 指针负责把上一轮和本轮接起来。画一张三节点图最清晰。

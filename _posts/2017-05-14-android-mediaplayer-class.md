@@ -1,5 +1,4 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: android mediaplayer
 categories: 流媒体相关
@@ -7,7 +6,7 @@ categories: 流媒体相关
 
 # Android MediaPlayer
 
-之前做过一些关于android播放器的开发工作，当时懵懂无知，只知道一个ffmpeg，然后就费劲巴拉的用ndk把ffmpeg编译了，然后又自己封装了个库调用，那个过程可以看看[这篇文章](http://www.roman10.net/2013/08/18/how-to-build-ffmpeg-with-ndk-r9/)，然后我这里也有一个编译好的[库](http://download.csdn.net/detail/peter_hugh/8295383)，可以拿来用。
+之前做过一些关于android播放器的开发工作，当时懵懂无知，只知道一个ffmpeg，然后就费劲巴拉的用ndk把ffmpeg编译了，然后又自己封装了个库调用，那个过程可以看看[这篇文章](https://www.roman10.net/2013/08/18/how-to-build-ffmpeg-with-ndk-r9/)，然后我这里也有一个编译好的[库](https://download.csdn.net/detail/peter_hugh/8295383)，可以拿来用。
 
 好了，历史就说到这里，下面开始说一些今天的正题了，MediaPlayer类。
 

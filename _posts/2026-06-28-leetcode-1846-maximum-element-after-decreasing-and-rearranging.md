@@ -1,5 +1,4 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.1846: 减小和重新排列数组后的最大元素"
 categories: LeetCode

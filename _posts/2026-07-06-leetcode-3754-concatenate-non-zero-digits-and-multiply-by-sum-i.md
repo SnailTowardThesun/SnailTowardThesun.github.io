@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.3754: 连接非零数字并乘以其数字和 I"
 categories: LeetCode
+tags: 简单
 ---
 
 > 数字操作是编程中常见的基础问题，处理数字的每一位需要注意边界条件和类型转换。

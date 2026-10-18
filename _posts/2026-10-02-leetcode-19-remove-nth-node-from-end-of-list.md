@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.19: 删除链表的倒数第N个节点"
 categories: LeetCode
+tags: 中等
 ---
 
 > 快指针先走 n+1 步，两指针再同步移动——快指针到 null 时，慢指针恰好在待删节点的前一个位置。一次遍历完成。

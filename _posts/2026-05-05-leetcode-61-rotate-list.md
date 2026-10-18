@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.61: 旋转链表"
 categories: LeetCode
+tags: 中等
 ---
 
 > 链表旋转在轮询调度、循环队列中常用，实现资源的循环分配。

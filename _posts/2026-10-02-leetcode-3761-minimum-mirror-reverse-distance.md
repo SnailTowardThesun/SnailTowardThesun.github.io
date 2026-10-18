@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.3761: 最小镜像对距离"
 categories: LeetCode
+tags: 简单
 ---
 
 > 数字反转（mirror）问题要注意前导零：120 反转后是 21，而不是 021。哈希表记录「反转值→位置」即可一次扫描求最小配对距离。

@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.1855: 下标对中的最大距离"
 categories: LeetCode
+tags: 中等
 ---
 
 > 两个非递增数组求满足 `nums1[i] <= nums2[j]` 的最大 `j-i`，单调性质天然适合双指针或二分查找。

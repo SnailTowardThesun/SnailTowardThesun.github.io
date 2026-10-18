@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.1340: 跳跃游戏 V"
 categories: LeetCode
+tags: 困难
 ---
 
 > 跳跃游戏系列是经典的动态规划问题，这道题引入了高度限制，增加了问题的复杂度。理解跳跃规则是解决问题的关键。

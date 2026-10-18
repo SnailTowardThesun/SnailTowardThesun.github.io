@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.874: 模拟行走机器人"
 categories: LeetCode
+tags: 中等
 ---
 
 > 方向向量 + 障碍物哈希集合，一步一步模拟移动，遇到障碍就停。用方向数组替代冗长的 if-else 转向逻辑更优雅。

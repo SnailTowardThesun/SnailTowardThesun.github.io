@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.11: 盛最多水的容器"
 categories: LeetCode
+tags: 中等
 ---
 
 > 双指针从两端向中间收缩，每次移动较矮的一侧——这是双指针贪心最经典的入门题。

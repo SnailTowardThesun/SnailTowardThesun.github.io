@@ -1,5 +1,4 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: 搭建一个简单的基于html5的直播平台
 categories: 流媒体相关
@@ -10,8 +9,8 @@ categories: 流媒体相关
 ## 简要说明
 直播的风头基本都已经过去了，写这个文章的目的就是为了记录，所以废话少说，开始正题。
 首先介绍下这几个工具：
-1. [angular4](https://angular.io/), [google](www.google.com)开源的前端框架，最新的angular4使用了ts作为主力语言。
-1. [flv.js](https://github.com/Bilibili/flv.js), [B站](www.bilibili.com)开源的html5播放器，简单来讲就是通过获取http-flv的直播流，然后利用[MSE](https://www.w3.org/TR/media-source/)来播放。
+1. [angular4](https://angular.io/), [google](https://www.google.com)开源的前端框架，最新的angular4使用了ts作为主力语言。
+1. [flv.js](https://github.com/Bilibili/flv.js), [B站](https://www.bilibili.com)开源的html5播放器，简单来讲就是通过获取http-flv的直播流，然后利用[MSE](https://www.w3.org/TR/media-source/)来播放。
 1. [srs](https://github.com/ossrs/srs), 作者[winlin](https://github.com/winlinvip)，国内比较认可的一款开源的流媒体服务器
 
 ## 具体步骤

@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.42: 接雨水"
 categories: LeetCode
+tags: 困难
 ---
 
 > 双指针向中间收缩，两侧都高于当前水位时抬升水位，水量按新水位一次性结算。这是双指针水位法的一种变体。

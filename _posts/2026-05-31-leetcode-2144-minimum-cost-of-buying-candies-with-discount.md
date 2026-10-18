@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.2144: 购买糖果的最小成本"
 categories: LeetCode
+tags: 简单
 ---
 
 > 糖果店促销策略在零售业中非常常见，理解这种"买二送一"优惠的计算方式有助于优化购物方案。

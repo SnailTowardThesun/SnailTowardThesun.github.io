@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.3751: 范围内总波动值 I"
 categories: LeetCode
+tags: 中等
 ---
 
 > 数字序列中的峰谷检测算法在信号处理、趋势分析等场景中经常使用，可以用来识别数据中的局部极值点。

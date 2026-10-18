@@ -1,8 +1,8 @@
 ---
-layout: article
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.53: 最大子数组和"
 categories: LeetCode
+tags: 简单
 ---
 
 > Kadane 算法的一句核心决策：当前元素单独成段，还是接上之前的段？取两者较大值即可。
