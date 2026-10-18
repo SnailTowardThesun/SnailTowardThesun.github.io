@@ -101,3 +101,67 @@ TEST(top150, 71) {
 1. 按 '/' 切 token，连续斜杠自动合并；
 2. ".." 弹栈、"." 跳过、其他入栈；
 3. 栈空结果就是 "/"，根目录回退不出界。
+
+## 补充：Top 150 C++ 实现
+
+以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/71.cpp`。
+
+{% raw %}
+```cpp
+using namespace std;
+
+class Solution {
+   public:
+    string simplifyPath(string path) {
+        string ret = "";
+
+        vector<string> container;
+        string tmp = "";
+        for (auto i : path) {
+            if (i == '/') {
+                if (tmp != "") {
+                    container.emplace_back(tmp);
+                }
+                tmp = "";
+                continue;
+            }
+            tmp += i;
+        }
+
+        if (tmp != "") {
+            container.emplace_back(tmp);
+        }
+
+        vector<string> simple_container;
+        for (auto i : container) {
+            if (i == "..") {
+                if (!simple_container.empty()) {
+                    simple_container.pop_back();
+                }
+            } else if (i == ".") {
+                continue;
+            } else {
+                simple_container.emplace_back(i);
+            }
+        }
+
+        ret = "/";
+        for (auto i : simple_container) {
+            ret += i;
+            ret += '/';
+        }
+
+        if (ret.size() > 1 && ret.at(ret.size() - 1) == '/') {
+            ret.pop_back();
+        }
+
+        return ret;
+    }
+};
+```
+{% endraw %}
+
+### 补充说明
+
+- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
+- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。

@@ -97,3 +97,61 @@ TEST(top150, 30) {
 1. 固定窗口按固定单词长切片，问题本质是频率匹配；
 2. 单词缺失或计数超标立即失败；
 3. 进阶做法对每个起点偏移量（共 ws 种）做滑动窗口，可降到 O(L × ws)。
+
+## 补充：Top 150 C++ 实现
+
+以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/30.cpp`。
+
+{% raw %}
+```cpp
+#include <unordered_map>
+
+using namespace std;
+
+class Solution {
+   public:
+    vector<int> findSubstring(string s, vector<string>& words) {
+        vector<int> ret;
+
+        int n = words.size();
+        int ws = words[0].size();
+        int window_length = n * ws;
+
+        if (s.size() < window_length) {
+            return ret;
+        }
+
+        /// sort(words.begin(), words.end());
+        unordered_map<string, int> lookup;
+        for (int i = 0; i < n; i++) {
+            lookup[words[i]]++;
+        }
+
+        for (auto i = 0; i <= s.size() - window_length; i++) {
+            auto ss = s.substr(i, window_length);
+            unordered_map<string, int> tmp;
+            bool is_same = true;
+            for (auto j = 0; j < n; j++) {
+                string word = s.substr(i + j * ws, ws);
+                auto it = lookup.find(word);  // 单词不存在，或者出现次数超过目标次数
+                if (it == lookup.end() || ++tmp[word] > it->second) {
+                    is_same = false;
+                    break;
+                }
+            }
+
+            if (is_same) {
+                ret.push_back(i);
+            }
+        }
+
+        return ret;
+    }
+};
+```
+{% endraw %}
+
+### 补充说明
+
+- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
+- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。

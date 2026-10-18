@@ -101,3 +101,52 @@ TEST(TOP150, No380_RandomizedSet) {
 1. 数组保证随机访问，哈希表保证定位；
 2. 交换删尾是 O(1) 删除的核心技巧；
 3. 同步维护两份数据结构，别忘了更新被移动元素的下标。
+
+## 补充：Top 150 C++ 实现
+
+以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/380.cpp`。
+
+{% raw %}
+```cpp
+#include <unordered_set>
+
+using namespace std;
+
+class RandomizedSet {
+    unordered_set<int> container;
+
+public:
+    RandomizedSet() {
+    }
+
+    bool insert(int val) {
+        if (container.find(val) != container.end()) {
+            return false;
+        }
+
+        container.insert(val);
+        return true;
+    }
+
+    bool remove(int val) {
+        if (container.find(val) == container.end()) {
+            return false;
+        }
+
+        container.erase(val);
+        return true;
+    }
+
+    int getRandom() {
+        int seed = rand() % container.size();
+        vector<int> t{container.begin(), container.end()};
+        return t[seed];
+    }
+};
+```
+{% endraw %}
+
+### 补充说明
+
+- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
+- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。

@@ -116,3 +116,46 @@ TEST(top150, 228) {
 1. 有序无重复数组中，差 1 即连续；
 2. `right` 断开时回退一步取段尾，长度 1 的段输出单元素；
 3. 一次扫描 O(n)，两个指针各走一遍。
+
+## 补充：Top 150 C++ 实现
+
+以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/228.cpp`。
+
+{% raw %}
+```cpp
+using namespace std;
+
+class Solution {
+   public:
+    vector<string> summaryRanges(vector<int>& nums) {
+        vector<string> ret;
+
+        int left = 0;
+        while (left < nums.size()) {
+            string tmp = to_string(nums[left]);
+            int right = left + 1;
+            while (right < nums.size()) {
+                if (nums[right] != nums[right - 1] + 1) {
+                    break;
+                }
+                right++;
+            }
+
+            if (right > left + 1) {
+                tmp += "->";
+                tmp += to_string(nums[right - 1]);
+            }
+            ret.push_back(tmp);
+            left = right;
+        }
+
+        return ret;
+    }
+};
+```
+{% endraw %}
+
+### 补充说明
+
+- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
+- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。

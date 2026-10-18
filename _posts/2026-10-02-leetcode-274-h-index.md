@@ -77,3 +77,36 @@ TEST(TOP150, No274_HIndex) {
 1. 排序把「引用数门槛」和「论文数量」对齐；
 2. 从左向右第一个满足的位置即最大 h；
 3. 追求线性时间用计数/桶排序。
+
+## 补充：Top 150 C++ 实现
+
+以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/274.cpp`。
+
+{% raw %}
+```cpp
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+   public:
+    int hIndex(vector<int>& citations) {
+        int n = int(citations.size());
+        sort(citations.begin(), citations.end());
+        for (int i = 0; i < n; i++) {
+            int target = n - i;
+            if (citations[i] >= target) {
+                return target;
+            }
+        }
+        return 0;
+    }
+};
+```
+{% endraw %}
+
+### 补充说明
+
+- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
+- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。

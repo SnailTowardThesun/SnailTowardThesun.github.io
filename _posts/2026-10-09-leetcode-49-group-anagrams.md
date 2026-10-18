@@ -114,3 +114,37 @@ TEST(top150, 49) {
 1. 异位词排序后相同，排序结果是天然的哈希 key；
 2. `map[key].push_back(str)` 一行完成分组；
 3. 时间 O(n·k·log k)，用字符计数 key 可优化到 O(n·k)。
+
+## 补充：Top 150 C++ 实现
+
+以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/49.cpp`。
+
+{% raw %}
+```cpp
+using namespace std;
+
+class Solution {
+   public:
+    vector<vector<string> > groupAnagrams(vector<string>& strs) {
+        unordered_map<string, vector<string> > container;
+        for (auto str : strs) {
+            auto sorted = str;
+            sort(sorted.begin(), sorted.end());
+            container[sorted].emplace_back(str);
+        }
+
+        vector<vector<string> > ret;
+        for (auto it : container) {
+            ret.emplace_back(it.second);
+        }
+
+        return ret;
+    }
+};
+```
+{% endraw %}
+
+### 补充说明
+
+- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
+- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。

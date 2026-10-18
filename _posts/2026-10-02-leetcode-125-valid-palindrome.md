@@ -84,3 +84,45 @@ TEST(top150, 125) {
 1. 先清洗再回文比较，职责分离；
 2. 比较阶段首尾双指针；
 3. 追求 O(1) 空间时可在原串上直接跳字符。
+
+## 补充：Top 150 C++ 实现
+
+以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/125.cpp`。
+
+{% raw %}
+```cpp
+#include <cctype>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+   public:
+    bool isPalindrome(string s) {
+        string helper = "";
+        for (auto i : s) {
+            if (i >= 'a' && i <= 'z') {
+                helper += i;
+            } else if (i >= 'A' && i <= 'Z') {
+                helper += tolower(i);
+            } else if (i >= '0' && i <= '9') {
+                helper += i;
+            }
+        }
+
+        for (int i = 0, j = helper.size() - 1; i < j; i++, j--) {
+            if (helper[i] != helper[j]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+};
+```
+{% endraw %}
+
+### 补充说明
+
+- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
+- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。

@@ -76,3 +76,41 @@ TEST(top150, 167) {
 1. 有序数组上双指针线性逼近目标；
 2. 比哈希表版省空间；
 3. 提交时注意 1-indexed 的下标要求。
+
+## 补充：Top 150 C++ 实现
+
+以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/167.cpp`。
+
+{% raw %}
+```cpp
+#include <vector>
+
+using namespace std;
+
+class Solution {
+   public:
+    vector<int> twoSum(vector<int>& numbers, int target) {
+        vector<int> result;
+        int pre = 0, last = numbers.size() - 1;
+        while (pre < last) {
+            if (numbers[pre] + numbers[last] == target) {
+                return vector<int>{pre, last};
+            }
+
+            if (numbers[pre] + numbers[last] < target) {
+                pre++;
+            } else {
+                last--;
+            }
+        }
+
+        return result;
+    }
+};
+```
+{% endraw %}
+
+### 补充说明
+
+- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
+- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。

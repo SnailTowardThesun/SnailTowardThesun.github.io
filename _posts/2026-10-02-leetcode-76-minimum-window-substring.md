@@ -104,3 +104,78 @@ TEST(top150, 76) {
 1. need/matched 两个计数器管理覆盖条件；
 2. 右扩左缩，收缩阶段产出所有候选最优窗口；
 3. O(m+n) 时间，是滑动窗口的标杆题目。
+
+## 补充：Top 150 C++ 实现
+
+以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/76.cpp`。
+
+{% raw %}
+```cpp
+#include <climits>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+   public:
+    string minWindow(string s, string t) {
+        int m = s.size();
+        int n = t.size();
+
+        if (m < n) {
+            return "";
+        }
+
+        // t 中每个字符的需求量
+        unordered_map<char, int> lookup;
+        for (auto i : t) {
+            lookup[i]++;
+        }
+
+        unordered_map<char, int> window;
+        int need = lookup.size();  // 需要满足的字符种类数
+        int matched = 0;           // 当前窗口内已满足的种类数
+        int best_len = INT_MAX;
+        int best_left = -1;
+        int left = 0;
+
+        for (int right = 0; right < m; right++) {
+            char c = s[right];
+            if (lookup.count(c)) {
+                window[c]++;
+                // 该字符数量恰好达标时，种类数 +1
+                if (window[c] == lookup[c]) {
+                    matched++;
+                }
+            }
+
+            // 窗口已覆盖 t，收缩左边界寻找更短的覆盖
+            while (matched == need) {
+                if (right - left + 1 < best_len) {
+                    best_len = right - left + 1;
+                    best_left = left;
+                }
+                char lc = s[left];
+                if (lookup.count(lc)) {
+                    window[lc]--;
+                    // 移出后不再满足需求，种类数 -1，结束收缩
+                    if (window[lc] < lookup[lc]) {
+                        matched--;
+                    }
+                }
+                left++;
+            }
+        }
+
+        return best_left == -1 ? "" : s.substr(best_left, best_len);
+    }
+};
+```
+{% endraw %}
+
+### 补充说明
+
+- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
+- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。

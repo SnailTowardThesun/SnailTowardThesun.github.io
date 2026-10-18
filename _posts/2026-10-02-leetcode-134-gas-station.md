@@ -93,3 +93,48 @@ TEST(TOP150, No134_CanCompleteCircuit) {
 1. 逐站累计油与油耗，任意时刻断油即失败；
 2. 失败区间内所有站都不可作起点，整体跳过保证 O(n)；
 3. 经典替代写法先判总油量是否够总耗，再单次扫描找起点。
+
+## 补充：Top 150 C++ 实现
+
+以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/134.cpp`。
+
+{% raw %}
+```cpp
+#include <climits>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+   public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int n = gas.size();
+        for (auto i = 0; i < n;) {
+            int tmp_total = 0;
+            int tmp_cost = 0;
+            int j = 0;
+            for (; j < n; j++) {
+                tmp_total += gas[(j + i) % n];
+                tmp_cost += cost[(j + i) % n];
+
+                if (tmp_total < tmp_cost) {
+                    break;
+                }
+            }
+
+            if (j == n && tmp_total >= tmp_cost) {
+                return i;
+            }
+
+            i += j + 1;
+        }
+        return -1;
+    }
+};
+```
+{% endraw %}
+
+### 补充说明
+
+- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
+- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。

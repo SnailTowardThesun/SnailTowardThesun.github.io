@@ -79,3 +79,43 @@ TEST(TOP150, 209) {
 1. 正数数组上的定条件窗口问题；
 2. 右扩左缩，两指针各走一遍；
 3. 注意「未达标」与「长度为 0」的区分。
+
+## 补充：Top 150 C++ 实现
+
+以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/209.cpp`。
+
+{% raw %}
+```cpp
+#include <climits>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+   public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int n = nums.size();
+        int left = 0;
+        int sum = 0;
+        int result = INT_MAX;
+
+        for (int right = 0; right < n; right++) {
+            sum += nums[right];
+
+            while (sum >= target) {
+                result = min(result, right - left + 1);
+                sum -= nums[left];
+                left++;
+            }
+        }
+
+        return result == INT_MAX ? 0 : result;
+    }
+};
+```
+{% endraw %}
+
+### 补充说明
+
+- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
+- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。

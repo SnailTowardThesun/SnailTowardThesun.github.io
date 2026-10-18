@@ -89,3 +89,48 @@ TEST(TOP150, No88_MergeTwoSortedLists) {
 1. 有序序列合并用双指针逐个取小；
 2. 当前实现用临时容器，直观但 O(m+n) 空间；
 3. 面试标准解法从后向前写，原地 O(1)。
+
+## 补充：Top 150 C++ 实现
+
+以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/88.cpp`。
+
+{% raw %}
+```cpp
+#include <vector>
+
+using namespace std;
+
+class Solution {
+   public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        vector<int> container;
+
+        int i = 0, j = 0;
+
+        for (; i < m && j < n;) {
+            if (nums1[i] < nums2[j]) {
+                container.emplace_back(nums1[i]);
+                i++;
+            } else {
+                container.emplace_back(nums2[j]);
+                j++;
+            }
+        }
+
+        for (; i < m; i++) {
+            container.emplace_back(nums1[i]);
+        }
+
+        for (; j < n; j++) {
+            container.emplace_back(nums2[j]);
+        }
+        nums1 = std::move(container);
+    }
+};
+```
+{% endraw %}
+
+### 补充说明
+
+- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
+- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。

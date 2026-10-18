@@ -91,3 +91,47 @@ TEST(TOP150, No238_ProductExceptSelf) {
 1. 不用除法，答案拆成左右两段乘积；
 2. 当前实现双数组，输出数组复用可做到 O(1) 额外空间；
 3. 含零场景由前后缀自动处理，无需特判。
+
+## 补充：Top 150 C++ 实现
+
+以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/238.cpp`。
+
+{% raw %}
+```cpp
+#include <vector>
+
+using namespace std;
+
+class Solution {
+   public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        vector<int> left;
+        vector<int> right;
+        int n = nums.size();
+
+        left.push_back(nums[0]);
+        right.push_back(nums[n - 1]);
+        for (int i = 1; i < n; i++) {
+            left.push_back(nums[i] * left[left.size() - 1]);
+        }
+
+        for (int i = n - 2; i >= 0; i--) {
+            right.push_back(nums[i] * right[right.size() - 1]);
+        }
+
+        vector<int> ret;
+        ret.push_back(right[n - 2]);
+        for (int i = 1; i < n - 1; i++) {
+            ret.push_back(left[i - 1] * right[n - i - 2]);
+        }
+        ret.push_back(left[n - 2]);
+        return ret;
+    }
+};
+```
+{% endraw %}
+
+### 补充说明
+
+- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
+- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。

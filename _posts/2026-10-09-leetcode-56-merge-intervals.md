@@ -109,3 +109,42 @@ TEST(top150, 56) {
 1. 排序后可合并区间必然连续，一次遍历即可；
 2. 判定条件：当前起点 > 上一终点 → 新区间，否则合并终点；
 3. 合并时终点取 `max`，防止前区间终点覆盖后区间。
+
+## 补充：Top 150 C++ 实现
+
+以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/56.cpp`。
+
+{% raw %}
+```cpp
+using namespace std;
+
+class Solution {
+   public:
+    vector<vector<int> > merge(vector<vector<int> >& intervals) {
+        vector<vector<int> > ret;
+
+        if (intervals.empty()) {
+            return ret;
+        }
+
+        sort(intervals.begin(), intervals.end());
+        for (int i = 0; i < intervals.size(); ++i) {
+            int left = intervals[i][0];
+            int right = intervals[i][1];
+            if (ret.empty() || ret.back()[1] < left) {
+                ret.push_back({left, right});
+            } else {
+                ret.back()[1] = max(ret.back()[1], right);
+            }
+        }
+
+        return ret;
+    }
+};
+```
+{% endraw %}
+
+### 补充说明
+
+- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
+- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。

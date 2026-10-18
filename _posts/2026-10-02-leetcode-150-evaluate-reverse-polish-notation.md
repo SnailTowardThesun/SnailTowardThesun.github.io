@@ -89,3 +89,74 @@ TEST(top150, 150) {
 1. 后缀表达式用栈即可线性求值；
 2. 操作数弹出顺序决定减除法结果；
 3. 同一模型用于表达式编译器与栈式虚拟机。
+
+## 补充：Top 150 C++ 实现
+
+以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/150.cpp`。
+
+{% raw %}
+```cpp
+#include <stack>
+
+using namespace std;
+
+class Solution {
+   public:
+    int evalRPN(vector<string>& tokens) {
+        stack<int> container;
+        container.emplace(stoi(tokens[0]));
+
+        int ret = stoi(tokens[0]);
+        for (auto i = 1; i < tokens.size(); i++) {
+            if (tokens[i] == "+") {
+                // pop two to add
+                int last = container.top();
+                container.pop();
+                int pre = container.top();
+                container.pop();
+
+                ret = pre + last;
+                container.emplace(ret);
+
+            } else if (tokens[i] == "-") {
+                int last = container.top();
+                container.pop();
+                int pre = container.top();
+                container.pop();
+
+                ret = pre - last;
+                container.emplace(ret);
+
+            } else if (tokens[i] == "*") {
+                int last = container.top();
+                container.pop();
+                int pre = container.top();
+                container.pop();
+
+                ret = pre * last;
+                container.emplace(ret);
+
+            } else if (tokens[i] == "/") {
+                int last = container.top();
+                container.pop();
+                int pre = container.top();
+                container.pop();
+
+                ret = pre / last;
+                container.emplace(ret);
+
+            } else {
+                container.emplace(stoi(tokens[i]));
+            }
+        }
+
+        return ret;
+    }
+};
+```
+{% endraw %}
+
+### 补充说明
+
+- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
+- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。

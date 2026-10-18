@@ -96,3 +96,35 @@ TEST(TOP150, No169_MajorityElement) {
 1. 哈希计数直观，提前返回；
 2. 摩尔投票利用「票数过半」的抵消性质，空间最优；
 3. 无多数元素保证时投票结果需要二次核验。
+
+## 补充：Top 150 C++ 实现
+
+以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/169.cpp`。
+
+{% raw %}
+```cpp
+#include <vector>
+
+using namespace std;
+
+class Solution {
+   public:
+    int majorityElement(vector<int>& nums) {
+        unordered_map<int, int> candidate;
+        for (auto i : nums) {
+            candidate[i]++;
+            if (candidate[i] > nums.size() / 2) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+};
+```
+{% endraw %}
+
+### 补充说明
+
+- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
+- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。

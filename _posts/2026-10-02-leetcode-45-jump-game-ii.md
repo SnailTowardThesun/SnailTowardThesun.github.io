@@ -107,3 +107,40 @@ TEST(TOP150, No45_JumpGameII) {
 1. DP 定义清晰：可达前驱中取最小跳跃数再加一；
 2. 最优解是按「覆盖边界」批量扩展的贪心，O(n) 时间 O(1) 空间；
 3. 本题源文件可后续替换为贪心版本。
+
+## 补充：Top 150 C++ 实现
+
+以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/45.cpp`。
+
+{% raw %}
+```cpp
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+   public:
+    int jump(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> dp(n, INT_MAX);
+        dp[0] = 0;
+        for (auto i = 1; i < n; i++) {
+            for (auto j = 0; j < i; j++) {
+                if (nums[j] + j >= i) {
+                    dp[i] = std::min(dp[i], dp[j]);
+                }
+            }
+
+            dp[i] += 1;
+        }
+        return dp[n - 1];
+    }
+};
+```
+{% endraw %}
+
+### 补充说明
+
+- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
+- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。

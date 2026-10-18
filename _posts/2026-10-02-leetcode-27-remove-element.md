@@ -80,3 +80,38 @@ TEST(TOP150, No27_RemoveElement) {
 1. 顺序允许改变时，对尾交换比覆盖式搬移更直接；
 2. 交换后检查位置不变，防止漏网；
 3. O(n) 时间 O(1) 空间。
+
+## 补充：Top 150 C++ 实现
+
+以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/27.cpp`。
+
+{% raw %}
+```cpp
+#include <vector>
+
+using namespace std;
+
+class Solution {
+   public:
+    int remove_element(vector<int>& nums, int val) {
+        int target = 0;
+
+        for (auto i = 0; i < nums.size() - target;) {
+            if (nums[i] == val) {
+                target += 1;
+                std::swap(nums[i], nums[nums.size() - target]);
+            } else {
+                i++;
+            }
+        }
+
+        return nums.size() - target;
+    }
+};
+```
+{% endraw %}
+
+### 补充说明
+
+- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
+- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。

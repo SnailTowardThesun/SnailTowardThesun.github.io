@@ -95,3 +95,36 @@ TEST(top150, 219) {
 1. 哈希表存"值 → 最近下标"，内层枚举降为 O(1) 查询；
 2. 差值超 k 时覆盖旧下标：旧下标不可能再配对成功；
 3. 一次遍历 O(n) 时间、O(n) 空间。
+
+## 补充：Top 150 C++ 实现
+
+以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/219.cpp`。
+
+{% raw %}
+```cpp
+using namespace std;
+
+class Solution {
+   public:
+    bool containsNearbyDuplicate(vector<int>& nums, int k) {
+        unordered_map<int, int> container;
+        for (auto i = 0; i < nums.size(); i++) {
+            if (container.find(nums[i]) != container.end()) {
+                auto diff = abs(i - container[nums[i]]);
+                if (diff <= k) {
+                    return true;
+                }
+            }
+            container[nums[i]] = i;
+        }
+
+        return false;
+    }
+};
+```
+{% endraw %}
+
+### 补充说明
+
+- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
+- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。

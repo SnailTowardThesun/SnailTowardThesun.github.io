@@ -140,3 +140,88 @@ TEST(Top150, 105) {
 1. 前序首元素定根，中序找根切左右；
 2. 前序左段 = 根后 left_size 个，右段紧随其后；
 3. O(n²) 朴素版，哈希 + 双指针区间是标准优化方向。
+
+## 补充：Top 150 C++ 实现
+
+以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/105.cpp`。
+
+{% raw %}
+```cpp
+#include "leetcode_common.h"
+
+using namespace std;
+
+class Solution {
+public:
+    TreeNode *buildTree(vector<int> &preorder, vector<int> &inorder) {
+        if (preorder.empty()) {
+            return nullptr;
+        }
+
+        TreeNode *root = new TreeNode(preorder[0]);
+        if (preorder.size() == 1) {
+            return root;
+        }
+
+        // get left points
+        int inorder_left_end = 0;
+        for (int i = 0; i < inorder.size(); i++) {
+            if (inorder[i] == preorder[0]) {
+                inorder_left_end = i - 1;
+                break;
+            }
+        }
+        vector<int> inorder_left_nodes;
+        for (int i = 0; i <= inorder_left_end; i++) {
+            inorder_left_nodes.emplace_back(inorder[i]);
+        }
+
+        vector<int> preorder_left_nodes;
+        for (auto i = 1; i < 1+inorder_left_nodes.size(); i++) {
+            preorder_left_nodes.emplace_back(preorder[i]);
+        }
+
+        // get right points
+        int inorder_right_start = inorder_left_end + 2;
+        vector<int> inorder_right_nodes;
+        for (int i = inorder_right_start; i < inorder.size(); i++) {
+            inorder_right_nodes.emplace_back(inorder[i]);
+        }
+
+        vector<int> preorder_right_nodes;
+        for (int i = 1 + preorder_left_nodes.size(); i < preorder.size(); i++) {
+            preorder_right_nodes.emplace_back(preorder[i]);
+        }
+
+        root->left = buildTree(preorder_left_nodes, inorder_left_nodes);
+        root->right = buildTree(preorder_right_nodes, inorder_right_nodes);
+
+        return root;
+    }
+};
+
+TEST(Top150, 105) {
+    Solution s;
+
+    TreeNode *root = new TreeNode(3);
+    root->left = new TreeNode(9);
+    root->right = new TreeNode(20);
+    root->right->left = new TreeNode(15);
+    root->right->right = new TreeNode(7);
+
+    vector<int> preorder{3, 9, 20, 15, 7};
+    vector<int> inorder{9, 3, 15, 20, 7};
+    auto ret = s.buildTree(preorder, inorder);
+    EXPECT_EQ(ret->val, 3);
+    EXPECT_EQ(ret->left->val, 9);
+    EXPECT_EQ(ret->right->val, 20);
+    EXPECT_EQ(ret->right->left->val, 15);
+    EXPECT_EQ(ret->right->right->val, 7);
+}
+```
+{% endraw %}
+
+### 补充说明
+
+- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
+- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。

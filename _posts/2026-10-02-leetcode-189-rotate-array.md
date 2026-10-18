@@ -97,3 +97,34 @@ TEST(TOP150, No189_RotateArray) {
 1. 轮转等价于尾段前置；
 2. 取模处理 k >= n；
 3. 三次翻转是原地标准做法。
+
+## 补充：Top 150 C++ 实现
+
+以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/189.cpp`。
+
+{% raw %}
+```cpp
+#include <vector>
+
+using namespace std;
+
+class Solution {
+   public:
+    void rotate(vector<int>& nums, int k) {
+        int step = k % nums.size();
+        vector<int> container;
+        container.reserve(nums.size());
+        container.insert(container.end(), nums.end() - step, nums.end());
+        container.insert(container.end(), nums.begin(), nums.end() - step);
+
+        nums = container;
+        return;
+    }
+};
+```
+{% endraw %}
+
+### 补充说明
+
+- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
+- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。

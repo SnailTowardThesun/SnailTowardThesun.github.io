@@ -76,3 +76,37 @@ TEST(TOP150, No55_CanJump) {
 1. 维护可达右边界，遇可达点就尝试扩展；
 2. 当前下标超过边界即死局；
 3. 与跳跃游戏 II 的「边界扩展」模型一脉相承。
+
+## 补充：Top 150 C++ 实现
+
+以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/55.cpp`。
+
+{% raw %}
+```cpp
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+   public:
+    bool canJump(vector<int>& nums) {
+        int right_most = nums[0];
+        for (int i = 1; i < nums.size(); i++) {
+            if (i > right_most) {
+                return false;
+            }
+
+            right_most = std::max(right_most, i + nums[i]);
+        }
+
+        return true;
+    }
+};
+```
+{% endraw %}
+
+### 补充说明
+
+- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
+- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。

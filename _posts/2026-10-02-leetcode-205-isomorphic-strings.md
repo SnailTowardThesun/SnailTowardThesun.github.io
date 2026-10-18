@@ -76,3 +76,44 @@ TEST(top150, 205) {
 1. 字符替换关系必须双向唯一；
 2. 两张映射表各司其职，缺一不可；
 3. 同类思路可用于「单词规律」(Word Pattern) 一题。
+
+## 补充：Top 150 C++ 实现
+
+以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/205.cpp`。
+
+{% raw %}
+```cpp
+#include <unordered_map>
+
+using namespace std;
+
+class Solution {
+   public:
+    bool isIsomorphic(string s, string t) {
+        unordered_map<char, char> container_s;
+        unordered_map<char, char> container_t;
+        for (auto i = 0; i < s.size(); i++) {
+            if (container_s.count(s.at(i)) < 1) {
+                container_s[s.at(i)] = t.at(i);
+            }
+            if (container_t.count(t.at(i)) < 1) {
+                container_t[t.at(i)] = s.at(i);
+            }
+            if (container_s[s.at(i)] != t.at(i)) {
+                return false;
+            }
+            if (container_t[t.at(i)] != s.at(i)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+};
+```
+{% endraw %}
+
+### 补充说明
+
+- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
+- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。

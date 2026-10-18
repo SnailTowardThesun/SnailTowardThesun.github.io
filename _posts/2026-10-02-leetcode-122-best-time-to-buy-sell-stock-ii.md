@@ -95,3 +95,46 @@ TEST(TOP150, No122_MaxProfitII) {
 1. 两状态 DP 覆盖「今天买卖持币」的全部选择；
 2. 本题因无交易次数限制，贪心累加相邻上涨差值即可；
 3. 这是股票系列 DP 的基础模型，后续题目在此状态上加约束。
+
+## 补充：Top 150 C++ 实现
+
+以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/122.cpp`。
+
+{% raw %}
+```cpp
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    int maxProfit(vector<int> &prices) {
+        vector dp(prices.size(), vector<int>(2, 0));
+        dp[0][0] = 0;
+        dp[0][1] = -prices[0];
+        for (auto i = 1; i < prices.size(); i++) {
+            dp[i][0] = std::max(dp[i - 1][0], dp[i - 1][1] + prices[i]);
+            dp[i][1] = std::max(dp[i - 1][1], dp[i - 1][0] - prices[i]);
+        }
+        return dp[prices.size() - 1][0];
+    }
+};
+
+TEST(TOP150, No122_MaxProfitII) {
+    Solution solution;
+    std::vector<int> prices1{7, 1, 5, 3, 6, 4};
+    std::vector<int> prices2{1, 2, 3, 4, 5};
+    std::vector<int> prices3{7, 6, 4, 3, 1};
+
+    EXPECT_EQ(solution.maxProfit(prices1), 7);
+    EXPECT_EQ(solution.maxProfit(prices2), 4);
+    EXPECT_EQ(solution.maxProfit(prices3), 0);
+}
+```
+{% endraw %}
+
+### 补充说明
+
+- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
+- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。

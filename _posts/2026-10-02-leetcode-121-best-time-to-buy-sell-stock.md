@@ -76,3 +76,46 @@ TEST(TOP150, No121_MaxProfit) {
 1. 当天卖出利润 = 当天价 - 历史最低价；
 2. 扫描中同步维护最低价与最大利润；
 3. O(n) 时间 O(1) 空间。
+
+## 补充：Top 150 C++ 实现
+
+以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/121.cpp`。
+
+{% raw %}
+```cpp
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    int maxProfit(vector<int> &prices) {
+        int ret = 0;
+        int preMin = prices[0];
+        for (auto i = 1;i < prices.size(); i++) {
+            if (prices[i] > preMin) {
+                ret = std::max(ret, prices[i] - preMin);
+            } else {
+                preMin = prices[i];
+            }
+        }
+
+        return ret;
+    }
+};
+
+TEST(TOP150, No121_MaxProfit) {
+    Solution solution;
+    std::vector<int> prices{7, 1, 5, 3, 6, 4};
+    auto ret = solution.maxProfit(prices);
+
+    EXPECT_EQ(ret, 5);
+}
+```
+{% endraw %}
+
+### 补充说明
+
+- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
+- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。

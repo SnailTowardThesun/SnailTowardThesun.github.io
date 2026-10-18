@@ -77,3 +77,35 @@ TEST(top150, 392) {
 1. 双指针一次扫描，匹配即推进 s；
 2. 贪心取最早匹配位置；
 3. 多查询场景预处理「下一个字符位置」即可加速。
+
+## 补充：Top 150 C++ 实现
+
+以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/392.cpp`。
+
+{% raw %}
+```cpp
+using namespace std;
+
+class Solution {
+   public:
+    bool isSubsequence(string s, string t) {
+        size_t s_p = 0;
+        size_t t_p = 0;
+        while (s_p < s.size() && t_p < t.size()) {
+            if (s[s_p] == t[t_p]) {
+                s_p++;
+            }
+
+            t_p++;
+        }
+
+        return s_p == s.size();
+    }
+};
+```
+{% endraw %}
+
+### 补充说明
+
+- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
+- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。

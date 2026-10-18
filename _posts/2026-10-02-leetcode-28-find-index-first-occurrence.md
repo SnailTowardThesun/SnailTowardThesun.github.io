@@ -81,3 +81,46 @@ TEST(TOP150, 28) {
 1. 朴素匹配按起点枚举，首字符剪枝；
 2. 边界 `n-m+1` 防止越界；
 3. 追求线性复杂度时换 KMP。
+
+## 补充：Top 150 C++ 实现
+
+以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/28.cpp`。
+
+{% raw %}
+```cpp
+using namespace std;
+
+class Solution {
+   public:
+    int strStr(string haystack, string needle) {
+        auto ret = -1;
+
+        int n = haystack.length();
+        int m = needle.length();
+
+        for (int i = 0; i < n - m + 1; i++) {
+            if (haystack.at(i) == needle.at(0)) {
+                auto is_equal = true;
+                for (int j = 0; j < m; j++) {
+                    if (haystack.at(i + j) != needle.at(j)) {
+                        is_equal = false;
+                        break;
+                    }
+                }
+
+                if (is_equal) {
+                    return i;
+                }
+            }
+        }
+
+        return ret;
+    }
+};
+```
+{% endraw %}
+
+### 补充说明
+
+- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
+- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。

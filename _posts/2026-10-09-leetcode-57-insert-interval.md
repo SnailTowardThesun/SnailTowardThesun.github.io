@@ -125,3 +125,55 @@ TEST(top150, 57) {
 1. 重叠判定：`起点 < 新终点` 且 `终点 > 新起点`；
 2. 结果三段式：重叠前原样保留、重叠段合并成一块、重叠后原样保留；
 3. 合并端点取 `min(起点)` 与 `max(终点)`，排序后最小起点可直接取 begin 处。
+
+## 补充：Top 150 C++ 实现
+
+以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/57.cpp`。
+
+{% raw %}
+```cpp
+using namespace std;
+
+class Solution {
+   public:
+    vector<vector<int> > insert(vector<vector<int> >& intervals, vector<int>& newInterval) {
+        sort(intervals.begin(), intervals.end(),
+             [](const vector<int>& a, const vector<int>& b) { return a[0] < b[0]; });
+
+        vector<vector<int> > ret;
+        int left = newInterval[0];
+        int right = newInterval[1];
+        int begin = -1;
+        int end = -1;
+        for (auto i = 0; i < intervals.size(); i++) {
+            auto v = intervals[i];
+            if (begin == -1 && v[1] > left) {
+                begin = i;
+            }
+
+            if (v[0] < right) {
+                end = i;
+            }
+        }
+
+        for (auto i = 0; i < begin; i++) {
+            ret.push_back(intervals[i]);
+        }
+
+        auto ev = intervals[end][1] > right ? intervals[end][1] : right;
+        ret.push_back(vector<int>{intervals[begin][0], ev});
+
+        for (auto i = end + 1; i < intervals.size(); i++) {
+            ret.push_back(intervals[i]);
+        }
+
+        return ret;
+    }
+};
+```
+{% endraw %}
+
+### 补充说明
+
+- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
+- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。
