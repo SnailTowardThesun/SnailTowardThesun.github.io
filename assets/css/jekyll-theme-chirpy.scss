@@ -1,0 +1,92 @@
+---
+---
+
+@use 'abstracts/variables' with (
+  $theme: '{{ site.theme_mode }}'
+);
+
+/* prettier-ignore */
+@use 'main
+{%- if jekyll.environment == 'production' -%}
+  .bundle
+{%- endif -%}
+';
+
+/* append your custom style below */
+
+/* ===================== 语言切换 Tabs（纯 CSS radio 实现，无 JS） =====================
+ * 文章中的用法（第 N 个 input 对应第 N 个 label 和第 N 个 panel，最多 4 个 tab）：
+ *
+ *   <div class="lang-tabs">
+ *     <input type="radio" id="唯一id-1" name="唯一组名" checked>
+ *     <input type="radio" id="唯一id-2" name="唯一组名">
+ *     <div class="lang-tab-nav">
+ *       <label for="唯一id-1">C++</label>
+ *       <label for="唯一id-2">Python</label>
+ *     </div>
+ *     <div class="lang-tab-panels">
+ *       <div class="lang-tab-panel">{% highlight cpp %} ... {% endhighlight %}</div>
+ *       <div class="lang-tab-panel">{% highlight python %} ... {% endhighlight %}</div>
+ *     </div>
+ *   </div>
+ *
+ * id 与 name 需保证整页唯一（建议带题号前缀，如 lt3863-cpp）。
+ * ===================================================================================== */
+
+.lang-tabs {
+  // radio 只作状态开关，视觉上隐藏
+  input[type='radio'] {
+    display: none;
+  }
+
+  .lang-tab-nav {
+    display: flex;
+    gap: 0.3rem;
+    padding-left: 0.5rem;
+    margin-bottom: -1px; // 消除标签与代码盒之间的发丝缝
+  }
+
+  .lang-tab-nav label {
+    padding: 0.3rem 0.85rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--text-muted-color);
+    background-color: transparent;
+    border: 1px solid var(--btn-border-color);
+    border-bottom: none;
+    border-radius: 0.5rem 0.5rem 0 0;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.2s ease-in-out;
+
+    &:hover {
+      color: var(--heading-color);
+    }
+  }
+
+  // 面板默认隐藏；代码块顶部间距清零，使代码盒与 tab 栏贴合
+  .lang-tab-panel {
+    display: none;
+
+    .highlight {
+      margin-top: 0;
+    }
+  }
+
+  // 第 N 个 radio 勾选时，激活第 N 个 label 与第 N 个 panel
+  @for $i from 1 through 4 {
+    input[type='radio']:nth-of-type(#{$i}):checked {
+      ~ .lang-tab-nav label:nth-child(#{$i}) {
+        color: var(--heading-color);
+        font-weight: 600;
+        background-color: var(--highlight-bg-color);
+        box-shadow: inset 0 2px 0 var(--heading-color); // 顶部强调条，明暗主题下都有足够区分度
+      }
+
+      ~ .lang-tab-panels .lang-tab-panel:nth-child(#{$i}) {
+        display: block;
+      }
+    }
+  }
+}

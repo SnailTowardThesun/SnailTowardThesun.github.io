@@ -54,12 +54,23 @@ Difficulty: **Medium**
 
 ### 复杂度分析
 
-- 时间复杂度：`O(n)`，有序性检查、求最值、中间扫描各遍历一次；
-- 空间复杂度：`O(1)`。
+- 时间复杂度：`O(n)`，有序性检查、求最值、中间扫描各遍历一次（Python 版用排序检查有序性，为 `O(n log n)`，取舍见下文代码解析）；
+- 空间复杂度：`O(1)`（Python 版的 `join(sorted(s))` 需 `O(n)` 辅助空间）。
 
 ## 代码实现
 
-```cpp
+C++ 与 Python 的分类讨论一一对应（`max(s)` / `min(s)` 对字符串同样按字典序取最值），点击标签切换查看：
+
+<div class="lang-tabs">
+  <input type="radio" id="lt3863-cpp" name="lt3863" checked>
+  <input type="radio" id="lt3863-py" name="lt3863">
+  <div class="lang-tab-nav">
+    <label for="lt3863-cpp">C++</label>
+    <label for="lt3863-py">Python</label>
+  </div>
+  <div class="lang-tab-panels">
+    <div class="lang-tab-panel">
+{% highlight cpp %}
 class Solution {
 public:
     int minOperations(string s) {
@@ -87,27 +98,10 @@ public:
         return 3;
     }
 };
-```
-
-### 代码解析
-
-- **C++20 ranges**：`ranges::is_sorted` 直接判断有序；`ranges::minmax` 一次遍历同时拿到最小/最大字符，配合结构化绑定 `auto [mn, mx]` 写法非常紧凑；
-- **边界安全**：访问用 `s.at()` 而非 `s[]`，越界会抛异常而非未定义行为，刷题时更易定位错误；
-- **判断顺序**：`n == 2` 的检查必须放在求最值之后不影响正确性，但放在循环之前可以避免无意义的中间扫描。
-
-## Python 实现：一个安静的陷阱
-
-这份题解翻译成 Python 时踩了一个值得单独记录的坑。判断「字符串是否已排序」，直觉写法是：
-
-```python
-if s == sorted(s):   # 恒为 False！
-```
-
-问题出在类型上：`sorted("klo")` 返回的不是字符串，而是**列表** `['k', 'l', 'o']`。Python 拿字符串和列表比较时既不报错也不转换，只会安静地返回 `False`——于是「已有序返回 0」的分支成了永远走不到的死代码，连 `"klo"` 这种现成的有序串都会被漏判，一路跌落到后面的分类讨论返回 1。没有异常、没有警告，只有测试挂掉时才知道出了事。
-
-正确做法是让两边类型一致：`"".join(sorted(s))` 把列表拼回字符串，或者 `list(s) == sorted(s)` 把字符串拆成列表，效果相同。修正后的完整实现：
-
-```python
+{% endhighlight %}
+    </div>
+    <div class="lang-tab-panel">
+{% highlight python %}
 class Solution:
     def minOperations(self, s: str) -> int:
         n = len(s)
@@ -124,9 +118,17 @@ class Solution:
             if s[i] == mx or s[i] == mn:
                 return 2
         return 3
-```
+{% endhighlight %}
+    </div>
+  </div>
+</div>
 
-其余分类讨论与 C++ 版一一对应：`max(s)` / `min(s)` 对字符串同样按字典序取最值，直接沿用了 `mx`、`mn` 两个锚点。一点取舍说明：`join(sorted(s))` 的写法简洁直观，但有序性检查付出了 O(n log n) 的排序代价；C++ 版的 `ranges::is_sorted` 是纯线性扫描，只需 O(n)。刷题时两种写法都能通过，若追求严格线性，可以换成相邻比较 `all(s[i] <= s[i + 1] for i in range(n - 1))`，还能在第一处逆序处短路。
+### 代码解析
+
+- **C++20 ranges**：`ranges::is_sorted` 直接判断有序；`ranges::minmax` 一次遍历同时拿到最小/最大字符，配合结构化绑定 `auto [mn, mx]` 写法非常紧凑；
+- **边界安全**：访问用 `s.at()` 而非 `s[]`，越界会抛异常而非未定义行为，刷题时更易定位错误；
+- **判断顺序**：`n == 2` 的检查必须放在求最值之后不影响正确性，但放在循环之前可以避免无意义的中间扫描；
+- **Python 的类型陷阱**：判断有序时直觉写下的 `s == sorted(s)` 恒为 `False`——`sorted(s)` 返回**列表**而 `s` 是字符串，Python 比较两者既不报错也不转换，只是安静地返回假值。于是「已有序返回 0」成了永远走不到的死代码，连 `"klo"` 这样的有序串都会漏判并跌落到后面的分类讨论，没有异常、没有警告，只有测试挂掉时才现形。修正方法是让两边类型一致：`"".join(sorted(s))` 拼回字符串（本文采用），或 `list(s) == sorted(s)` 拆成列表。取舍提示：join 写法的有序性检查要付出 O(n log n) 排序代价，C++ 的 `ranges::is_sorted` 是纯线性；追求严格线性可换成相邻比较 `all(s[i] <= s[i + 1] for i in range(n - 1))`，还能在第一处逆序处短路。
 
 ## 测试用例
 
