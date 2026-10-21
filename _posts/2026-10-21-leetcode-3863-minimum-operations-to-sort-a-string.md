@@ -95,6 +95,39 @@ public:
 - **边界安全**：访问用 `s.at()` 而非 `s[]`，越界会抛异常而非未定义行为，刷题时更易定位错误；
 - **判断顺序**：`n == 2` 的检查必须放在求最值之后不影响正确性，但放在循环之前可以避免无意义的中间扫描。
 
+## Python 实现：一个安静的陷阱
+
+这份题解翻译成 Python 时踩了一个值得单独记录的坑。判断「字符串是否已排序」，直觉写法是：
+
+```python
+if s == sorted(s):   # 恒为 False！
+```
+
+问题出在类型上：`sorted("klo")` 返回的不是字符串，而是**列表** `['k', 'l', 'o']`。Python 拿字符串和列表比较时既不报错也不转换，只会安静地返回 `False`——于是「已有序返回 0」的分支成了永远走不到的死代码，连 `"klo"` 这种现成的有序串都会被漏判，一路跌落到后面的分类讨论返回 1。没有异常、没有警告，只有测试挂掉时才知道出了事。
+
+正确做法是让两边类型一致：`"".join(sorted(s))` 把列表拼回字符串，或者 `list(s) == sorted(s)` 把字符串拆成列表，效果相同。修正后的完整实现：
+
+```python
+class Solution:
+    def minOperations(self, s: str) -> int:
+        n = len(s)
+        if s == "".join(sorted(s)):  # sorted(s) 是 list，需 join 回 str 再比较
+            return 0
+        if n == 2:
+            return -1
+
+        mx = max(s)
+        mn = min(s)
+        if s[0] == mn or s[n - 1] == mx:
+            return 1
+        for i in range(1, n - 1):
+            if s[i] == mx or s[i] == mn:
+                return 2
+        return 3
+```
+
+其余分类讨论与 C++ 版一一对应：`max(s)` / `min(s)` 对字符串同样按字典序取最值，直接沿用了 `mx`、`mn` 两个锚点。一点取舍说明：`join(sorted(s))` 的写法简洁直观，但有序性检查付出了 O(n log n) 的排序代价；C++ 版的 `ranges::is_sorted` 是纯线性扫描，只需 O(n)。刷题时两种写法都能通过，若追求严格线性，可以换成相邻比较 `all(s[i] <= s[i + 1] for i in range(n - 1))`，还能在第一处逆序处短路。
+
 ## 测试用例
 
 ```cpp
