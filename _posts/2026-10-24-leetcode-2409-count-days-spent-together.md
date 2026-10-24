@@ -80,6 +80,54 @@ class Solution:
 - **不相交的两分支**：`leaveAlice < arriveBob`（Alice 走得比 Bob 来得早）或 `arriveAlice > leaveBob`（Alice 来得比 Bob 走得晚），覆盖了左右两种相离方向；
 - **`+ 1` 别丢**：这题我真实踩过——第一版漏了它，官方示例 1 算出 `2` 而不是 `3`，被测试用例当场抓了出来。
 
+### C++ 实现
+
+```cpp
+namespace {
+class Solution {
+   public:
+    int calDays(string date) {
+        int ret = 0;
+
+        vector<int> dic{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+        string month = date.substr(0, 2);
+        string day = date.substr(3, 2);
+
+        int mo = stoi(month);
+        int d = stoi(day);
+
+        for (int i = 0; i < mo - 1; i++) {
+            ret += dic[i];
+        }
+
+        ret += d;
+
+        return ret;
+    }
+    int countDaysTogether(string arriveAlice, string leaveAlice, string arriveBob, string leaveBob) {
+        int i_arr_alice = calDays(arriveAlice);
+        int i_lea_alice = calDays(leaveAlice);
+        int i_arr_bob = calDays(arriveBob);
+        int i_lea_bob = calDays(leaveBob);
+        if (i_arr_alice > i_lea_bob) {
+            return 0;
+        }
+        if (i_arr_bob > i_lea_alice) {
+            return 0;
+        }
+        return min(i_lea_alice, i_lea_bob) - max(i_arr_alice, i_arr_bob) + 1;
+    }
+};
+}  // namespace
+```
+
+### C++ 代码解析
+
+- **`date.substr(3, 2)`**：`"MM-DD"` 的下标 2 是分隔符 `-`，日号要从下标 3 起取。第一版写成 `substr(2, 2)`，截出来的是 `"-1"` 这样的串——`stoi` 把前导负号当成合法符号，直接解析成 **-1**，日号变成了负数；
+- **`i < mo - 1`**：和 Python 版 `range(int(dds[0]) - 1)` 是同一个坑，循环只累加当前月**之前**的整月。第一版写成 `i < mo`，把当前月整月也加了进去。两处叠加后 `"08-15"` 算成 243 + (-1) = 242，而正确值是 212 + 15 = 227——官方示例 1 的四个日期全被算成同一个数，结果输出 `1` 而不是 `3`；
+- **匿名命名空间**：仓库把全部题解 `.cpp` 链接进同一个 `tests` 可执行文件，`namespace { ... }` 给 `Solution` 内部链接，避免同名类的 ODR 冲突。
+
 ## 测试用例
 
 ```python
@@ -113,8 +161,31 @@ assert s.countDaysTogether("05-05", "05-05", "05-05", "05-20") == 1  # 单日行
 
 用例按区间关系分类铺开：完全相同、双向包含、跨月部分重叠、左右相邻不相交、单点/单日边界。几个关键锚点——全年 `01-01 ~ 12-31` 相等时得 `365`（顺带钉死非闰年总天数）、`02-28` 边界（2 月按 28 天算）、`leaveAlice == arriveBob` 的单点相交得 `1`（专防漏 `+1`）。
 
+C++ 版用 Google Test 覆盖同一组锚点（官方示例、全年 `365`、跨月部分重叠、单日落在对方区间）——上面 `calDays` 的两处 bug，就是这 5 条用例里 4 条同时报红抓出来的：
+
+```cpp
+TEST(Daily, 2409) {
+    Solution s;
+
+    // Example 1: Alice [08-15, 08-18], Bob [08-16, 08-19], 重叠 3 天
+    EXPECT_EQ(s.countDaysTogether("08-15", "08-18", "08-16", "08-19"), 3);
+
+    // Example 2: 区间不相交，重叠 0 天
+    EXPECT_EQ(s.countDaysTogether("10-01", "10-31", "11-01", "12-31"), 0);
+
+    // Edge: 完全相同的全年区间，重叠 365 天（非闰年）
+    EXPECT_EQ(s.countDaysTogether("01-01", "12-31", "01-01", "12-31"), 365);
+
+    // Edge: 部分重叠，Alice [09-01, 10-19] Bob [09-22, 10-12]，重叠 21 天
+    EXPECT_EQ(s.countDaysTogether("09-01", "10-19", "09-22", "10-12"), 21);
+
+    // Edge: Alice 仅停留一天且落在 Bob 区间内，重叠 1 天
+    EXPECT_EQ(s.countDaysTogether("05-10", "05-10", "05-10", "05-20"), 1);
+}
+```
+
 ## 总结
 
 - `"MM-DD"` 零填充时字典序等于日期序，但要算天数，先转成「一年中的第几天」更踏实；
 - 双闭区间的交集长度记得 `+1`，不相交时和 `max(0, ...)` 等价；
-- 把 `365`、`02-28`、单点相交接进测试，两处 bug（累加时下标误用、漏 `+1`）都是被它们当场抓出来的——边界用例先行，比肉眼检查可靠。
+- 把 `365`、`02-28`、单点相交接进测试，两处 bug（累加时下标误用、漏 `+1`）都是被它们当场抓出来的；移植到 C++ 时 `substr(2, 2)` 误截分隔符、`stoi` 解析出负数的新坑，也没逃过同一组用例——边界用例先行，比肉眼检查可靠。
