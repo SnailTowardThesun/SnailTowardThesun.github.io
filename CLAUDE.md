@@ -1,59 +1,60 @@
-# For Good Future - 博客网站
+# CLAUDE.md — SnailTowardThesun.github.io 博客
 
-技术博客网站，专注于分享算法、编程和技术相关内容，基于Jekyll构建并部署在GitHub Pages上。
+技术博客网站，专注于分享算法、编程和技术相关内容，基于 Jekyll（Chirpy 主题）构建并部署在 GitHub Pages 上。
 
 ## 技术栈
 
 | 技术 | 版本 | 用途 |
 |------|------|------|
-| Jekyll | ~> 4.3 | 静态站点生成器 |
-| Minima | ~> 2.5 | 默认主题 |
-| Ruby | 3.4 | 运行环境 |
-| Sass | - | CSS预处理器 |
-| Docker | - | 容器化环境 |
-| GitHub Pages | - | 部署平台 |
+| Jekyll | 4.4（随主题 gem 约束） | 静态站点生成器 |
+| jekyll-theme-chirpy | ~> 7.6 | 站点主题（布局/样式由 gem 提供） |
+| Ruby | 3.4（容器内） | 运行环境 |
+| Podman | - | 容器化构建（本机无 docker） |
+| GitHub Pages + Actions | - | 自动部署 |
 
 ## 关键目录
 
-| 目录 | 用途 |
+| 目录/文件 | 用途 |
 |------|------|
-| `_posts/` | 博客文章（Markdown格式） |
-| `_layouts/` | 页面布局模板 |
-| `_sass/` | Sass样式文件 |
-| `assets/` | 静态资源（图片、CSS等） |
-| `docker/` | Docker相关配置 |
+| `_posts/` | 博客文章（`YYYY-MM-DD-title.md`） |
+| `_data/` | 站点数据（导航、作者信息等） |
+| `_plugins/` | Jekyll 插件脚本 |
+| `_tabs/` | 顶部导航页面（归档/分类/关于等） |
+| `assets/` | 静态资源（图片、CSS、JS） |
+| `_config.yml` | Jekyll 站点配置 |
+| `Gemfile` | Ruby 依赖（jekyll-theme-chirpy ~> 7.6） |
+| `Dockerfile` | 本地镜像定义（`localhost/jekyll-blog`） |
 
-## 重要命令
+> 仓库内没有 `_layouts/`、`_sass/` 目录——布局与样式由主题 gem 提供，定制走 `_config.yml` 和 `assets/` 自定义 SCSS。
+
+## 重要命令（一律走 podman）
+
+本机系统 ruby 过旧（2.6）跑不了 bundle，**禁止直接执行 `bundle exec jekyll ...`**；docker 未安装。
 
 ```bash
-# 本地开发服务器
-bundle exec jekyll serve
+podman machine start 2>/dev/null || true   # 确保 podman 虚拟机在运行
 
-# 构建静态站点
-bundle exec jekyll build
+# 构建验证（提交/推送前必做）
+podman run --rm -v "$PWD:/app" -w /app localhost/jekyll-blog:latest bash -c "jekyll build"
 
-# Docker构建
-docker build -f Dockerfile.local -t blog .
+# 本地预览（含 live reload）
+podman run --rm -v "$PWD:/app" -w /app -p 4000:4000 \
+  localhost/jekyll-blog:latest bash -c "jekyll serve --host 0.0.0.0 --port 4000"
 
-# Docker运行
-docker run -p 4000:4000 blog
-
-# Podman构建（替代Docker）
-podman build -f Dockerfile.local -t blog .
-
-# Podman运行（替代Docker）
-podman run -p 4000:4000 blog
+# 仅当本地无镜像或 Gemfile 变更时才重建（需根目录 Dockerfile，层缓存会复用）
+podman build -t localhost/jekyll-blog:latest .
 ```
+
+成功标志：输出末尾 `done in N seconds` 且无 `Liquid Exception`。
 
 ## 编码规范
 
-- **博客文章**：使用Markdown格式，文件名格式为 `YYYY-MM-DD-title.md`
-- **LeetCode文章**：标题格式为 `LeetCode刷题的日子--No.<序号>: <题目名称>`，例如 `LeetCode刷题的日子--No.2078: Two Furthest Houses With Different Colors`
-- **YAML Front Matter**：标题中包含冒号（:）等特殊字符时，需要用双引号括起来，例如 `title: "LeetCode刷题的日子--No.2078: Two Furthest Houses With Different Colors"`
-- **趣味性知识**：在示例之后、解题思路之前，以单行形式添加与题目相关的趣味性知识或实际应用场景，不需要「趣味性知识」的标题，字数简洁精炼
-- **代码块**：使用Markdown代码围栏，指定语言以获得语法高亮
-- **图片**：存放在 `assets/` 目录下，按年份/主题组织
-- **链接**：使用相对路径或完整URL，确保可访问性
+- **博客文章**：使用 Markdown 格式，文件名格式为 `YYYY-MM-DD-title.md`（小写字母、数字、连字符）
+- **LeetCode 文章标题**：`LeetCode刷题的日子--No.<序号>: <题目名称>`，含冒号时 YAML 中用双引号包裹
+- **YAML Front Matter**：`author` / `title` / `categories` / `tags`（Chirpy 自动推断 post 布局，无需写 layout）
+- **小知识**：紧跟 YAML Front Matter 之后、正文之前，单行 `>` 引用块，不超过 100 字，无标题，内容与题目相关
+- **图片**：存放在 `assets/` 目录下，按年份/主题组织，相对路径引用
+- **链接**：使用相对路径或完整 URL，确保可访问性
 
 ## Jekyll/Liquid 模板注意事项 ⚠️
 
@@ -83,25 +84,18 @@ vector<vector<int>> dirs = {{0, 1}, {0, -1}};
 - 即使在行内代码中（反引号包裹）也会触发此错误
 
 ### 建议
-编写完博客后，使用 `bundle exec jekyll build` 本地验证构建成功后再推送。
+编写完博客后，用 podman 方式 `jekyll build` 本地验证构建成功后再推送（见上方命令）。
 
 ## 部署信息
 
 - **部署平台**：GitHub Pages
 - **域名**：https://SnailTowardThesun.github.io
-- **构建方式**：GitHub Actions自动构建
+- **构建方式**：GitHub Actions 自动构建
 - **分支**：主分支自动部署
-
-## 特殊说明
-
-- 遵循 `AGENTS.md` 中的协作协议，采用"Vibe Coding, Logical Execution"原则
-- 内容主题主要涵盖算法、C++、AI等技术领域
-- 保持代码示例的准确性和可执行性
-- 定期更新依赖以确保安全性和性能
 
 ## 开发流程
 
-1. **本地开发**：使用 `bundle exec jekyll serve` 启动本地服务器
-2. **内容创作**：在 `_posts/` 目录创建新的博客文章
-3. **构建测试**：运行 `bundle exec jekyll build` 确保构建成功
-4. **部署**：推送到GitHub主分支，自动部署到GitHub Pages
+1. **环境准备**：`podman machine start`（如未运行）
+2. **内容创作**：在 `_posts/` 目录创建新的博客文章（遵循上方规范）
+3. **构建测试**：podman 方式运行 `jekyll build` 确保构建成功
+4. **部署**：推送到 GitHub 主分支，自动部署到 GitHub Pages
