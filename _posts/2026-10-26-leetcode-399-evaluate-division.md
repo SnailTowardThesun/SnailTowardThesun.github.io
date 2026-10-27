@@ -94,6 +94,8 @@ ra / rb = (a / b) · weight[b] / weight[a] = v · weight[b] / weight[a]
 
 ## 代码实现
 
+### Python
+
 ```python
 class UnionFind:
     def __init__(self, n):
@@ -141,13 +143,91 @@ class Solution:
         return res
 ```
 
+### C++
+
+```cpp
+class UnionFind {
+   public:
+    vector<int> parent;
+    vector<double> weight;
+
+    UnionFind(int n) {
+        for (int i = 0; i < n; i++) {
+            parent.emplace_back(i);
+            weight.emplace_back(1.0);
+        }
+    }
+
+    int find(int x) {
+        if (parent[x] != x) {
+            int p = parent[x];
+            int root = find(p);
+
+            parent[x] = root;
+            weight[x] = weight[x] * weight[p];
+        }
+        return parent[x];
+    }
+
+    void unit(int x, int y, double v) {
+        int root_x = find(x);
+        int root_y = find(y);
+        if (root_x == root_y) {
+            return;
+        }
+
+        parent[root_x] = root_y;
+        weight[root_x] = v * weight[y] / weight[x];
+    }
+};
+class Solution {
+   public:
+    vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values,
+                                vector<vector<string>>& queries) {
+        vector<double> ret;
+
+        map<string, int> container;
+        for (auto i : equations) {
+            for (auto j : i) {
+                if (container.count(j) == 0) {
+                    container[j] = container.size();
+                }
+            }
+        }
+
+        UnionFind uf(container.size());
+        for (auto i = 0; i < equations.size(); i++) {
+            auto x = equations[i][0];
+            auto y = equations[i][1];
+            auto v = values[i];
+            uf.unit(container[x], container[y], v);
+        }
+
+        for (auto i = 0; i < queries.size(); i++) {
+            auto c = queries[i][0];
+            auto d = queries[i][1];
+            if (container.count(c) == 0 || container.count(d) == 0) {
+                ret.emplace_back(-1.0);
+            } else if (uf.find(container[c]) != uf.find(container[d])) {
+                ret.emplace_back(-1.0);
+            } else {
+                ret.emplace_back(uf.weight[container[c]] / uf.weight[container[d]]);
+            }
+        }
+
+        return ret;
+    }
+};
+```
+
 ### 代码解析
 
 - **`find` 的四步顺序是全题最容易写错的地方**。实现时曾把 `self.weight[x] *= self.weight[p]` 写在递归 `find(p)` **之前**：那一刻 `weight[p]` 还是"p 相对它自己父亲"的比值，没被递归刷成"p 相对根"，于是 `weight[x]` 只累到祖父那一层，`parent[x]` 却已指向根。诡异之处在于示例 1 全部通过——链 `a → b → c` 只有两跳，p 的父亲恰好就是根，`weight[p]` 碰巧已是最终值。直到"长链传递"用例 `a/b=2, b/c=3, c/d=4` 查 `a/d`，得到 `6` 而不是 `24`，错误才暴露。**链深 2 时错序碰巧正确，链深 3 才露馅**，所以测试里必须有三跳以上的链；
 - **`union` 公式里用的是节点自己的权值**：`v * weight[y] / weight[x]`，不是 `weight[root_x]`、`weight[root_y]`——根的权值恒为 `1`，代进去等于把推导扔掉了。前面两次 `find` 的副作用正是把 `weight[x]`、`weight[y]` 刷成相对各自根的比值，公式才成立；
 - **字符串与下标的转换要处处一致**：另一处真实踩坑是查询的 `elif` 分支写成了 `uf.find(c)`，把字符串直接喂进 `find`，`self.parent["a"]` 当场 `TypeError`；而紧跟的 `else` 分支用的是 `ids[c]`。两行相邻、一行转了一行没转，是这类"外部字符串 + 内部下标"代码的典型事故；
 - **查询时 `find` 必须在读 `weight` 之前**：`elif` 里的两次 `find` 把 `c`、`d` 都压到公共根下并刷新权值，`else` 里再读 `weight` 才是"相对同一个根"的值。若跳过 `find` 直接读，拿到的是相对旧父亲的比值，相除没有意义；
-- **去掉按秩合并**：规模只有几十个节点，路径压缩单独摊还下来已近常数；保留 rank 需要为"反向挂接"再写一条倒数公式，多一个分支多一处出错点，收益为零。
+- **去掉按秩合并**：规模只有几十个节点，路径压缩单独摊还下来已近常数；保留 rank 需要为"反向挂接"再写一条倒数公式，多一个分支多一处出错点，收益为零；
+- **C++ 版的两处本地化**：合并函数命名 `unit`——`union` 是 C++ 关键字，Python 里那个名字直接搬不过来；`find` 里"先挂根、后累乘"（`parent[x] = root` 写在 `weight[x] = weight[x] * weight[p]` 之前）与 Python 版"先乘后挂"等价——改 `parent` 不碰 `weight`，而 `weight[p]` 在递归返回时已是终值，两序殊途同归。这正是"先记旧父亲 `p`"的价值：把旧引用存下来之后，剩下两步的顺序才有自由度。
 
 ## 测试用例
 
@@ -240,6 +320,8 @@ def test_solution() -> None:
 ```
 
 浮点结果用 `math.isclose` 按 `1e-5` 容差比较，和判题一致。"长链传递"是专门抓 `find` 顺序错误的用例，三跳以上才会暴露；"两个互不连通的分量"钉死"根不同返回 -1"；"桥接"验证后出现的等式把两棵已存在的树合并时，公式必须用刷新后的权值而不是初始的 `1`；"环"确认无矛盾的冗余等式被同根判断安全跳过；"星型"检查两个叶子之间的换算要经过公共根正确相除。
+
+C++ 侧（`cplusplus/top150/graph/top150_399.cpp`）以 gtest（`TEST(TOP150, 399)`）复刻了三个官方示例，浮点断言用 `EXPECT_NEAR` 按 `1e-5` 容差逐项比较，正对应上面的 `assert_close`。
 
 ## 总结
 
