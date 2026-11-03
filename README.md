@@ -9,17 +9,20 @@
 
 ## 本地开发
 
-需要 Ruby 3.1+（3.4 与 CI 一致）：
+本机使用 Podman 与仓库 Dockerfile 中的 Ruby 3.4 环境：
 
 ```bash
-bundle install
-bundle exec jekyll serve   # http://localhost:4000
+podman machine start  # 已运行时跳过
+podman build -t localhost/jekyll-blog:latest .
+podman run --rm -v "$PWD:/app" -w /app -p 4000:4000 \
+  localhost/jekyll-blog:latest bundle exec jekyll serve --host 0.0.0.0
 ```
 
-或使用官方 Docker 镜像：
+构建验证（与部署一致的 production 环境）：
 
 ```bash
-docker run --rm -v "$PWD:/srv/jekyll" -p 4000:4000 amirpourmand/alpine-chirpy
+podman run --rm -v "$PWD:/app" -w /app \
+  localhost/jekyll-blog:latest bash -c 'JEKYLL_ENV=production bundle exec jekyll build'
 ```
 
 ## 结构约定
@@ -31,18 +34,21 @@ docker run --rm -v "$PWD:/srv/jekyll" -p 4000:4000 amirpourmand/alpine-chirpy
 
 ## 写新文章
 
-```bash
-bundle exec jekyll compose "leetcode-xx-title"  # 需要 jekyll-compose，或直接新建文件
-```
+在 `_posts/` 下新建 `YYYY-MM-DD-leetcode-xx-title.md`，使用以下模板。
 
 front matter 模板：
 
 ```yaml
 ---
+author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.XX: 题目名"
 categories: LeetCode
 tags: 中等   # 简单 / 中等 / 困难
 ---
+
+> 小知识：在这里补充与题目相关的知识，不超过 100 字。
+
+## 题目
 ```
 
-注意：正文代码中如有 `{{ }}`（C++ 花括号初始化等），Jekyll 会原样保留，无需处理；真正的 Liquid 输出请用 `{% raw %}` 包裹。
+注意：Jekyll 会在 Markdown 渲染前解析 Liquid，代码块和行内代码中的 `{{ }}`（如 C++ 花括号初始化）也会被解析。请将包含此类代码的区域用 `{% raw %}` 和 `{% endraw %}` 包裹，再运行构建验证。
