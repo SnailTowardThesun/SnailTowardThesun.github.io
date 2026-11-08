@@ -63,22 +63,18 @@ Difficulty: **Easy**
 
 ## 代码实现
 
-### Python
+C++ 版是 Python 同一构造的直译（逐字符对应 `"." * n` 与 `"#" * (n - 1) + "."`），点击标签切换查看：
 
-```python
-class Solution:
-    def createGrid(self, m: int, n: int) -> list[str]:
-        top = "." * n
-        line = "#" * (n - 1) + "."
-        ret = [top]
-        for _ in range(m - 1):
-            ret.append(line)
-        return ret
-```
-
-### C++
-
-```cpp
+<div class="lang-tabs">
+  <input type="radio" id="lt3963-cpp" name="lt3963" checked>
+  <input type="radio" id="lt3963-py" name="lt3963">
+  <div class="lang-tab-nav">
+    <label for="lt3963-cpp">C++</label>
+    <label for="lt3963-py">Python</label>
+  </div>
+  <div class="lang-tab-panels">
+    <div class="lang-tab-panel">
+{% highlight cpp %}
 class Solution {
    public:
     vector<string> createGrid(int m, int n) {
@@ -102,7 +98,22 @@ class Solution {
         return ret;
     }
 };
-```
+{% endhighlight %}
+    </div>
+    <div class="lang-tab-panel">
+{% highlight python %}
+class Solution:
+    def createGrid(self, m: int, n: int) -> list[str]:
+        top = "." * n
+        line = "#" * (n - 1) + "."
+        ret = [top]
+        for _ in range(m - 1):
+            ret.append(line)
+        return ret
+{% endhighlight %}
+    </div>
+  </div>
+</div>
 
 ### 代码解析
 

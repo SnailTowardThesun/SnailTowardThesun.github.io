@@ -80,7 +80,18 @@ Difficulty: **Hard**
 
 ## 代码实现
 
-```cpp
+C++ 与 Python 的状态机转移逐行对应，点击标签切换查看：
+
+<div class="lang-tabs">
+  <input type="radio" id="lt123-cpp" name="lt123" checked>
+  <input type="radio" id="lt123-py" name="lt123">
+  <div class="lang-tab-nav">
+    <label for="lt123-cpp">C++</label>
+    <label for="lt123-py">Python</label>
+  </div>
+  <div class="lang-tab-panels">
+    <div class="lang-tab-panel">
+{% highlight cpp %}
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
@@ -99,11 +110,10 @@ public:
         return sell2;
     }
 };
-```
-
-### Python 实现
-
-```python
+{% endhighlight %}
+    </div>
+    <div class="lang-tab-panel">
+{% highlight python %}
 class Solution:
     def maxProfit(self, prices: list[int]) -> int:
         n = len(prices)
@@ -118,7 +128,10 @@ class Solution:
             sell2 = max(sell2, buy2 + prices[i])  # 今天卖出第二笔
 
         return sell2
-```
+{% endhighlight %}
+    </div>
+  </div>
+</div>
 
 ### 代码解析
 

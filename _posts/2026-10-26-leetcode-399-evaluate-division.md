@@ -94,58 +94,18 @@ ra / rb = (a / b) · weight[b] / weight[a] = v · weight[b] / weight[a]
 
 ## 代码实现
 
-### Python
+Python 与 C++ 的带权并查集一一对应（C++ 里 `union` 是关键字，合并函数改名 `unit`），点击标签切换查看：
 
-```python
-class UnionFind:
-    def __init__(self, n):
-        self.parent = list(range(n))
-        self.weight = [1.0] * n
-
-    def find(self, x):
-        if self.parent[x] != x:
-            p = self.parent[x]
-            root = self.find(p)
-            self.weight[x] *= self.weight[p]
-            self.parent[x] = root
-        return self.parent[x]
-
-    def union(self, x, y, v):
-        root_x, root_y = self.find(x), self.find(y)
-        if root_x == root_y:
-            return
-
-        self.parent[root_x] = root_y
-        self.weight[root_x] = v * self.weight[y] / self.weight[x]
-
-
-class Solution:
-    def calcEquation(self, equations: list[list[str]], values: list[float], queries: list[list[str]]) -> list[float]:
-        ids = {}
-        for a, b in equations:
-            for s in (a, b):
-                if s not in ids:
-                    ids[s] = len(ids)
-
-        uf = UnionFind(len(ids))
-        for (a, b), v in zip(equations, values, strict=True):
-            uf.union(ids[a], ids[b], v)
-
-        res = []
-        for c, d in queries:
-            if c not in ids or d not in ids:
-                res.append(-1.0)
-            elif uf.find(ids[c]) != uf.find(ids[d]):
-                res.append(-1.0)
-            else:
-                res.append(uf.weight[ids[c]] / uf.weight[ids[d]])
-
-        return res
-```
-
-### C++
-
-```cpp
+<div class="lang-tabs">
+  <input type="radio" id="lt399-cpp" name="lt399" checked>
+  <input type="radio" id="lt399-py" name="lt399">
+  <div class="lang-tab-nav">
+    <label for="lt399-cpp">C++</label>
+    <label for="lt399-py">Python</label>
+  </div>
+  <div class="lang-tab-panels">
+    <div class="lang-tab-panel">
+{% highlight cpp %}
 class UnionFind {
    public:
     vector<int> parent;
@@ -218,7 +178,58 @@ class Solution {
         return ret;
     }
 };
-```
+{% endhighlight %}
+    </div>
+    <div class="lang-tab-panel">
+{% highlight python %}
+class UnionFind:
+    def __init__(self, n):
+        self.parent = list(range(n))
+        self.weight = [1.0] * n
+
+    def find(self, x):
+        if self.parent[x] != x:
+            p = self.parent[x]
+            root = self.find(p)
+            self.weight[x] *= self.weight[p]
+            self.parent[x] = root
+        return self.parent[x]
+
+    def union(self, x, y, v):
+        root_x, root_y = self.find(x), self.find(y)
+        if root_x == root_y:
+            return
+
+        self.parent[root_x] = root_y
+        self.weight[root_x] = v * self.weight[y] / self.weight[x]
+
+
+class Solution:
+    def calcEquation(self, equations: list[list[str]], values: list[float], queries: list[list[str]]) -> list[float]:
+        ids = {}
+        for a, b in equations:
+            for s in (a, b):
+                if s not in ids:
+                    ids[s] = len(ids)
+
+        uf = UnionFind(len(ids))
+        for (a, b), v in zip(equations, values, strict=True):
+            uf.union(ids[a], ids[b], v)
+
+        res = []
+        for c, d in queries:
+            if c not in ids or d not in ids:
+                res.append(-1.0)
+            elif uf.find(ids[c]) != uf.find(ids[d]):
+                res.append(-1.0)
+            else:
+                res.append(uf.weight[ids[c]] / uf.weight[ids[d]])
+
+        return res
+{% endhighlight %}
+    </div>
+  </div>
+</div>
 
 ### 代码解析
 

@@ -73,7 +73,18 @@ answer = sum(nums) - n * min(nums)
 
 ## 代码实现
 
-```cpp
+C++ 版单趟遍历同时攒出 `sum` 与 `mn`；Python 版本就是公式本身，点击标签切换查看：
+
+<div class="lang-tabs">
+  <input type="radio" id="lt453-cpp" name="lt453" checked>
+  <input type="radio" id="lt453-py" name="lt453">
+  <div class="lang-tab-nav">
+    <label for="lt453-cpp">C++</label>
+    <label for="lt453-py">Python</label>
+  </div>
+  <div class="lang-tab-panels">
+    <div class="lang-tab-panel">
+{% highlight cpp %}
 class Solution {
    public:
     int minMoves(vector<int>& nums) {
@@ -88,15 +99,17 @@ class Solution {
         return sum - mn * (long long)nums.size();
     }
 };
-```
-
-Python 版本就是公式本身：
-
-```python
+{% endhighlight %}
+    </div>
+    <div class="lang-tab-panel">
+{% highlight python %}
 class Solution:
     def minMoves(self, nums: list[int]) -> int:
         return sum(nums) - min(nums) * len(nums)
-```
+{% endhighlight %}
+    </div>
+  </div>
+</div>
 
 ### 代码解析
 

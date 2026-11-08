@@ -51,38 +51,18 @@ Alice 和 Bob 计划去纽约旅游。Alice 在 `arriveAlice` 到 `leaveAlice` �
 
 ## 代码实现
 
-```python
-class Solution:
-    def countDaysTogether(self, arriveAlice: str, leaveAlice: str, arriveBob: str, leaveBob: str) -> int:
-        def cal_days(d):
-            days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-            dds = d.split("-")
-            rt = 0
-            for i in range(int(dds[0]) - 1):
-                rt += days[i]
-            rt += int(dds[1])
-            return rt
+两版实现同一条思路——先换算成「一年中的第几天」，再做闭区间交集，点击标签切换查看：
 
-        int_arr_alice = cal_days(arriveAlice)
-        int_lea_alice = cal_days(leaveAlice)
-        int_arr_bob = cal_days(arriveBob)
-        int_lea_bob = cal_days(leaveBob)
-
-        if int_lea_alice < int_arr_bob or int_arr_alice > int_lea_bob:
-            return 0
-
-        return min(int_lea_alice, int_lea_bob) - max(int_arr_alice, int_arr_bob) + 1
-```
-
-### 代码解析
-
-- **`cal_days`**：`days` 表存每月天数，循环累加的是第 `month` 个月**之前**的整月，最后加上日号；
-- **不相交的两分支**：`leaveAlice < arriveBob`（Alice 走得比 Bob 来得早）或 `arriveAlice > leaveBob`（Alice 来得比 Bob 走得晚），覆盖了左右两种相离方向；
-- **`+ 1` 别丢**：这题我真实踩过——第一版漏了它，官方示例 1 算出 `2` 而不是 `3`，被测试用例当场抓了出来。
-
-### C++ 实现
-
-```cpp
+<div class="lang-tabs">
+  <input type="radio" id="lt2409-cpp" name="lt2409" checked>
+  <input type="radio" id="lt2409-py" name="lt2409">
+  <div class="lang-tab-nav">
+    <label for="lt2409-cpp">C++</label>
+    <label for="lt2409-py">Python</label>
+  </div>
+  <div class="lang-tab-panels">
+    <div class="lang-tab-panel">
+{% highlight cpp %}
 namespace {
 class Solution {
    public:
@@ -120,9 +100,44 @@ class Solution {
     }
 };
 }  // namespace
-```
+{% endhighlight %}
+    </div>
+    <div class="lang-tab-panel">
+{% highlight python %}
+class Solution:
+    def countDaysTogether(self, arriveAlice: str, leaveAlice: str, arriveBob: str, leaveBob: str) -> int:
+        def cal_days(d):
+            days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+            dds = d.split("-")
+            rt = 0
+            for i in range(int(dds[0]) - 1):
+                rt += days[i]
+            rt += int(dds[1])
+            return rt
 
-### C++ 代码解析
+        int_arr_alice = cal_days(arriveAlice)
+        int_lea_alice = cal_days(leaveAlice)
+        int_arr_bob = cal_days(arriveBob)
+        int_lea_bob = cal_days(leaveBob)
+
+        if int_lea_alice < int_arr_bob or int_arr_alice > int_lea_bob:
+            return 0
+
+        return min(int_lea_alice, int_lea_bob) - max(int_arr_alice, int_arr_bob) + 1
+{% endhighlight %}
+    </div>
+  </div>
+</div>
+
+### 代码解析
+
+**Python 版**
+
+- **`cal_days`**：`days` 表存每月天数，循环累加的是第 `month` 个月**之前**的整月，最后加上日号；
+- **不相交的两分支**：`leaveAlice < arriveBob`（Alice 走得比 Bob 来得早）或 `arriveAlice > leaveBob`（Alice 来得比 Bob 走得晚），覆盖了左右两种相离方向；
+- **`+ 1` 别丢**：这题我真实踩过——第一版漏了它，官方示例 1 算出 `2` 而不是 `3`，被测试用例当场抓了出来。
+
+**C++ 版**
 
 - **`date.substr(3, 2)`**：`"MM-DD"` 的下标 2 是分隔符 `-`，日号要从下标 3 起取。第一版写成 `substr(2, 2)`，截出来的是 `"-1"` 这样的串——`stoi` 把前导负号当成合法符号，直接解析成 **-1**，日号变成了负数；
 - **`i < mo - 1`**：和 Python 版 `range(int(dds[0]) - 1)` 是同一个坑，循环只累加当前月**之前**的整月。第一版写成 `i < mo`，把当前月整月也加了进去。两处叠加后 `"08-15"` 算成 243 + (-1) = 242，而正确值是 212 + 15 = 227——官方示例 1 的四个日期全被算成同一个数，结果输出 `1` 而不是 `3`；

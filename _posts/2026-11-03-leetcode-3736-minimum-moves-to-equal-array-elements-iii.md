@@ -65,18 +65,20 @@ Difficulty: **Easy**
 
 ## 代码实现
 
-Python 版（`max` + 生成器求和）：
+Python 用 `max` + 生成器求和，C++ 单趟遍历同时攒出最大值与总和，Rust 用 `iter().max()` + `map(...).sum()` 一行收尾，点击标签切换查看：
 
-```python
-class Solution:
-    def minMoves(self, nums: List[int]) -> int:
-        mm = max(nums)
-        return sum((mm - i) for i in nums)
-```
-
-C++ 版（单趟遍历同时攒出最大值与总和）：
-
-```cpp
+<div class="lang-tabs">
+  <input type="radio" id="lt3736-cpp" name="lt3736" checked>
+  <input type="radio" id="lt3736-py" name="lt3736">
+  <input type="radio" id="lt3736-rust" name="lt3736">
+  <div class="lang-tab-nav">
+    <label for="lt3736-cpp">C++</label>
+    <label for="lt3736-py">Python</label>
+    <label for="lt3736-rust">Rust</label>
+  </div>
+  <div class="lang-tab-panels">
+    <div class="lang-tab-panel">
+{% highlight cpp %}
 int minMoves(vector<int>& nums) {
     long long total = 0;  // 元素总和
     int mm = 0;           // 最大值（题目保证 nums[i] >= 1，0 起步安全）
@@ -88,16 +90,26 @@ int minMoves(vector<int>& nums) {
     // 答案 = n*max - sum：每个元素补到 max 的缺口之和
     return mm * nums.size() - total;
 }
-```
-
-Rust 版（`iter().max()` + `map(...).sum()` 一行收尾）：
-
-```rust
+{% endhighlight %}
+    </div>
+    <div class="lang-tab-panel">
+{% highlight python %}
+class Solution:
+    def minMoves(self, nums: List[int]) -> int:
+        mm = max(nums)
+        return sum((mm - i) for i in nums)
+{% endhighlight %}
+    </div>
+    <div class="lang-tab-panel">
+{% highlight rust %}
 pub fn min_moves(nums: Vec<i32>) -> i32 {
     let mm = *nums.iter().max().unwrap();  // 题目保证 n >= 1，unwrap 安全
     nums.iter().map(|&x| mm - x).sum()
 }
-```
+{% endhighlight %}
+    </div>
+  </div>
+</div>
 
 ### 代码解析
 

@@ -67,17 +67,20 @@ Python/C++ 版照公式直写即可，Rust 初版翻了几个典型的车（记�
 
 ## 代码实现
 
-```python
-class Solution:
-    def minMoves2(self, nums: list[int]) -> int:
-        nums.sort()
-        mid = nums[len(nums) // 2]
-        return sum(abs(i - mid) for i in nums)
-```
+三语言同构：排序 → 取中位数 → 绝对偏差求和。注意官方只保证**答案**在 int32 内——本题每项偏差与总和都不超过答案，`int` 安全。点击标签切换查看：
 
-C++ 版（注意官方只保证**答案**在 int32 内——本题每项偏差与总和都不超过答案，`int` 安全）：
-
-```cpp
+<div class="lang-tabs">
+  <input type="radio" id="lt462-cpp" name="lt462" checked>
+  <input type="radio" id="lt462-py" name="lt462">
+  <input type="radio" id="lt462-rust" name="lt462">
+  <div class="lang-tab-nav">
+    <label for="lt462-cpp">C++</label>
+    <label for="lt462-py">Python</label>
+    <label for="lt462-rust">Rust</label>
+  </div>
+  <div class="lang-tab-panels">
+    <div class="lang-tab-panel">
+{% highlight cpp %}
 int minMoves2(vector<int>& nums) {
     sort(nums.begin(), nums.end());
     int mid = nums[nums.size() / 2];  // 中位数（偶数个时取上中位，两者等价）
@@ -88,17 +91,28 @@ int minMoves2(vector<int>& nums) {
 
     return ret;
 }
-```
-
-Rust 版（`iter().map(...).sum()` 一行收尾）：
-
-```rust
+{% endhighlight %}
+    </div>
+    <div class="lang-tab-panel">
+{% highlight python %}
+class Solution:
+    def minMoves2(self, nums: list[int]) -> int:
+        nums.sort()
+        mid = nums[len(nums) // 2]
+        return sum(abs(i - mid) for i in nums)
+{% endhighlight %}
+    </div>
+    <div class="lang-tab-panel">
+{% highlight rust %}
 pub fn min_moves2(mut nums: Vec<i32>) -> i32 {
     nums.sort();
     let mid = nums[nums.len() / 2];
     nums.iter().map(|&x| (x - mid).abs()).sum()
 }
-```
+{% endhighlight %}
+    </div>
+  </div>
+</div>
 
 ### 代码解析
 
