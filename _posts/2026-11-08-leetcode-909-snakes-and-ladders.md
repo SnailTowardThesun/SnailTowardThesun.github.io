@@ -159,7 +159,7 @@ def test_solution() -> None:
     assert solution.snakesAndLadders([[4, -1], [-1, 3]]) == 1
 ```
 
-`uv run pytest top150/graph/top150_909.py` 全部通过。
+`uv run pytest top150/graph_bfs/top150_909.py` 全部通过。
 
 ## 总结
 
