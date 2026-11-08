@@ -67,10 +67,18 @@ Difficulty: **Medium**
 
 ## 代码实现
 
-### C++ 实现
+C++ 与 Python 的行列计数一一对应（变量命名一致），点击标签切换查看：
 
-{% raw %}
-```cpp
+<div class="lang-tabs">
+  <input type="radio" id="lt1267-cpp" name="lt1267" checked>
+  <input type="radio" id="lt1267-py" name="lt1267">
+  <div class="lang-tab-nav">
+    <label for="lt1267-cpp">C++</label>
+    <label for="lt1267-py">Python</label>
+  </div>
+  <div class="lang-tab-panels">
+    <div class="lang-tab-panel">
+{% highlight cpp %}
 class Solution {
    public:
     int countServers(vector<vector<int>>& grid) {
@@ -101,12 +109,10 @@ class Solution {
         return ret;
     }
 };
-```
-{% endraw %}
-
-### Python 实现
-
-```python
+{% endhighlight %}
+    </div>
+    <div class="lang-tab-panel">
+{% highlight python %}
 class Solution:
     def countServers(self, grid: list[list[int]]) -> int:
         m, n = len(grid), len(grid[0])
@@ -126,7 +132,10 @@ class Solution:
                     ret += 1
 
         return ret
-```
+{% endhighlight %}
+    </div>
+  </div>
+</div>
 
 ### 代码解析
 
