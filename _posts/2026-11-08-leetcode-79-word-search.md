@@ -5,7 +5,7 @@ categories: LeetCode
 tags: [中等, 回溯, 矩阵]
 ---
 
-> Boggle 桌游（1972 年风靡欧美）：摇出 16 颗骰子的 4×4 字母盘上按相邻规则连词——本题正是它的算法版，网格搜词是拼字游戏 AI 的祖传基本功。
+> 网格搜词可以看成路径搜索：格子是节点，相邻格子之间连边。匹配字符之外，还要记录当前路径已经访问的格子；换一条路径时，这些标记必须撤销。
 
 ## 题目
 
@@ -55,92 +55,67 @@ top150 面试经典 150 题把本题归入「回溯」分类，是网格版回�
 
 ### 枚举起点，DFS 逐字符推进
 
-外层双重循环扫全网格：凡 `board[i][j] == word[0]` 的格子都可能是一条合法路径的起点，逐一启动 DFS。DFS 内部：当前格已匹配 `word[no]`，向上下左右四个方向寻找 `word[no + 1]`——字符相等且未访问即可踏入，踏上即匹配下一个字符；匹配到最后一个字符（`no == len(word) - 1`）立即返回 `True`，逐层短路返回，不做多余搜索。
+外层双重循环扫全网格：凡 `board[i][j] == word[0]` 的格子都可能是一条合法路径的起点，逐一启动 DFS。DFS 内部：先检查当前字符是否匹配 `word[index]`，不匹配立即返回；匹配最后一位则成功，否则标记当前格并向四个方向递归。找到后停止搜索，但各层仍须先恢复棋盘再返回。
 
 ### 标记防复用，撤销保干净——回溯的灵魂
 
-「同一单元格不能走两次」靠标记实现：进入格子时打上访问标记（思路演示常原地改写成 `'#'`，本实现用独立的 `visited` 0/1 矩阵，语义等价）；**该分支探索失败、返回之前必须恢复标记**——这正是回溯的「撤销选择」。
+「同一单元格不能走两次」靠标记实现：进入格子时暂存原字母并改写成 `'#'`（输入仅含英文字母，不会冲突）；**无论搜索成功还是失败，返回之前都恢复原字母**——这正是回溯的「撤销选择」。
 
 恢复不可省：失败分支留下的残留标记会污染棋盘，把后续本可走通的分支误判成不可走。测试里专门备了 `word = "ABCESEEE"` 一例：只标记不恢复的错误实现**在官方示例 1 上照样通过**，却在这个用例上误判 `False`——示例全过、专项翻车，本例专防此类缺陷。
 
 ### 复杂度分析
 
 - 时间复杂度：`O(m·n·3^L)`，`L` 为词长——起点至多 `m·n` 个；路径首步 4 个方向，其后每步**不回头**走刚来的格子，至多 3 个方向；
-- 空间复杂度：`O(L)`（递归栈深度至多 15 层；`visited` 至多 6×6 = 36 格，视为常数）。
+- 空间复杂度：`O(L)`（递归栈；原地标记不另建 visited 矩阵）。
 
 ## 代码实现
 
 ```python
 class Solution:
     def exist(self, board: list[list[str]], word: str) -> bool:
-        # TODO: 枚举每个等于 word[0] 的格子作为起点，逐一启动 DFS 回溯
-        # TODO: 当前格匹配 word[i] 后向上下左右四方向扩展，尝试匹配 word[i+1]
-        # TODO: 进入格子时原地标记（如置 '#'）防止路径内复用，返回前恢复原字母（撤销选择）
-        # TODO: 匹配到最后一个字符立即返回 True 短路，避免多余搜索
-        def dfs(board, i, j, no, word, visited):
-            m, n = len(board), len(board[0])
-            if no == len(word) - 1:
-                return True
-            no += 1
-            if i + 1 < m:
-                if board[i + 1][j] == word[no] and not visited[i + 1][j]:
-                    visited[i + 1][j] = 1
-                    if dfs(board, i + 1, j, no, word, visited):
-                        return True
-                    visited[i + 1][j] = 0
-            if i - 1 >= 0:
-                if board[i - 1][j] == word[no] and not visited[i - 1][j]:
-                    visited[i - 1][j] = 1
-                    if dfs(board, i - 1, j, no, word, visited):
-                        return True
-                    visited[i - 1][j] = 0
-            if j + 1 < n:
-                if board[i][j + 1] == word[no] and not visited[i][j + 1]:
-                    visited[i][j + 1] = 1
-                    if dfs(board, i, j + 1, no, word, visited):
-                        return True
-                    visited[i][j + 1] = 0
-            if j - 1 >= 0:
-                if board[i][j - 1] == word[no] and not visited[i][j - 1]:
-                    visited[i][j - 1] = 1
-                    if dfs(board, i, j - 1, no, word, visited):
-                        return True
-                    visited[i][j - 1] = 0
-
-            return False
-
         m, n = len(board), len(board[0])
         if len(word) > m * n:
             return False
+
+        def dfs(i: int, j: int, index: int) -> bool:
+            if board[i][j] != word[index]:
+                return False
+            if index == len(word) - 1:
+                return True
+
+            letter = board[i][j]
+            board[i][j] = "#"  # 输入只有英文字母，标记不会与 word 中的字符冲突。
+            found = False
+            for di, dj in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                ni, nj = i + di, j + dj
+                if 0 <= ni < m and 0 <= nj < n and dfs(ni, nj, index + 1):
+                    found = True
+                    break
+            board[i][j] = letter  # 成功或失败都恢复，调用结束后棋盘保持原样。
+            return found
+
         for i in range(m):
             for j in range(n):
-                visited = [[0] * n for _ in range(m)]
-                visited[i][j] = 1
-                if board[i][j] == word[0]:
-                    if dfs(board, i, j, 0, word, visited):
-                        return True
-
+                if dfs(i, j, 0):
+                    return True
         return False
 ```
 
 ### 代码解析
 
-- **标记与恢复**：`visited` 用 0/1 矩阵而非原地改写 `'#'`，且**每个起点新开一张**——起点之间互不污染；踏入邻居前先置 1，该方向递归返回 `False` 后立即置 0 恢复，「标记—探索—撤销」三拍子就是回溯的全部节奏；
-- **边界判断**：四个方向各自把关——`i + 1 < m`、`i - 1 >= 0`、`j + 1 < n`、`j - 1 >= 0`，越界方向直接跳过，不引入方向数组与循环；
-- **递归前三重把关**：`board[i + 1][j] == word[no] and not visited[i + 1][j]` 把「字符不匹配」与「已访问」的分支挡在递归之外，无效路径根本不入栈；
-- **短路返回**：进入 `dfs` 先查 `no == len(word) - 1`——命中最后一个字符立即 `return True` 逐层穿透；外层起点循环同理，`if dfs(...): return True`，找到后不再枚举剩余起点；
-- **入口修剪**：`len(word) > m * n` 时格子总数不够铺满单词，直接返回 `False`，一次搜索都不必启动。
+- 当前格先比字符，再判定是否匹配完毕；标记 `'#'` 永远不会匹配下一位，因而防止路径复用；
+- 方向数组统一四邻域遍历，只对未越界坐标递归；
+- 成功时先记下 `found` 并退出方向循环，恢复原字母后才返回，避免短路遗漏撤销；
+- `len(word) > m*n` 时直接返回 False；结束后输入棋盘保持原样，可连续搜索不同单词。
 
 ## 测试用例
 
-覆盖四个官方示例与五个边界（混排大小写、同盘小写全词、单格命中与未命中、回溯撤销专项 `ABCESEEE`）：
+覆盖三个官方示例、补充示例与边界（混排大小写、同盘小写全词、单格命中与未命中、回溯撤销专项 `ABCESEEE`）：
 
 ```python
 def test_solution() -> None:
     solution = Solution()
     assert not solution.exist([["a", "a"], ["A", "A"]], "aaa")
-
-    assert not solution.exist([["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]], "ABCB")
 
     # ---- 官方示例 1：ABCCED 沿 A(0,0)→B→C→C→E→D 走通 ----
     assert solution.exist([["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]], "ABCCED")
@@ -149,8 +124,9 @@ def test_solution() -> None:
     assert solution.exist([["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]], "SEE")
 
     # ---- 官方示例 3：ABCB 回到 B 必须复用已走过的格子，false ----
+    assert not solution.exist([["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]], "ABCB")
 
-    # ---- 官方示例 4：2x2 小写棋盘，b 之后无相邻 c，false ----
+    # ---- 补充示例：2x2 小写棋盘，b 之后无相邻 c，false ----
     assert not solution.exist([["a", "b"], ["c", "d"]], "abcd")
 
     # ---- 大小写敏感：同官方示例 1 棋盘，小写 abcced 匹配不到，false ----
@@ -167,6 +143,13 @@ def test_solution() -> None:
     # 已程序化验证：只标记不恢复（不会撤销选择）的错误实现在本例上误判
     # False，而它在官方示例 1 上仍能通过——本例专防此类缺陷
     assert solution.exist([["A", "B", "C", "E"], ["S", "F", "E", "S"], ["A", "D", "E", "E"]], "ABCESEEE")
+
+    # ---- 成功短路与失败回溯都必须恢复棋盘，同一对象可连续搜索 ----
+    board = [["A", "B"], ["C", "D"]]
+    original = [row.copy() for row in board]
+    for word, expected in (("ABD", True), ("ABA", False), ("ACDB", True), ("ABCD", False)):
+        assert solution.exist(board, word) == expected
+        assert board == original
 ```
 
 `uv run pytest top150/backtracking/top150_79.py` 全部通过。

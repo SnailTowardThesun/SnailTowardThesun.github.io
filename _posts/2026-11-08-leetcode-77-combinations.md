@@ -43,59 +43,50 @@ Difficulty: **Medium**
 
 排列问题里 `[1,2]` 和 `[2,1]` 是两个答案，组合问题里它们是同一个——`{1,2}` 不区分顺序。枚举时若不加约束，每个组合会按各种顺序被重复产出。解法不是靠判重集合，而是靠枚举结构本身：让路径上的数**严格递增**，每个组合只以升序形态被生成一次，天然无重。
 
-### 本实现：固定首元素 + 递归后缀
+### 本实现：共享路径 + 剩余数量剪枝
 
-传统写法是带 start 指针的回溯：每层从 start 往后挑数、入栈、回溯。本实现换成自顶向下的分解，语义更直白——`dfs(arr, k)` 返回「从 arr 中选 k 个数的全部组合」：
+用 `backtrack(start)` 表示下一位只能从 `start..n` 中选择，所有递归层共用一条 `path`。
 
-1. 枚举首元素 `s = arr[i]`：首元素一旦固定，剩下的 `k-1` 个数只能从后缀 `arr[i+1:]` 里选——比 `s` 小的数早就在「首元素更小」的分支里出现过了；
-2. 递归 `dfs(arr[i+1:], k-1)` 拿到后缀的所有 `k-1` 元组合，把 `s` 拼到每个组合头部：`[s, *c]`；
-3. 首元素递增 + 后缀里的数都比首元素大 → 任何组合只以升序形态生成一次。
+1. 选择 `value` 后，下一层从 `value + 1` 开始，保证路径严格递增；
+2. 还缺 `remaining = k - len(path)` 个数时，当前值至多为 `n - remaining + 1`；更大的值会让剩余候选不足，直接剪掉；
+3. 收满 k 个数时复制路径并返回；每次递归后弹出刚选的值。
 
-它与 start 指针回溯完全等价：`arr[i+1:]` 就是「下一层从 `i+1` 开始挑」，去重都靠路径严格递增，只是把「维护指针」换成了「切后缀传下去」——顺带的好处是每层返回值即答案，不需要显式的回溯（undo）动作。
-
-三个边界分支：
-
-- `k == 1`：从 arr 里选 1 个，每个元素自成一组，直接返回 `[[i] for i in arr]`；
-- `k > len(arr)`：数不够选，无解返回 `[]`——入口处约束保证 `k <= n` 不会触发，但递归深处后缀越切越短，先碰到的就是它；
-- `k == len(arr)`：要选的数恰好等于剩余的数，只能全选，`arr` 本身就是唯一组合。这个分支兼作剪枝：循环枚举首元素时，一旦走到「剩余长度恰好等于 k」的后缀，后面每个 `i` 都只剩全选一种可能，由它一步兜住。
+剪枝保证每个被访问的前缀都能扩展成完整组合；不创建后缀切片，也不保存子问题的全部答案。
 
 ### 复杂度分析
 
 - 时间复杂度：`O(C(n,k) * k)`——共 C(n,k) 个组合，每个组合构造 O(k)
-- 空间复杂度：`O(k)`（递归深度，不计输出）
+- 空间复杂度：`O(k)`（递归栈与共享路径，不计输出）
 
 ## 代码实现
 
 ```python
 class Solution:
     def combine(self, n: int, k: int) -> list[list[int]]:
-        def dfs(arr, k):
-            if k == 1:
-                return [[i] for i in arr]
-            if k > len(arr):
-                return []
-            if k == len(arr):
-                return [arr]
+        ret: list[list[int]] = []
+        path: list[int] = []
 
-            ret = []
-            for i in range(len(arr)):
-                s = arr[i]
-                combs = dfs(arr[i + 1 :], k - 1)
-                for c in combs:
-                    ret.append([s, *c])
+        def backtrack(start: int) -> None:
+            remaining = k - len(path)
+            if remaining == 0:
+                ret.append(path.copy())
+                return
+            # 选 value 后，后面还须留出 remaining - 1 个数。
+            for value in range(start, n - remaining + 2):
+                path.append(value)
+                backtrack(value + 1)
+                path.pop()
 
-            return ret
-
-        arr = list(range(n + 1))[1:]
-        return dfs(arr, k)
+        backtrack(1)
+        return ret
 ```
 
 ### 代码解析
 
-- `[s, *c]`：星号解包把子组合 `c` 的元素铺开接到 `s` 后面，等价于 `[s] + c` 但少一次显式拼接调用，一步造出完整组合；
-- 三个边界分支各挡一种情况：`k == 1` 是递归的底，必须最先判——再把 `k-1` 递归下去就是选 0 个、负数个，没有意义；`k > len(arr)` 挡住「后缀不够长」的死路，返回空列表让上层循环自然跳过；`k == len(arr)` 把「只能全选」折叠成一步返回，兼具剪枝；
-- `arr = list(range(n + 1))[1:]`：`range(n + 1)` 产出 `0..n`，切掉首元素 `0` 得到 `1..n`——比 `[i for i in range(1, n + 1)]` 更短，且切完天然有序，这正是「路径严格递增」成立的前提；
-- 没有共享的 path 与 undo：每层返回新建的列表、从不修改旧状态，「回溯」被函数返回自然吸收。
+- `remaining == 0` 时 `path.copy()` 收集独立结果，避免后续回溯修改已保存的组合；
+- `range(start, n - remaining + 2)` 的右端点不包含在循环中，实际最大候选恰为 `n - remaining + 1`；
+- 下一层用 `value + 1`，保证每个数至多出现一次且顺序严格递增；
+- `k == n` 时剪枝只保留全选路径，`k == 1` 时自然枚举所有单元素，无需额外分支。
 
 ## 测试用例
 
@@ -124,12 +115,19 @@ def test_solution() -> None:
     result_20_1 = sorted(solution.combine(20, 1))
     assert len(result_20_1) == 20
     assert result_20_1 == [[i] for i in range(1, 21)]
+
+    # ---- 小规模穷举对照标准库，覆盖剪枝上界、漏解与重复解 ----
+    from itertools import combinations
+
+    for n in range(1, 9):
+        for k in range(1, n + 1):
+            assert sorted(map(tuple, solution.combine(n, k))) == list(combinations(range(1, n + 1), k))
 ```
 
 `uv run pytest top150/backtracking/top150_77.py` 全部通过。
 
 ## 总结
 
-- 组合与排列只差「无序」：让路径严格递增，每个组合只有升序一种生成方式，去重不靠判重集合、靠枚举结构本身；
-- 「固定首元素 + 递归后缀」与 start 指针回溯等价，但语义是纯粹的函数分解——dfs(arr, k) = 枚举首元素 × dfs(后缀, k-1)，返回即答案，无需显式回溯；
-- 三个边界分支把递归的底（k==1）、死路（k>len）、全选（k==len）各自折叠成一行，其中 k==len 兼作剪枝。
+- 组合按升序生成，靠 start 限制消除重复；
+- 剩余数量决定候选上界，提前剪掉无法补足 k 个数的分支；
+- 共享路径避免切片和中间结果，辅助空间 O(k)，时间 O(k·C(n,k))。

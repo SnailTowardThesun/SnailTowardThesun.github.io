@@ -1,15 +1,15 @@
 ---
 author: SnailTowardThesun
-title: "LeetCode刷题的日子--No.3105: 最长严格递增或递减子数组 I"
+title: "LeetCode刷题的日子--No.3105: 最长的严格递增或递减子数组"
 categories: LeetCode
 tags: [简单, 数组]
 ---
 
-> 「严格单调」四个字里唯一的坑是严格：相邻相等既非增也非减，会同时打断两条单调链。游程计数一次遍历即可，双指针、DP 都是用不上的杀鸡牛刀。
+> 单调游程是连续上升或下降的一段。相邻相等会同时打断两条游程；维护当前递增、递减长度，相当于把线性 DP 滚动压缩成两个计数器。
 
 ## 题目
 
-LeetCode 3105. Longest Strictly Increasing or Strictly Decreasing Subarray I（最长严格递增或递减子数组 I）
+LeetCode 3105. Longest Strictly Increasing or Strictly Decreasing Subarray（最长的严格递增或递减子数组）
 
 Difficulty: **Easy**
 
@@ -59,7 +59,7 @@ Difficulty: **Easy**
 
 `>` 与 `<` 互斥，而 `==` 落在两个分支的「否则」里：一次相等同时打断递增链和递减链。若误用 `>=` / `<=`（非严格版本），`[3,3,3]` 会错误地给出 3 而不是 1——示例 2 专门守住这一点。
 
-至于为什么不用 DP 或双指针：最长单调子数组只依赖相邻元素的大小关系，游程计数本身就是最优子结构的全部内容，`f(i)` 只由 `f(i-1)` 和一次比较决定。
+游程计数也可视为滚动 DP：以当前位置结尾的递增/递减长度只依赖上一位置和一次相邻比较，因此无需完整 DP 数组。双指针也能表达同样的连续区间。
 
 ### 手算示例 1（nums = [1,4,3,3,2]）
 
@@ -95,7 +95,7 @@ class Solution {
    public:
     int longestMonotonicSubarray(vector<int>& nums) {
         int ret = 1, large = 1, small = 1;
-        for (int i = 1; i < nums.size(); i++) {
+        for (size_t i = 1; i < nums.size(); i++) {
             // 严格递增游程：相等也算打断
             if (nums[i] > nums[i - 1]) {
                 large++;
@@ -182,7 +182,7 @@ def test_solution() -> None:
     assert solution.longestMonotonicSubarray([1, 2, 3, 2, 2, 1]) == 3
 ```
 
-C++ 侧在 `TEST(Daily, 3105)` 里用同样的 7 组用例断言，`./tests --gtest_filter='Daily.3105*'` 通过；提交前另用 O(n²) 暴力枚举所有子数组并逐对检查严格单调，随机对照 1000 组，与游程计数结果全部一致。
+C++ 侧在 `TEST(Daily, 3105)` 里用同样的 7 组用例断言，`./tests --gtest_filter='Daily.3105*'` 通过；提交前另用 O(n³) 暴力枚举所有子数组并逐对检查严格单调，随机对照 1000 组，与游程计数结果全部一致。
 
 ## 总结
 

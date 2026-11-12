@@ -19,8 +19,8 @@ Difficulty: **Medium**
 
 约束：
 
-- `2 <= candidates.length <= 40`
-- `1 <= candidates[i] <= 40`，且 `candidates` 中的元素互不相同
+- `1 <= candidates.length <= 30`
+- `2 <= candidates[i] <= 40`，且 `candidates` 中的元素互不相同
 - `1 <= target <= 40`
 - 题目保证符合要求的组合数少于 150 个
 
@@ -65,8 +65,8 @@ Difficulty: **Medium**
 
 ### 复杂度分析
 
-- 时间复杂度：指数级——搜索树规模与满足条件的组合数相关，上界由候选数决定的指数增长（题目保证组合数少于 150，实际搜索量远小于理论上限）
-- 空间复杂度：`O(target / min(candidates))`——递归栈深度即最长路径长度，路径上每个数至少贡献最小候选值（不计输出空间）
+- 时间复杂度：指数级——搜索树规模与满足条件的组合数相关，上界由候选数决定的指数增长（输出组合数少于 150 并不限制失败分支数量，仍需排序剪枝）
+- 空间复杂度：`O(N + target / min(candidates))`——N 为候选数，包含 sorted 的副本及排序临时空间、递归栈和路径（不计输出）
 
 ## 代码实现
 
@@ -110,7 +110,7 @@ def test_solution() -> None:
     # ---- 官方示例 1：2+2+3 与 7 ----
     assert sorted(sorted(x) for x in solution.combinationSum([2, 3, 6, 7], 7)) == [[2, 2, 3], [7]]
 
-    # ---- 官方示例 2：四种组合中的三种 ----
+    # ---- 官方示例 2：恰好三种组合 ----
     assert sorted(sorted(x) for x in solution.combinationSum([2, 3, 5], 8)) == [
         [2, 2, 2, 2],
         [2, 3, 3],

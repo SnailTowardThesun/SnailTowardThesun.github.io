@@ -44,7 +44,7 @@ Difficulty: **Easy**
 2. 每一步操作让数组总和**恰好**增加 1，所以从 `sum` 补到 `n * V` 总共需要 `n * V - sum` 步，与操作怎么分配到各元素完全无关；
 3. `n * V - sum` 随 `V` 严格递增——`V` 取最小可行值 `max` 最优，答案 = `n * max - sum = Σ(max - nums[i])`。
 
-直观版：每个元素到最大值的缺口是几，就补几次 +1，缺口之和即总操作数。`[2,1,3]` 的缺口是 `0 + 2 + 1 = 3`。
+直观版：每个元素到最大值的缺口是几，就补几次 +1，缺口之和即总操作数。`[2,1,3]` 的缺口依次是 `1 + 2 + 0 = 3`。
 
 ### 三部曲对照
 
@@ -95,7 +95,7 @@ int minMoves(vector<int>& nums) {
     <div class="lang-tab-panel">
 {% highlight python %}
 class Solution:
-    def minMoves(self, nums: List[int]) -> int:
+    def minMoves(self, nums: list[int]) -> int:
         mm = max(nums)
         return sum((mm - i) for i in nums)
 {% endhighlight %}
@@ -114,8 +114,8 @@ pub fn min_moves(nums: Vec<i32>) -> i32 {
 ### 代码解析
 
 - Python 走 `max(nums)` + 生成器两次遍历，C++ 单趟同时攒 `mm`/`total`，都是 O(n)，选顺手的写法即可；
-- C++ 的 `mm = 0` 初始值能工作是因为本题保证 `nums[i] >= 1`；若值域含负数或 0，必须改用首元素或 `INT_MIN` 起步——换题照抄要小心；
-- `mm * nums.size()` 中 `int` 与 `size_t` 相乘会先提升到无符号 64 位：本题数值 ≤ 9801 毫无压力，`long long` 累加总和也属于余量而非必需，但都是"知道即可"的细节；
+- C++ 的 `mm = 0` 初始值能工作是因为本题保证 `nums[i] >= 1`；若可能全部为负数，应改用首元素或 `INT_MIN` 起步；含 0 的非负数组仍可用 0——换题照抄要小心；
+- `mm * nums.size()` 中 `int` 与 `size_t` 相乘会先提升到无符号 64 位：本题乘积至多 10000、答案至多 9801，`long long` 累加总和也属于余量而非必需，但都是"知道即可"的细节；
 - Rust 每一项 `(mm - x)` 非负且部分和不超过总和，`i32` 求和天然安全。
 
 ## 测试用例

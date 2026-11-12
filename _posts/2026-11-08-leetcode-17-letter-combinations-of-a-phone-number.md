@@ -5,7 +5,7 @@ categories: LeetCode
 tags: [中等, 回溯, 字符串]
 ---
 
-> 老式手机九宫格键盘上，字母按使用频率高到低排在 2-9 键位，T9 联想输入法靠这张映射表把按键序列猜成单词——本题要枚举的，正是这张表展开出的全部字母组合。
+> 电话键盘把英文字母按字母顺序分组放在 2–9 键上，7 和 9 各对应四个字母。一个数字串对应的全部字母组合，就是这些字母集合的笛卡尔积。
 
 ## 题目
 
@@ -54,7 +54,7 @@ Difficulty: **Medium**
 
 本题属于 top150 回溯（backtracking）分类，是组合枚举最朴素的入门形态：把 `digits` 的每一位看作树的一层，每一层从当前数字对应的字母集合里**恰好选一个**向下走——不同于子集型问题的「选或不选」，这里没有跳过分支，只有「选哪个」。路径长度凑齐 `len(digits)` 时收集一条完整组合；整棵树展开后恰好是各键字母集合的笛卡尔积（`itertools.product` 的手工展开）。
 
-实现上有两种等价写法：经典回溯维护一条 path，进层追加、退层撤销；或者把「后面所有位的组合」交给递归子问题，用「首字母 × 子组合」拼接出答案。本文实现取后者——字符串拼接天然产生新对象，连显式撤销都省了。
+实现维护一条共享的 `path`：选择字母时追加，递归处理下一位，返回后弹出。只在叶子处 `join` 生成结果字符串，避免逐层保存后缀的全部组合。
 
 ### 分支因子由映射表决定
 
@@ -67,47 +67,39 @@ Difficulty: **Medium**
 ### 复杂度分析
 
 - 时间复杂度：`O(4^n * n)`——最坏每位 4 个字母，共 `4^n` 条组合，每条收集时拼接/拷贝需要 `O(n)`；
-- 空间复杂度：`O(n)`——递归栈深度加上单层临时结构（不计输出；`n <= 4`，栈深最多 4 层）。
+- 空间复杂度：`O(n)`——递归栈与共享路径（不计 `O(n·4^n)` 的输出）。
 
 ## 代码实现
 
 ```python
 class Solution:
     def letterCombinations(self, digits: str) -> list[str]:
-        if len(digits) == 0:
+        if not digits:
             return []
 
-        number_char_dict = {
-            "2": ["a", "b", "c"],
-            "3": ["d", "e", "f"],
-            "4": ["g", "h", "i"],
-            "5": ["j", "k", "l"],
-            "6": ["m", "n", "o"],
-            "7": ["p", "q", "r", "s"],
-            "8": ["t", "u", "v"],
-            "9": ["w", "x", "y", "z"],
-        }
+        letters = ("", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz")
+        ret: list[str] = []
+        path: list[str] = []
 
-        input = list(digits)
-        if len(input) == 1:
-            return number_char_dict[input[0]]
+        def backtrack(index: int) -> None:
+            if index == len(digits):
+                ret.append("".join(path))
+                return
+            for letter in letters[int(digits[index])]:
+                path.append(letter)
+                backtrack(index + 1)
+                path.pop()
 
-        ret = []
-        subs = self.letterCombinations("".join(input[1:]))
-        for k in number_char_dict[input[0]]:
-            for s in subs:
-                ret.append(k + s)
-
+        backtrack(0)
         return ret
 ```
 
 ### 代码解析
 
-- 空串特判放在最前：`len(digits) == 0` 直接返回 `[]`，把 `[""]` 的坑挡在递归之外（对应示例 2 的边界）；
-- 映射表用字典一字排开：键是单字符字符串，值直接存**字母列表**——单数字输入可以把列表原样返回，省掉一层循环拼接；
-- `if len(input) == 1` 单数字短路：它既是递归的 base case，也让一位输入零拼接直接出结果；
-- 递归分解「首字母 × 子问题」：`subs = self.letterCombinations("".join(input[1:]))` 先递归求出后面所有位的组合，双重循环再把当前位的每个字母前缀到每条子组合上——组合串是在**归途**上自底向上拼出来的：最深层返回裸字母列表，每退一层补上自己那一位；
-- `k + s` 拼接替代「path 追加 + 撤销」：新串是不可变的新对象，不碰上一层的状态，回溯的 undo 步骤被字符串不可变性吸收。
+- 空串直接返回 `[]`，避免收集一条空字符串；
+- `letters[int(digits[index])]` 取得当前数字的候选字母，映射表只创建一次；
+- `path.append` 与 `path.pop` 成对出现，兄弟分支复用同一条路径；
+- 叶子处 `"".join(path)` 创建独立字符串，之后回溯不会影响已经收集的答案。
 
 ## 测试用例
 
@@ -144,7 +136,7 @@ def test_solution() -> None:
     result = solution.letterCombinations("79")
     assert len(result) == 16
     assert all(len(comb) == 2 for comb in result)
-    assert len(set(result)) == 16  # 无重复
+    assert len(set(result)) == 16
 ```
 
 `uv run pytest top150/backtracking/top150_17.py` 全部通过。
@@ -153,4 +145,4 @@ def test_solution() -> None:
 
 - 电话号码的字母组合 = 各键字母集合的笛卡尔积：每位一层、每层恰选一个字母，回溯与递归分解都是这棵决策树的遍历；
 - 空串必须挡在递归之外返回 `[]`——否则收集条件被空路径命中，交出 `[""]`；
-- 「首字母 × 子组合」的写法用字符串拼接替代显式撤销，不可变性替我们做了 undo——回溯的心智模型不变，代码更短。
+- 共享路径配合叶子处拼接，辅助空间为 O(n)，无需保存中间层的全部子组合。

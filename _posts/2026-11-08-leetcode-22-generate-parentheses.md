@@ -48,43 +48,39 @@ Difficulty: **Medium**
 
 ### 复杂度分析
 
-- 时间复杂度：`O(4^n / sqrt(n))`（卡特兰数 `C_n` 的渐近量级）
-- 空间复杂度：`O(n)`（递归深度 + 当前路径）
+- 时间复杂度：`O(n·C_n) = O(4^n / sqrt(n))`——`C_n = O(4^n / n^(3/2))` 个结果，每条拼接 O(n)
+- 空间复杂度：`O(n)`（递归深度 + 共享路径，不计输出）
 
 ## 代码实现
 
 ```python
 class Solution:
     def generateParenthesis(self, n: int) -> list[str]:
-        # TODO 回溯：维护已放左括号数 open 与右括号数 close——
-        #   open < n 时可放 '('，close < open 时可放 ')'，
-        #   串长达到 2n 时收集结果，回溯撤销选择
-        ret = set()
+        ret: list[str] = []
+        path: list[str] = []
 
-        def dfs(path, n, left, right):
-            if left > n:
-                return
-            if right > left:
-                return
-
+        def backtrack(left: int, right: int) -> None:
             if len(path) == 2 * n:
-                ret.add(path)
+                ret.append("".join(path))
+                return
+            if left < n:
+                path.append("(")
+                backtrack(left + 1, right)
+                path.pop()
+            if right < left:
+                path.append(")")
+                backtrack(left, right + 1)
+                path.pop()
 
-            dfs(path + "(", n, left + 1, right)
-            dfs(path + ")", n, left, right + 1)
-
-        dfs("", n, 0, 0)
-
-        return list(ret)
+        backtrack(0, 0)
+        return ret
 ```
 
 ### 代码解析
 
-- `dfs` 的参数 `left` / `right` 就是思路中的 `open` / `close` 计数——随递归参数 +1 传入，不维护可变状态；
-- 剪枝写在**子调用入口**：`dfs(path + "(", ...)` 无条件发起，非法分支由下一层的 `left > n`、`right > left` 两道闸拦下——与「放之前判断」等价，只是把守卫挪到了「放之后」；
-- 收集时机是 `len(path) == 2 * n`：入口两道闸保证此刻必有 `left == right == n`（`left + right == 2n` 且双双不越界），收进 `ret` 的串必然有效；
-- `path + "("` 每次生成新字符串，返回上层时旧 `path` 原封不动——「撤销选择」被字符串不可变性吸收，不需要显式 pop；
-- 收集后代码仍会发起两次子调用，但 `left + 1 > n` 立刻被剪掉，正确性不受影响；结果收进 `set` 再转 `list`，是对「每条路径对应唯一串」的双保险。
+- `left`、`right` 分别记录已放的左右括号数；只在 `left < n` 或 `right < left` 时进入对应分支；
+- `path` 是共享字符列表，追加、递归、弹出，避免递归栈同时持有多份字符串前缀；
+- 长度到达 `2*n` 时拼接并立即返回，不再扩展；每条路径唯一，直接存入列表，无需集合去重。
 
 ## 测试用例
 
@@ -108,6 +104,18 @@ def test_solution() -> None:
 
     # ---- n=8：约束上界，卡特兰数 C_8 = 1430 个，数量断言 ----
     assert len(solution.generateParenthesis(8)) == 1430
+
+    # ---- 数量正确还不够：所有结果必须唯一，任意前缀合法且左右括号等量 ----
+    for n, expected in enumerate((1, 2, 5, 14, 42, 132, 429, 1430), start=1):
+        result = solution.generateParenthesis(n)
+        assert len(result) == len(set(result)) == expected
+        for parentheses in result:
+            assert len(parentheses) == 2 * n
+            balance = 0
+            for char in parentheses:
+                balance += 1 if char == "(" else -1
+                assert balance >= 0
+            assert balance == 0
 ```
 
 `uv run pytest top150/backtracking/top150_22.py` 全部通过。
@@ -115,5 +123,5 @@ def test_solution() -> None:
 ## 总结
 
 - 有效性可以边构造边保证：前缀条件（任意前缀左 ≥ 右）折叠进分支规则后，搜索树的叶子全是合法组合，省掉「全枚举 + 过滤」；
-- 计数随递归参数传递、路径用不可变字符串拼接，「撤销选择」被语言特性吸收，回溯只剩两条递归分支；
+- 计数随递归参数传递，共享路径在递归前追加、递归后撤销，只有收集答案时拼接字符串；
 - n 对括号的有效组合数是卡特兰数 `C_n`——n=8 时恰 1430 个，数量断言是回溯正确性最便宜的体检。
