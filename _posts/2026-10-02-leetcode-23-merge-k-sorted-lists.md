@@ -24,7 +24,7 @@ Difficulty: **Hard**
 
 ## 解题思路
 
-### 最小堆多路归并
+### 解法一：最小堆多路归并
 
 1. 把所有非空链表的头节点放入最小堆（按节点值排序）。
 2. 每次取出堆顶接到结果尾部；若该节点有后继，把后继入堆。
@@ -32,14 +32,31 @@ Difficulty: **Hard**
 
 哨兵节点 node 省去对头节点的特判。
 
+### 解法二：顺序两两合并
+
+Top 150 重刷这题时的另一种写法：不维护堆，从第一条链表开始，把后面的链表逐条用「哑节点 + 双指针」归并进结果——归并两条有序链表是第 21 题的原语，k 条链表就是把这个原语顺序用 k-1 次。
+
+两个实现细节：哑节点省掉头节点特判；每次 `ph.next = ...` 接上节点后 `ph` 必须**立即后移**，否则指针永远停在哑节点上，每次赋值都在覆盖同一个 `next`，前面接好的节点会全部丢失。
+
 ### 复杂度分析
 
-- **时间复杂度**：O(N log k)，N 为总节点数，每个节点入堆出堆一次。
-- **空间复杂度**：O(k)。
+- **解法一（最小堆）**：时间 O(N log k)，N 为总节点数，每个节点入堆出堆一次；空间 O(k)。
+- **解法二（顺序两两合并）**：时间 O(k²·n)（k 条平均长度 n 的链表，顺序合并的最坏情形），空间 O(1)。官方约束总结点 N ≤ 10⁴ 下完全够用；若 k 很大（上万条单节点链表这种极端分布），两两分治合并或解法一的最小堆可降到 O(N log k)。
 
 ## 代码实现
 
-```cpp
+两个面板是**两种解法**：C++ 为最小堆多路归并，Python 为顺序两两合并，点击标签切换查看：
+
+<div class="lang-tabs">
+  <input type="radio" id="lt23-cpp" name="lt23" checked>
+  <input type="radio" id="lt23-py" name="lt23">
+  <div class="lang-tab-nav">
+    <label for="lt23-cpp">C++</label>
+    <label for="lt23-py">Python</label>
+  </div>
+  <div class="lang-tab-panels">
+    <div class="lang-tab-panel">
+{% highlight cpp %}
 class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
@@ -63,19 +80,10 @@ public:
         return node.next;
     }
 };
-```
-
-### 代码解析
-
-- 比较器用 `a->val > b->val`，priority_queue 默认是大顶堆，反向比较得到小顶堆。
-
-## 解法二：顺序两两合并（Python）
-
-Top 150 重刷这题时的另一种写法：不维护堆，从第一条链表开始，把后面的链表逐条用「哑节点 + 双指针」归并进结果——归并两条有序链表是第 21 题的原语，k 条链表就是把这个原语顺序用 k-1 次。
-
-两个实现细节：哑节点省掉头节点特判；每次 `ph.next = ...` 接上节点后 `ph` 必须**立即后移**，否则指针永远停在哑节点上，每次赋值都在覆盖同一个 `next`，前面接好的节点会全部丢失。
-
-```python
+{% endhighlight %}
+    </div>
+    <div class="lang-tab-panel">
+{% highlight python %}
 from leetcode_common import ListNode
 
 
@@ -113,11 +121,15 @@ class Solution:
         for i in range(1, len(lists)):
             ret = mergeLists(ret, lists[i])
         return ret
-```
+{% endhighlight %}
+    </div>
+  </div>
+</div>
 
-复杂度：时间 O(k²·n)（k 条平均长度 n 的链表，顺序合并的最坏情形），空间 O(1)。官方约束总结点 N ≤ 10⁴ 下完全够用；若 k 很大（上万条单节点链表这种极端分布），两两分治合并或上面的最小堆可降到 O(N log k)。
+### 代码解析
 
-## 测试用例
+- **C++ 版（解法一）**：比较器用 `a->val > b->val`，priority_queue 默认是大顶堆，反向比较得到小顶堆。
+- **Python 版（解法二）**：哑节点 + 双指针归并是第 21 题的原语；注意 `ph.next = ...` 接上节点后 `ph` 必须立即后移，否则每次赋值都在覆盖哑节点的同一个 `next`。
 
 ```cpp
 TEST(Daily, 23) {
@@ -133,6 +145,6 @@ TEST(Daily, 23) {
 
 ## 总结
 
-1. 小顶堆维护每条链表当前最小节点；
-2. 弹出后补后继，直到堆空；
-3. 时间 O(N log k)，空间 O(k)。
+1. 解法一（最小堆）：小顶堆维护每条链表当前最小节点，弹出后补后继直到堆空，时间 O(N log k)、空间 O(k)；
+2. 解法二（顺序两两合并）：第 21 题的归并原语顺序用 k-1 次，时间 O(k²·n)、空间 O(1)，常规规模够用；
+3. k 很大时用堆或两两分治合并，把复杂度压回 O(N log k)。
