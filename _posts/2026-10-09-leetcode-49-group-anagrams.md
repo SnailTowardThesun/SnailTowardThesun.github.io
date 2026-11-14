@@ -62,7 +62,18 @@ Difficulty: **Medium**
 
 ## 代码实现
 
-```cpp
+C++ 与 Python 逻辑一致（排序串作键 + 哈希自动建组），点击标签切换查看：
+
+<div class="lang-tabs">
+  <input type="radio" id="lt49-cpp" name="lt49" checked>
+  <input type="radio" id="lt49-py" name="lt49">
+  <div class="lang-tab-nav">
+    <label for="lt49-cpp">C++</label>
+    <label for="lt49-py">Python</label>
+  </div>
+  <div class="lang-tab-panels">
+    <div class="lang-tab-panel">
+{% highlight cpp %}
 class Solution {
    public:
     vector<vector<string> > groupAnagrams(vector<string> &strs) {
@@ -81,15 +92,35 @@ class Solution {
         return ret;
     }
 };
-```
+{% endhighlight %}
+    </div>
+    <div class="lang-tab-panel">
+{% highlight python %}
+from collections import defaultdict
+
+
+class Solution:
+    def groupAnagrams(self, strs: list[str]) -> list[list[str]]:
+        container: defaultdict[str, list[str]] = defaultdict(list)
+        for s in strs:
+            key = "".join(sorted(s))  # 异位词排序后相同，作分组键
+            container[key].append(s)  # key 不存在时自动建空组，一行完成查找+插入
+        return list(container.values())
+{% endhighlight %}
+    </div>
+  </div>
+</div>
 
 ### 代码解析
 
 - **`container[sorted]` 的妙用**：`operator[]` 在 key 不存在时自动创建空的 `vector<string>`，一行完成"查找 + 插入"。
 - **复制再排序**：`auto sorted = str` 先拷贝，排序只动副本，原字符串保持原样进入分组。
 - **收集结果**：遍历哈希表把每个 `it.second`（分组列表）加入结果，分组内顺序与输入顺序一致。
+- **Python 版**：`defaultdict(list)` 正对应 C++ `operator[]` 的自动建组语义；`"".join(sorted(s))` 一步生成排序键，`list(container.values())` 收集分组。
 
 ## 测试用例
+
+C++ 侧：
 
 ```cpp
 TEST(top150, 49) {
@@ -107,6 +138,36 @@ TEST(top150, 49) {
     vector<string> single{"a"};
     EXPECT_EQ(s.groupAnagrams(single).size(), 1);
 }
+```
+
+Python 侧（hot100 版）——题目允许任意顺序返回，先把分组间与组内都排序成规范形再比对：
+
+```python
+def test_solution() -> None:
+    solution = Solution()
+
+    def canonical(result: list[list[str]]) -> list[list[str]]:
+        """分组间与组内都排序成规范形，消除「任意顺序返回」的干扰"""
+        return sorted(sorted(g) for g in result)
+
+    # ---- 官方示例 1：三组异位词 ----
+    assert canonical(solution.groupAnagrams(["eat", "tea", "tan", "ate", "nat", "bat"])) == [
+        ["ate", "eat", "tea"],
+        ["bat"],
+        ["nat", "tan"],
+    ]
+
+    # ---- 官方示例 2：单个空串自成一族 ----
+    assert solution.groupAnagrams([""]) == [[""]]
+
+    # ---- 官方示例 3：单字符 ----
+    assert solution.groupAnagrams(["a"]) == [["a"]]
+
+    # ---- 全部互为异位词：只分一组 ----
+    assert canonical(solution.groupAnagrams(["abc", "cba", "bca"])) == [["abc", "bca", "cba"]]
+
+    # ---- 无任何异位词：各自成组 ----
+    assert canonical(solution.groupAnagrams(["ab", "cd"])) == [["ab"], ["cd"]]
 ```
 
 ## 总结
