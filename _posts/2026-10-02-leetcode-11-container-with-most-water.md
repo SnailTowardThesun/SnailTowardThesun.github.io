@@ -42,7 +42,18 @@ Difficulty: **Medium**
 
 ## 代码实现
 
-```cpp
+C++ 与 Python 逻辑一致（对撞双指针、只移短板），点击标签切换查看：
+
+<div class="lang-tabs">
+  <input type="radio" id="lt11-cpp" name="lt11" checked>
+  <input type="radio" id="lt11-py" name="lt11">
+  <div class="lang-tab-nav">
+    <label for="lt11-cpp">C++</label>
+    <label for="lt11-py">Python</label>
+  </div>
+  <div class="lang-tab-panels">
+    <div class="lang-tab-panel">
+{% highlight cpp %}
 class Solution {
 public:
     int maxArea(vector<int>& height) {
@@ -58,13 +69,37 @@ public:
         return result;
     }
 };
-```
+{% endhighlight %}
+    </div>
+    <div class="lang-tab-panel">
+{% highlight python %}
+class Solution:
+    def maxArea(self, height: list[int]) -> int:
+        left, right = 0, len(height) - 1
+        ret = 0
+        while left < right:
+            # 先记面积再收缩；面积受短板限制，宽度为两指针间距
+            ret = max(ret, min(height[left], height[right]) * (right - left))
+            # 只移动短板：移动高板不可能得到更大面积
+            if height[left] > height[right]:
+                right -= 1
+            else:
+                left += 1
+        return ret
+{% endhighlight %}
+    </div>
+  </div>
+</div>
 
 ### 代码解析
 
-- `height[i] <= height[j]` 时移动左指针，否则移动右指针，相等时移哪一侧均可。
+- `height[i] <= height[j]` 时移动左指针，否则移动右指针，相等时移哪一侧均可（两个版本在等高时都选择移动左侧，行为一致）。
+- **先记面积再收缩**：当前指针位置的面积必须先算——收缩之后这组「宽度」就再也没有了。
+- 贪心正确性一句话：被移动走的短板，它与之间任何线的组合都不可能超过当前面积（宽度更小、高上限不变），排除它是安全的。
 
 ## 测试用例
+
+C++ 侧：
 
 ```cpp
 TEST(Daily, 11) {
@@ -74,6 +109,31 @@ TEST(Daily, 11) {
     vector<int> height3 = {4, 3, 2, 1, 4};
     EXPECT_EQ(s.maxArea(height3), 16);
 }
+```
+
+Python 侧（hot100 版）：
+
+```python
+def test_solution() -> None:
+    solution = Solution()
+
+    # ---- 官方示例 1：高 8 与高 7 的两条线 ----
+    assert solution.maxArea([1, 8, 6, 2, 5, 4, 8, 3, 7]) == 49
+
+    # ---- 官方示例 2：最小规模 ----
+    assert solution.maxArea([1, 1]) == 1
+
+    # ---- 官方示例 3：两端等高 ----
+    assert solution.maxArea([4, 3, 2, 1, 4]) == 16
+
+    # ---- 官方示例 4：中间高不如两端宽 ----
+    assert solution.maxArea([1, 2, 1]) == 2
+
+    # ---- 含 0 高度：短板为 0 的容器存不了水 ----
+    assert solution.maxArea([0, 5]) == 0
+
+    # ---- 递减序列：宽高折中，min(5,3)*2 = 6 ----
+    assert solution.maxArea([5, 4, 3, 2, 1]) == 6
 ```
 
 ## 总结
