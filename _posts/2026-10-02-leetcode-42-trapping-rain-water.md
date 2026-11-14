@@ -5,7 +5,7 @@ categories: LeetCode
 tags: [困难, 数组, 双指针, 动态规划]
 ---
 
-> 双指针向中间收缩，两侧都高于当前水位时抬升水位，水量按新水位一次性结算。这是双指针水位法的一种变体。
+> 每一列能接的水由两侧最高墙中较矮的一侧决定。双指针用已确认的边界逐列结算，可省去前后缀数组，达到 O(n) 时间、O(1) 辅助空间。
 
 ## 题目
 
@@ -27,14 +27,13 @@ Difficulty: **Hard**
 
 ## 解题思路
 
-### 双指针 + 水位结算
+### 解法一：双指针逐列结算（C++ 版）
 
-1. pt、pb 两指针指向两端，com 表示当前已确认的水位，tmp 记录上一轮水位。
-2. 只有当两侧柱子都高于 com 时，水位才能抬升到两者较小值 `com = min(A[pt], A[pb])`。
-3. 水位抬升后，对区间内每根柱子补充新增水量：`com - max(A[i], tmp)`（已超过新水位的不计）。
-4. 每次移动较矮一侧的指针，与盛水容器同理。
+1. 左右指针从两端出发，分别维护已经经过的最高柱 `left_max`、`right_max`。
+2. 若 `height[left] <= height[right]`，右侧已有足够高的边界，更新 `left_max` 后累计 `left_max - height[left]`，再移动左指针；否则对称处理右侧。
+3. 指针相遇时结束，每一列至多结算一次。每侧指针只有在另一侧边界足够高时才推进，因此同侧历史最高墙不会导致多算。
 
-经典写法是逐位置结算 `min(leftMax, rightMax) - height[i]`，本实现按「水位抬升事件」批量结算，思路等价。
+旧版在每次抬升水位后重新扫描内部区间，最坏 O(n²)；这里与当前仓库实现一致，改为逐列结算。
 
 ### 解法二：前后缀最大值（动态规划，Python 版）
 
@@ -42,13 +41,13 @@ Difficulty: **Hard**
 
 ### 复杂度分析
 
-- **解法一（双指针水位结算）**：时间 O(n²)（每次抬水位都扫描区间），空间 O(1)；经典双指针版可达 O(n)。
+- **解法一（双指针逐列结算）**：时间 O(n)，空间 O(1)。
 - **解法二（前后缀最大值）**：时间 O(n)（三趟线性扫描），空间 O(n)（两个辅助数组）。
 - 进阶：对撞双指针维护实时 leftmax/rightmax 可兼得 O(n) 时间与 O(1) 空间——每次移动较矮一侧，较矮侧的水位由同侧前缀最大值独立确定，无需数组。
 
 ## 代码实现
 
-两个面板是**两种解法**：C++ 为双指针水位批量结算版，Python 为前后缀最大值版，点击标签切换查看：
+两个面板是**两种解法**：C++ 为双指针逐列结算版，Python 为前后缀最大值版，点击标签切换查看：
 
 <div class="lang-tabs">
   <input type="radio" id="lt42-cpp" name="lt42" checked>
@@ -61,19 +60,21 @@ Difficulty: **Hard**
     <div class="lang-tab-panel">
 {% highlight cpp %}
 class Solution {
-public:
-    int trap(int A[], int n) {
+   public:
+    int trap(vector<int>& height) {
+        const int n = static_cast<int>(height.size());
         if (n < 3) return 0;
-        int pt = 0, pb = n - 1, com = 0, result = 0, tmp = 0;
-        while (pt < pb) {
-            if (A[pt] > com && A[pb] > com) {
-                com = A[pt] < A[pb] ? A[pt] : A[pb];
-                for (int i = pt + 1; i < pb; i++) {
-                    result += com < A[i] ? 0 : com - (A[i] < tmp ? tmp : A[i]);
-                }
-                tmp = com;
+        int left = 0, right = n - 1;
+        int left_max = 0, right_max = 0, result = 0;
+        while (left < right) {
+            // 较低一侧的水位由本侧最大高度决定，每个位置只结算一次。
+            if (height[left] <= height[right]) {
+                left_max = max(left_max, height[left]);
+                result += left_max - height[left++];
+            } else {
+                right_max = max(right_max, height[right]);
+                result += right_max - height[right--];
             }
-            A[pt] < A[pb] ? pt++ : pb--;
         }
         return result;
     }
@@ -98,7 +99,7 @@ class Solution:
         for i in range(n - 2, -1, -1):
             rightmax[i] = max(rightmax[i + 1], height[i])
 
-        # 每列水位 = min(两侧最高墙) - 柱高，负数说明自身就是墙，存不住水
+        # 每列水位 = min(两侧最高墙) - 柱高，两侧最大值均含自身，差值非负
         return sum(min(leftmax[i], rightmax[i]) - height[i] for i in range(n))
 {% endhighlight %}
     </div>
@@ -107,7 +108,7 @@ class Solution:
 
 ### 代码解析
 
-- C++ 版 `com - (A[i] < tmp ? tmp : A[i])`：只累计本轮新增水位，减去柱子高度或上轮已计水位，避免重复计算。
+- C++ 版每次只处理较矮边界所在列，更新同侧最大值后计算差值，左右指针总共移动 O(n) 次。
 - Python 版无需「上一轮水位」的簿记：前后缀数组把每列的水位一次算准，`min(leftmax[i], rightmax[i]) - height[i]` 恒非负（两个 max 都含 `height[i]` 自身），直接求和即可。
 
 ## 测试用例
@@ -117,10 +118,10 @@ C++ 侧：
 ```cpp
 TEST(Daily, 42) {
     Solution s;
-    int A1[] = {0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1};
-    EXPECT_EQ(s.trap(A1, 12), 6);
-    int A3[] = {1, 0, 1};
-    EXPECT_EQ(s.trap(A3, 3), 1);
+    vector<int> A1 = {0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1};
+    EXPECT_EQ(s.trap(A1), 6);
+    vector<int> A3 = {1, 0, 1};
+    EXPECT_EQ(s.trap(A3), 1);
 }
 ```
 
@@ -130,11 +131,13 @@ Python 侧（hot100 版）：
 def test_solution() -> None:
     solution = Solution()
 
-    # ---- 官方示例 1 / 2 ----
+    # ---- 官方示例 1 ----
     assert solution.trap([0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]) == 6
+
+    # ---- 官方示例 2 ----
     assert solution.trap([4, 2, 0, 3, 2, 5]) == 9
 
-    # ---- 最小可存水单元 ----
+    # ---- 最小可存水单元：两侧夹一根矮柱 ----
     assert solution.trap([1, 0, 1]) == 1
 
     # ---- 碗形：中间低四周高 ----
@@ -154,5 +157,5 @@ def test_solution() -> None:
 ## 总结
 
 1. 水量取决于两侧的较小最高值；
-2. 双指针收缩，两侧都更高才抬水位；
-3. 经典版逐位置结算可达 O(n)，本实现是批量结算变体。
+2. 双指针每次结算一列，O(n) 时间、O(1) 辅助空间；
+3. 前后缀数组版同样 O(n) 时间，以 O(n) 空间保存各列边界信息。

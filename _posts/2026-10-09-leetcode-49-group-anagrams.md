@@ -5,7 +5,7 @@ categories: LeetCode
 tags: [中等, 字符串, 哈希表]
 ---
 
-> 字母异位词检测在拼写检查、DNA 序列分析中有广泛应用，排序键法是它最简洁优雅的解法。
+> 异位词具有相同的字符计数。排序后的字符串或固定长度的计数元组，都能作为分组键；计数键还可以省去排序。
 
 ## 题目
 
@@ -53,7 +53,7 @@ Difficulty: **Medium**
 "bat" → "abt" → 组3
 ```
 
-> 进阶：还可以用 26 位质数乘积或字符计数串作为 key，把分组时间从 O(n·k·log k) 优化到 O(n·k)。
+> 进阶：用 26 项字符计数作为 key，可将时间优化到 O(n·(k+26))。不要直接用固定宽度整数的质数乘积：乘积可能溢出，导致不同单词的键发生碰撞。
 
 ### 复杂度分析
 
@@ -175,37 +175,3 @@ def test_solution() -> None:
 1. 异位词排序后相同，排序结果是天然的哈希 key；
 2. `map[key].push_back(str)` 一行完成分组；
 3. 时间 O(n·k·log k)，用字符计数 key 可优化到 O(n·k)。
-
-## 补充：Top 150 C++ 实现
-
-以下是当前 Top 150 源码中的实现，已同步到 `cplusplus/questions/49.cpp`。
-
-{% raw %}
-```cpp
-using namespace std;
-
-class Solution {
-   public:
-    vector<vector<string> > groupAnagrams(vector<string>& strs) {
-        unordered_map<string, vector<string> > container;
-        for (auto str : strs) {
-            auto sorted = str;
-            sort(sorted.begin(), sorted.end());
-            container[sorted].emplace_back(str);
-        }
-
-        vector<vector<string> > ret;
-        for (auto it : container) {
-            ret.emplace_back(it.second);
-        }
-
-        return ret;
-    }
-};
-```
-{% endraw %}
-
-### 补充说明
-
-- 该实现与 Top 150 源码保持一致；若与前文旧实现不同，以本节当前版本为准。
-- 代码保留源码中的关键注释（如有），便于对照变量含义和边界处理。
