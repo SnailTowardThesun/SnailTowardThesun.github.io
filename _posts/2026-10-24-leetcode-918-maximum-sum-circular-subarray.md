@@ -5,7 +5,7 @@ categories: LeetCode
 tags: [中等, 数组, 动态规划]
 ---
 
-> 环形数组是工程常客：音视频缓冲区、时间轮定时器都是首尾相接的 ring buffer。处理跨越边界的区间有个经典技巧——取补集：跨环的一段，恰好等于整圈减去中间不跨环的一段。
+> 环形结构是工程常客：音视频处理中常用环形缓冲区，时间轮则让时间槽循环复用。处理跨越数组边界的区间有个经典技巧——取补集：跨环的一段，恰好等于整圈减去中间不跨环的一段。
 
 ## 题目
 
@@ -69,7 +69,7 @@ Difficulty: **Medium**
 ### 复杂度分析
 
 - **时间复杂度**：O(n)，只遍历数组一次。
-- **空间复杂度**：O(1)，仅用常数个滚动变量。
+- **辅助空间复杂度**：O(1)，按下标遍历，仅用常数个滚动变量；不能用 `nums[1:]`，它会创建 O(n) 的临时列表。
 
 ## 代码实现
 
@@ -78,7 +78,8 @@ class Solution:
     def maxSubarraySumCircular(self, nums: list[int]) -> int:
         # cur_max / cur_min：以当前元素结尾的最大 / 最小子数组和（Kadane 滚动变量）
         cur_max = best_max = cur_min = best_min = total = nums[0]
-        for x in nums[1:]:
+        for i in range(1, len(nums)):
+            x = nums[i]  # 按下标遍历，避免 nums[1:] 创建 O(n) 切片
             cur_max = max(x, cur_max + x)
             best_max = max(best_max, cur_max)
             cur_min = min(x, cur_min + x)

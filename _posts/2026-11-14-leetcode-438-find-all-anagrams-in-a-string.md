@@ -46,6 +46,7 @@ Difficulty: **Medium**
 4. 每滑一步比较两个数组（26 格，O(26)），相等记录新左端 `i+1`。
 
 两个细节：
+
 - **配方必须用计数**而非字母集合——`"aab"` 与 `"abb"` 字母集相同但不是互为异位词；
 - 手算期望值时也容易栽在这里：`"aba"` 排序后就是 `"aab"`，它**是**异位词（本人核对测试期望时就漏了它，被暴力对照抓回）。
 
@@ -60,7 +61,7 @@ Difficulty: **Medium**
 ### 复杂度分析
 
 - 时间复杂度：`O(n·26)`——n 为 `s` 长度，每滑一步一次增量更新 + 一次 26 格比较；排序法为 O(n·k log k)；
-- 空间复杂度：`O(26)`；
+- 辅助空间复杂度：`O(26)`，不计输出；结果列表最多有 `max(0, n-len(p)+1)` 个下标，占 O(n) 空间；
 - 进阶：维护「有多少字母的计数不同」的差异变量 `differ`，进出窗口时增量更新，每步比较降到 O(1)——567 题（字符串的排列）就是这个写法。
 
 ## 代码实现
@@ -104,8 +105,10 @@ class Solution:
 def test_solution() -> None:
     solution = Solution()
 
-    # ---- 官方示例 1 / 2 ----
+    # ---- 官方示例 1 ----
     assert solution.findAnagrams("cbaebabacd", "abc") == [0, 6]
+
+    # ---- 官方示例 2：滑步重叠的异位词 ----
     assert solution.findAnagrams("abab", "ab") == [0, 1, 2]
 
     # ---- s 比 p 短：无解 ----
@@ -120,6 +123,10 @@ def test_solution() -> None:
     # ---- 重复字母："aba" 排序后同为 "aab"，也是异位词 ----
     assert solution.findAnagrams("aabaa", "aab") == [0, 1, 2]
     assert solution.findAnagrams("aababaa", "aab") == [0, 1, 3, 4]
+
+    # ---- 字母集合相同、计数不同；末尾窗口不能漏掉 ----
+    assert solution.findAnagrams("abb", "aab") == []
+    assert solution.findAnagrams("zzab", "ba") == [2]
 ```
 
 提交前用「每个起点排序比较」的朴素版随机对照 2000 组，与计数滑窗版结果全部一致。
