@@ -51,7 +51,18 @@ Difficulty: **Medium**
 
 ## 代码实现
 
-```cpp
+C++ 与 Python 逐行对应（原地排序 vs 新列表排序），点击标签切换查看：
+
+<div class="lang-tabs">
+  <input type="radio" id="lt56-cpp" name="lt56" checked>
+  <input type="radio" id="lt56-py" name="lt56">
+  <div class="lang-tab-nav">
+    <label for="lt56-cpp">C++</label>
+    <label for="lt56-py">Python</label>
+  </div>
+  <div class="lang-tab-panels">
+    <div class="lang-tab-panel">
+{% highlight cpp %}
 class Solution {
    public:
     vector<vector<int> > merge(vector<vector<int> > &intervals) {
@@ -75,15 +86,37 @@ class Solution {
         return ret;
     }
 };
-```
+{% endhighlight %}
+    </div>
+    <div class="lang-tab-panel">
+{% highlight python %}
+class Solution:
+    def merge(self, intervals: list[list[int]]) -> list[list[int]]:
+        intervals = sorted(intervals)  # 新列表，按左端点排序；可合并者必相邻
+
+        ret: list[list[int]] = []
+        for left, right in intervals:
+            if not ret or left > ret[-1][1]:  # 严格大于才分开；相触（==）也算重叠
+                ret.append([left, right])
+            else:
+                ret[-1][1] = max(right, ret[-1][1])  # max 保证嵌套区间右端点不回缩
+
+        return ret
+{% endhighlight %}
+    </div>
+  </div>
+</div>
 
 ### 代码解析
 
 - **`ret.back()` 复用**：不重叠时 `push_back` 新区间，重叠时直接改 `ret.back()[1]`，避免额外的临时区间变量。
 - **`max` 不能省**：排序只保证起点有序，终点可能"前大后小"（如 `[1,10]` 与 `[2,3]`），必须取两者较大值。
 - **边界相接也算重叠**：`[1,4]` 与 `[4,5]` 中 `4 < 4` 不成立，走合并分支，符合题目"相接即重叠"的定义。
+- **Python 版**：`sorted()` 返回新列表、不改调用方原数组；判定与 C++ 镜像（`left > ret[-1][1]` 开新段，等号落入合并分支）；空输入由循环自然返回空列表，无需特判。
 
 ## 测试用例
+
+C++ 侧：
 
 {% raw %}
 ```cpp
@@ -103,6 +136,28 @@ TEST(top150, 56) {
 }
 ```
 {% endraw %}
+
+Python 侧（hot100 版）：
+
+```python
+def test_solution() -> None:
+    solution = Solution()
+
+    # ---- 官方示例 ----
+    assert solution.merge([[1, 3], [2, 6], [8, 10], [15, 18]]) == [[1, 6], [8, 10], [15, 18]]
+    assert solution.merge([[1, 4], [4, 5]]) == [[1, 5]]  # 相触视为重叠
+
+    # ---- 输入无序：排序后正常合并（期望值由暴力对照机器算出）----
+    assert solution.merge([[1, 3], [2, 6], [15, 18], [8, 10]]) == [[1, 6], [8, 10], [15, 18]]
+    assert solution.merge([[5, 6], [1, 2]]) == [[1, 2], [5, 6]]
+
+    # ---- 嵌套区间：右端点取 max 不回缩 ----
+    assert solution.merge([[1, 4], [2, 3]]) == [[1, 4]]
+
+    # ---- 单区间 / 重复区间 ----
+    assert solution.merge([[1, 1]]) == [[1, 1]]
+    assert solution.merge([[2, 2], [2, 2]]) == [[2, 2]]
+```
 
 ## 总结
 
