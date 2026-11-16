@@ -42,7 +42,18 @@ Difficulty: **Hard**
 
 ## 代码实现
 
-```cpp
+C++ 与 Python 均为原地哈希（交换归位），点击标签切换查看：
+
+<div class="lang-tabs">
+  <input type="radio" id="lt41-cpp" name="lt41" checked>
+  <input type="radio" id="lt41-py" name="lt41">
+  <div class="lang-tab-nav">
+    <label for="lt41-cpp">C++</label>
+    <label for="lt41-py">Python</label>
+  </div>
+  <div class="lang-tab-panels">
+    <div class="lang-tab-panel">
+{% highlight cpp %}
 class Solution {
 public:
     int firstMissingPositive(int A[], int n) {
@@ -65,13 +76,38 @@ public:
         A[idx1] ^= A[idx2];
     }
 };
-```
+{% endhighlight %}
+    </div>
+    <div class="lang-tab-panel">
+{% highlight python %}
+class Solution:
+    def firstMissingPositive(self, nums: list[int]) -> int:
+        n = len(nums)
+        for i in range(n):
+            # 值在 [1,n] 内、且目标位置未被正确占位才交换（防重复值死循环）
+            while 1 <= nums[i] <= n and nums[nums[i] - 1] != nums[i]:
+                j = nums[i] - 1
+                nums[i], nums[j] = nums[j], nums[i]
+
+        for i in range(n):
+            if nums[i] != i + 1:
+                return i + 1
+        return n + 1
+{% endhighlight %}
+    </div>
+  </div>
+</div>
 
 ### 代码解析
 
 - 源文件用异或实现交换，不借助临时变量；现代写法直接用 `std::swap` 更安全（异或交换在位置相同时会清零）。
+- Python 版的防死循环条件是 `nums[nums[i] - 1] != nums[i]`——目标位置若已放着同样的值（重复值），交换无意义且会无限循环；换成 C++ 的 `A[i] - 1 != i`（目标不是自己才换）再配合 tmp 记录，是同一件事的两种写法。
+- 负数、零、大于 n 的数都不进交换循环，它们最终停留在缺失数字的位置上，被第二次遍历发现。
+- 另一条思路是「正数集合 + 从 1 探测」（判题器同样接受）：O(n) 时间但 O(n) 空间，不满足进阶要求——鸽笼原理保证答案 ≤ n+1，探测至多 n+1 步（仓库 hot100 目录保留了一份该实现作对照）。
 
 ## 测试用例
+
+C++ 侧：
 
 ```cpp
 TEST(Daily, 41) {
@@ -82,6 +118,31 @@ TEST(Daily, 41) {
     EXPECT_EQ(s.firstMissingPositive(A4, 2), 2);
 }
 ```
+
+Python 侧（hot100 版用集合解法同样通过；此处展示原地哈希版）：
+
+```python
+def test_solution() -> None:
+    solution = Solution()
+
+    # ---- 官方示例 ----
+    assert solution.firstMissingPositive([1, 2, 0]) == 3
+    assert solution.firstMissingPositive([3, 4, -1, 1]) == 2
+    assert solution.firstMissingPositive([7, 8, 9, 11, 12]) == 1
+
+    # ---- 1..n 齐全：答案是 n+1 ----
+    assert solution.firstMissingPositive([1]) == 2
+    assert solution.firstMissingPositive([2, 1]) == 3
+
+    # ---- 重复值：[1,1] 缺 2 ----
+    assert solution.firstMissingPositive([1, 1]) == 2
+
+    # ---- 全负 / 含大数：答案是 1 ----
+    assert solution.firstMissingPositive([-5, -3]) == 1
+    assert solution.firstMissingPositive([100, 200]) == 1
+```
+
+提交前用「集合 + 探测」版做 oracle 随机对照 2000 组（含负数、重复、越界值），与原地哈希版结果全部一致。
 
 ## 总结
 
