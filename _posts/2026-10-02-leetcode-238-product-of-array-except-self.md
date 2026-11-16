@@ -43,7 +43,18 @@ Difficulty: **Medium**
 
 ## 代码实现
 
-```cpp
+C++ 是双数组版（left/right 前后缀积），Python 是更省空间的「答案数组复用」版（前缀积写入答案、后缀积用变量边乘边走），点击标签切换查看：
+
+<div class="lang-tabs">
+  <input type="radio" id="lt238-cpp" name="lt238" checked>
+  <input type="radio" id="lt238-py" name="lt238">
+  <div class="lang-tab-nav">
+    <label for="lt238-cpp">C++</label>
+    <label for="lt238-py">Python</label>
+  </div>
+  <div class="lang-tab-panels">
+    <div class="lang-tab-panel">
+{% highlight cpp %}
 class Solution {
 public:
     vector<int> productExceptSelf(vector<int>& nums) {
@@ -68,13 +79,41 @@ public:
         return ret;
     }
 };
-```
+{% endhighlight %}
+    </div>
+    <div class="lang-tab-panel">
+{% highlight python %}
+class Solution:
+    def productExceptSelf(self, nums: list[int]) -> list[int]:
+        n = len(nums)
+        ret = [1] * n
+
+        left = 1  # 位置 i 左侧全体元素之积（不含自身）
+        for i in range(n):
+            ret[i] = left  # 先写前缀积
+            left *= nums[i]
+
+        right = 1  # 位置 i 右侧全体元素之积（不含自身）
+        for i in range(n - 1, -1, -1):
+            ret[i] *= right  # 再乘后缀积
+            right *= nums[i]
+
+        return ret
+{% endhighlight %}
+    </div>
+  </div>
+</div>
 
 ### 代码解析
 
 - right 数组是按逆序累积的，访问时下标映射为 n-i-2。
+- Python 版没有第二个数组：前缀积先写入答案，后缀积以变量形式「边乘边走」——答案数组被复用为中间载体，额外空间 O(1)。
+- 含零场景由前后缀自动处理：零两侧的前/后缀积为 0，无需任何特判——这正是「不用除法」路线的优势。
+- 另一条思路是「统计零 + 总乘积 + 除法」（判题器不拦）：两个以上零全零、恰一个零零位得总乘积、无零位 `total // nums[i]`——但题目明确要求不使用除法，且含零特判繁琐，仅作对照（仓库 hot100 目录保留了一份该实现）。
 
 ## 测试用例
+
+C++ 侧：
 
 ```cpp
 TEST(TOP150, No238_ProductExceptSelf) {
@@ -85,6 +124,28 @@ TEST(TOP150, No238_ProductExceptSelf) {
     EXPECT_EQ(ret, expected);
 }
 ```
+
+Python 侧（hot100 版）：
+
+```python
+def test_solution() -> None:
+    solution = Solution()
+
+    # ---- 官方示例（期望值经暴力对照机器核对）----
+    assert solution.productExceptSelf([1, 2, 3, 4]) == [24, 12, 8, 6]
+    assert solution.productExceptSelf([-1, 1, 0, -3, 3]) == [0, 0, 9, 0, 0]
+
+    # ---- 两个零：全零输出 ----
+    assert solution.productExceptSelf([0, 4, 0]) == [0, 0, 0]
+
+    # ---- 最小规模 ----
+    assert solution.productExceptSelf([2, 3]) == [3, 2]
+
+    # ---- 负数 ----
+    assert solution.productExceptSelf([-2, 3]) == [3, -2]
+```
+
+提交前用「逐位枚举其余元素连乘」的朴素版随机对照 2000 组（含负数与多个零），前后缀版与除法版结果全部一致。
 
 ## 总结
 
