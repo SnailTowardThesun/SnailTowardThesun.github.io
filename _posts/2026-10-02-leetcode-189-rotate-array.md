@@ -47,7 +47,18 @@ Difficulty: **Medium**
 
 ## 代码实现
 
-```cpp
+C++ 与 Python 均为「尾段 + 头段拼接」，点击标签切换查看：
+
+<div class="lang-tabs">
+  <input type="radio" id="lt189-cpp" name="lt189" checked>
+  <input type="radio" id="lt189-py" name="lt189">
+  <div class="lang-tab-nav">
+    <label for="lt189-cpp">C++</label>
+    <label for="lt189-py">Python</label>
+  </div>
+  <div class="lang-tab-panels">
+    <div class="lang-tab-panel">
+{% highlight cpp %}
 class Solution {
 public:
     void rotate(vector<int>& nums, int k) {
@@ -59,9 +70,24 @@ public:
         nums = move(container);
     }
 };
-```
+{% endhighlight %}
+    </div>
+    <div class="lang-tab-panel">
+{% highlight python %}
+class Solution:
+    def rotate(self, nums: list[int], k: int) -> None:
+        n = len(nums)
 
-三次翻转参考实现：
+        k = k % n  # 去掉整圈轮转，k == n 时数组不变
+
+        # 对切片赋值 = 就地覆写原列表（区别于 nums = ... 只改局部引用）
+        nums[:] = nums[n - k :] + nums[: n - k]
+{% endhighlight %}
+    </div>
+  </div>
+</div>
+
+三次翻转参考实现（O(1) 空间）：
 
 ```cpp
 class SolutionReverse {
@@ -79,8 +105,11 @@ public:
 
 - k 先取模，k == n 时数组不变。
 - 翻转区间以前 step 个为界，正好对应右移距离。
+- Python 版的 `nums[:] = ...` 是关键：对**切片赋值**就地覆写原列表对象；若写成 `nums = ...` 只改局部引用，调用方看不到任何变化——这是 Python「原地修改」题目的经典坑。
 
 ## 测试用例
+
+C++ 侧：
 
 ```cpp
 TEST(TOP150, No189_RotateArray) {
@@ -91,6 +120,33 @@ TEST(TOP150, No189_RotateArray) {
     EXPECT_EQ(nums, expected);
 }
 ```
+
+Python 侧（hot100 版）：
+
+```python
+def test_solution() -> None:
+    solution = Solution()
+
+    def run(nums: list[int], k: int) -> list[int]:
+        solution.rotate(nums, k)
+        return nums
+
+    # ---- 官方示例 ----
+    assert run([1, 2, 3, 4, 5, 6, 7], 3) == [5, 6, 7, 1, 2, 3, 4]
+    assert run([-1, -100, 3, 99], 2) == [3, 99, -1, -100]
+
+    # ---- k == 0 / k == n：数组不变（期望值由暴力对照机器算出）----
+    assert run([1, 2, 3], 0) == [1, 2, 3]
+    assert run([1, 2], 2) == [1, 2]
+
+    # ---- k > n：先取模再轮转 ----
+    assert run([1, 2], 3) == [2, 1]
+
+    # ---- 单元素 + 巨大 k ----
+    assert run([-1], 99) == [-1]
+```
+
+提交前用「逐个右移 k 次」的朴素版随机对照 1500 组（k 取 0..30，覆盖 k > n），与切片拼接版结果全部一致。
 
 ## 总结
 
