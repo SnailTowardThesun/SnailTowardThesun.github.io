@@ -39,8 +39,18 @@ Difficulty: **Medium**
 
 ## 代码实现
 
-{% raw %}
-```cpp
+C++ 用首行首列标记法（O(1) 空间），Python 为先收集后置零的直观实现，点击标签切换查看：
+
+<div class="lang-tabs">
+  <input type="radio" id="lt73-cpp" name="lt73" checked>
+  <input type="radio" id="lt73-py" name="lt73">
+  <div class="lang-tab-nav">
+    <label for="lt73-cpp">C++</label>
+    <label for="lt73-py">Python</label>
+  </div>
+  <div class="lang-tab-panels">
+    <div class="lang-tab-panel">
+{% highlight cpp %}
 class Solution {
 public:
     void setZeroes(vector<vector<int>>& matrix) {
@@ -70,10 +80,36 @@ public:
         if (col) for (int i = 0; i < m; ++i) matrix[i][0] = 0;
     }
 };
-```
-{% endraw %}
+{% endhighlight %}
+    </div>
+    <div class="lang-tab-panel">
+{% highlight python %}
+class Solution:
+    def setZeroes(self, matrix: list[list[int]]) -> None:
+        m, n = len(matrix), len(matrix[0])
+        zeros = [(i, j) for i in range(m) for j in range(n) if matrix[i][j] == 0]
+
+        # 先收集后置零：新写入的 0 不会再触发置零
+        for r, c in zeros:
+            for j in range(n):  # 整行置零
+                matrix[r][j] = 0
+            for i in range(m):  # 整列置零
+                matrix[i][c] = 0
+{% endhighlight %}
+    </div>
+  </div>
+</div>
+
+### 代码解析
+
+- C++ 版把第一行/第一列复用为标记数组，额外空间只有 row、col 两个 bool，满足进阶的 O(1) 要求。
+- Python 版（仓库 hot100 目录）先用列表收集所有 0 的坐标，再统一置零——逻辑直观不易错，代价是 O(k) 额外空间（k 为 0 的个数，最坏 O(m×n)）。
+- 两个版本共享同一个关键点：**不能边扫边置零**，否则新写入的 0 会级联触发整行整列置零；C++ 靠「先标记、从 (1,1) 开始置零」避免污染，Python 靠「先收集、后置零」。
+- 介于两者之间的等价做法：用两个集合分别记录含 0 的行号和列号，第二遍扫描按集合置零，空间 O(m+n)。
 
 ## 测试用例
+
+C++ 侧：
 
 {% raw %}
 ```cpp
@@ -86,8 +122,39 @@ TEST(Daily, 73) {
 ```
 {% endraw %}
 
+Python 侧（hot100 版，先收集后置零）：
+
+```python
+def test_solution() -> None:
+    solution = Solution()
+
+    # ---- 官方示例 ----
+    m1 = [[1, 1, 1], [1, 0, 1], [1, 1, 1]]
+    solution.setZeroes(m1)
+    assert m1 == [[1, 0, 1], [0, 0, 0], [1, 0, 1]]
+
+    m2 = [[0, 1, 2, 0], [3, 4, 5, 2], [1, 3, 1, 5]]
+    solution.setZeroes(m2)
+    assert m2 == [[0, 0, 0, 0], [0, 4, 5, 0], [0, 3, 1, 0]]
+
+    # ---- 首行/首列含 0 ----
+    m3 = [[0, 2], [3, 4]]
+    solution.setZeroes(m3)
+    assert m3 == [[0, 0], [0, 4]]
+
+    # ---- 无 0 / 全 0 ----
+    m4 = [[1, 2], [3, 4]]
+    solution.setZeroes(m4)
+    assert m4 == [[1, 2], [3, 4]]
+
+    m5 = [[0, 0], [0, 0]]
+    solution.setZeroes(m5)
+    assert m5 == [[0, 0], [0, 0]]
+```
+
 ## 总结
 
 1. 首行首列复用为标记数组，省掉 O(m+n) 空间；
 2. 两个 bool 单独记录标记行/列自身的零；
-3. 置零从 (1,1) 开始，避免标记被提前覆盖。
+3. 置零从 (1,1) 开始，避免标记被提前覆盖；
+4. 不追求 O(1) 空间时，「先收集 0 的坐标、再统一置零」更直观，Python 版即此实现。
