@@ -101,9 +101,9 @@ class Solution:
 ### 代码解析
 
 - 源文件用异或实现交换，不借助临时变量；现代写法直接用 `std::swap` 更安全（异或交换在位置相同时会清零）。
-- Python 版的防死循环条件是 `nums[nums[i] - 1] != nums[i]`——目标位置若已放着同样的值（重复值），交换无意义且会无限循环；换成 C++ 的 `A[i] - 1 != i`（目标不是自己才换）再配合 tmp 记录，是同一件事的两种写法。
+- Python 版的防死循环条件是 `nums[nums[i] - 1] != nums[i]`——目标位置若已放着同样的值（重复值），交换无意义且会无限循环；换成 C++ 的 `A[i] - 1 != i`（目标不是自己才换）再配合 tmp 记录，也能避免重复值死循环；Python 版直接检查目标位置，条件更直观。
 - 负数、零、大于 n 的数都不进交换循环，它们最终停留在缺失数字的位置上，被第二次遍历发现。
-- 另一条思路是「正数集合 + 从 1 探测」（判题器同样接受）：O(n) 时间但 O(n) 空间，不满足进阶要求——鸽笼原理保证答案 ≤ n+1，探测至多 n+1 步（仓库 hot100 目录保留了一份该实现作对照）。
+- 「正数集合 + 从 1 探测」可作为理解思路的起点：时间 O(n)、空间 O(n)，不满足本题的常数空间要求。本文与仓库 hot100 目录的 Python 主实现均采用原地哈希。
 
 ## 测试用例
 
@@ -119,7 +119,7 @@ TEST(Daily, 41) {
 }
 ```
 
-Python 侧（hot100 版用集合解法同样通过；此处展示原地哈希版）：
+Python 侧（与仓库 hot100 版一致，使用原地哈希）：
 
 ```python
 def test_solution() -> None:
@@ -136,6 +136,10 @@ def test_solution() -> None:
 
     # ---- 重复值：[1,1] 缺 2 ----
     assert solution.firstMissingPositive([1, 1]) == 2
+    assert solution.firstMissingPositive([2, 2, 1]) == 3
+
+    # ---- 同一位置需要连续交换，才能完成归位 ----
+    assert solution.firstMissingPositive([2, 3, 4, 1]) == 5
 
     # ---- 全负 / 含大数：答案是 1 ----
     assert solution.firstMissingPositive([-5, -3]) == 1
