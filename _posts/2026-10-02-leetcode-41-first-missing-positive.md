@@ -27,17 +27,15 @@ Difficulty: **Hard**
 
 ### 原地哈希
 
-理想状态下 nums[i] == i + 1。把范围内的数字逐一交换到正确位置：
+长度为 `n` 的数组最多包含 `n` 个不同正整数，答案一定在 `[1, n+1]` 内。先把 `[1,n]` 中出现的值放到对应位置，值 `x` 对应下标 `x-1`。
 
-1. 对每个位置，当 nums[i] 在 [1, n] 内且不在自己的位置，就与 `nums[nums[i]-1]` 交换。
-2. 用 tmp 记录上一次的值，防止两个相同数字造成死循环。
-3. 归位完成后，第一个 `nums[i] != i+1` 的位置返回 i+1；全部正确则返回 n+1。
-
-负数、零、大于 n 的数都不影响，它们会自然占据缺失数字的位置。
+1. 遍历每个位置。如果当前值在 `[1,n]` 内，且目标位置还没有存放相同的值，就交换这两个元素。
+2. 交换后继续检查当前位置，因为换来的元素也可能需要归位。目标位置已有相同值时停止，避免重复交换。
+3. 再遍历一次。第一个不满足 `nums[i] == i+1` 的位置给出答案 `i+1`。若全部对应，返回 `n+1`。
 
 ### 复杂度分析
 
-- **时间复杂度**：O(n)，每个数字归位后不会再移动。
+- **时间复杂度**：O(n)，每次有效交换至少固定一个位置，总交换次数不超过 n。
 - **空间复杂度**：O(1)。
 
 ## 代码实现
@@ -55,25 +53,19 @@ C++ 与 Python 均为原地哈希（交换归位），点击标签切换查看�
     <div class="lang-tab-panel">
 {% highlight cpp %}
 class Solution {
-public:
-    int firstMissingPositive(int A[], int n) {
-        for (int i = 0, tmp = -1; i < n; i++) {
-            while (A[i] - 1 >= 0 && A[i] - 1 < n && A[i] - 1 != i) {
-                swap(A, i, A[i] - 1);
-                if (A[i] == tmp) break;  // 防止重复值死循环
-                else tmp = A[i];
+   public:
+    int firstMissingPositive(vector<int>& nums) {
+        int n = nums.size();
+        for (int i = 0; i < n; ++i) {
+            while (nums[i] >= 1 && nums[i] <= n && nums[nums[i] - 1] != nums[i]) {
+                int target = nums[i] - 1;
+                std::swap(nums[i], nums[target]);
             }
         }
-        for (int i = 0; i < n; i++) {
-            if (A[i] - 1 != i) return i + 1;
+        for (int i = 0; i < n; ++i) {
+            if (nums[i] != i + 1) return i + 1;
         }
         return n + 1;
-    }
-
-    void swap(int A[], int idx1, int idx2) {
-        A[idx1] ^= A[idx2];
-        A[idx2] ^= A[idx1];
-        A[idx1] ^= A[idx2];
     }
 };
 {% endhighlight %}
@@ -84,7 +76,7 @@ class Solution:
     def firstMissingPositive(self, nums: list[int]) -> int:
         n = len(nums)
         for i in range(n):
-            # 值在 [1,n] 内、且目标位置未被正确占位才交换（防重复值死循环）
+            # 目标位置已有相同值时停止，避免重复值导致无限交换
             while 1 <= nums[i] <= n and nums[nums[i] - 1] != nums[i]:
                 j = nums[i] - 1
                 nums[i], nums[j] = nums[j], nums[i]
@@ -100,22 +92,21 @@ class Solution:
 
 ### 代码解析
 
-- 源文件用异或实现交换，不借助临时变量；现代写法直接用 `std::swap` 更安全（异或交换在位置相同时会清零）。
-- Python 版的防死循环条件是 `nums[nums[i] - 1] != nums[i]`——目标位置若已放着同样的值（重复值），交换无意义且会无限循环；换成 C++ 的 `A[i] - 1 != i`（目标不是自己才换）再配合 tmp 记录，也能避免重复值死循环；Python 版直接检查目标位置，条件更直观。
-- 负数、零、大于 n 的数都不进交换循环，它们最终停留在缺失数字的位置上，被第二次遍历发现。
-- 「正数集合 + 从 1 探测」可作为理解思路的起点：时间 O(n)、空间 O(n)，不满足本题的常数空间要求。本文与仓库 hot100 目录的 Python 主实现均采用原地哈希。
+- C++ 先检查值是否在 `[1,n]` 内，再减一计算目标下标。这样可以处理 `INT_MIN`，避免有符号整数溢出。
+- 目标位置已经保存相同值时无需交换。这涵盖元素已经归位和存在重复值两种情况。
+- 两个版本都直接修改输入数组，额外只保存常数个变量。
 
 ## 测试用例
 
-C++ 侧：
+C++ 回归用例覆盖 32 位整数边界。
 
 ```cpp
+#include <limits>
+
 TEST(Daily, 41) {
     Solution s;
-    int A2[] = {3, 4, -1, 1};
-    EXPECT_EQ(s.firstMissingPositive(A2, 4), 2);
-    int A4[] = {1, 1};
-    EXPECT_EQ(s.firstMissingPositive(A4, 2), 2);
+    vector<int> nums{std::numeric_limits<int>::min(), std::numeric_limits<int>::max(), 1};
+    EXPECT_EQ(s.firstMissingPositive(nums), 2);
 }
 ```
 
@@ -145,8 +136,6 @@ def test_solution() -> None:
     assert solution.firstMissingPositive([-5, -3]) == 1
     assert solution.firstMissingPositive([100, 200]) == 1
 ```
-
-提交前用「集合 + 探测」版做 oracle 随机对照 2000 组（含负数、重复、越界值），与原地哈希版结果全部一致。
 
 ## 总结
 

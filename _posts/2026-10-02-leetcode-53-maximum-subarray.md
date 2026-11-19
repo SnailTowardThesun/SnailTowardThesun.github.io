@@ -2,7 +2,7 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.53: 最大子数组和"
 categories: LeetCode
-tags: [简单, 数组, 动态规划]
+tags: [中等, 数组, 动态规划]
 ---
 
 > Kadane 算法的一句核心决策：当前元素单独成段，还是接上之前的段？取两者较大值即可。
@@ -11,7 +11,7 @@ tags: [简单, 数组, 动态规划]
 
 LeetCode 53. Maximum Subarray（最大子数组和）
 
-Difficulty: **Easy**
+Difficulty: **Medium**
 
 给定整数数组，找出和最大的连续非空子数组，返回其和。
 
@@ -53,11 +53,12 @@ C++ 是滚动变量版（O(1) 空间），Python 是 dp 数组版（O(n) 空间�
     <div class="lang-tab-panel">
 {% highlight cpp %}
 class Solution {
-public:
+   public:
     int maxSubArray(vector<int>& nums) {
         int global = nums[0];
         int local = nums[0];
-        for (int i = 1; i < nums.size(); i++) {
+        int size = nums.size();
+        for (int i = 1; i < size; i++) {
             local = nums[i] > local + nums[i] ? nums[i] : local + nums[i];
             global = local > global ? local : global;
         }
@@ -89,7 +90,7 @@ class Solution:
 
 - 两个版本是同一转移的两种形态：C++ 的 `local` 即 Python 的 `dp[i]`，前者只保留上一步的状态；`global` 对应 Python 的 `max(dp)`；
 - Python 版把「以每个位置结尾的最优」显式存下来，便于理解与调试；如果只保留上一步的状态，也能像 C++ 版一样将额外空间降到 O(1)；
-- 全负数组无需特判：`max(dp)` 至少选中最大的单个元素（`[-2,-1]` → `-1`）。
+- 全负数组无需特判：最优子数组只包含最大的单个元素（`[-2,-1]` → `-1`）。
 
 ## 测试用例
 
@@ -124,8 +125,6 @@ def test_solution() -> None:
     assert solution.maxSubArray([1, -2, 3]) == 3
     assert solution.maxSubArray([2, -1, 2]) == 3
 ```
-
-提交前用「枚举所有子数组」的 O(n²) 朴素版随机对照 1500 组（含全负数组），与 dp 版结果全部一致。
 
 ## 总结
 

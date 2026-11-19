@@ -27,9 +27,9 @@ Difficulty: **Medium**
 ### 转置 + 行反转
 
 1. **转置**：沿主对角线交换 matrix[i][j] 与 matrix[j][i]（只遍历上三角或下三角中的一侧，避免交换两次还原）。
-2. **行反转**：每行元素左右翻转，等价于水平镜像。
+2. **逐行反转**。把该行第 `i` 个位置的元素移到第 `n-1-i` 个位置。
 
-两个操作组合后，矩阵恰好顺时针旋转 90 度。
+原坐标 `(i,j)` 经过转置变为 `(j,i)`，再经逐行反转变为 `(j,n-1-i)`，恰好对应顺时针旋转 90 度。
 
 ### 复杂度分析
 
@@ -51,18 +51,18 @@ C++ 与 Python 均为转置 + 行反转，点击标签切换查看：
     <div class="lang-tab-panel">
 {% highlight cpp %}
 class Solution {
-public:
+   public:
     void rotate(vector<vector<int>>& matrix) {
         int n = matrix.size();
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < i; j++) {
-                swap(matrix[i][j], matrix[j][i]);
+                std::swap(matrix[i][j], matrix[j][i]);
             }
         }
 
         for (int i = 0; i < n; i++) {
-            reverse(matrix[i].begin(), matrix[i].end());
+            std::reverse(matrix[i].begin(), matrix[i].end());
         }
     }
 };
@@ -72,20 +72,15 @@ public:
 {% highlight python %}
 class Solution:
     def rotate(self, matrix: list[list[int]]) -> None:
-        """
-        Do not return anything, modify matrix in-place instead.
-        """
-        m, n = len(matrix), len(matrix[0])
+        n = len(matrix)
 
-        # 1. 主对角线转置：j 从 i 起只走上三角，每对元素只交换一次
-        for i in range(m):
-            for j in range(i, n):
+        # 只遍历严格上三角，避免重复交换
+        for i in range(n):
+            for j in range(i + 1, n):
                 matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
 
-        # 2. 逐行左右反转（水平镜像），组合后即顺时针旋转 90°
-        for i in range(m):
-            for j in range(n // 2):
-                matrix[i][j], matrix[i][n - j - 1] = matrix[i][n - j - 1], matrix[i][j]
+        for row in matrix:
+            row.reverse()
 {% endhighlight %}
     </div>
   </div>
@@ -93,10 +88,9 @@ class Solution:
 
 ### 代码解析
 
-- C++ 转置循环用 `j < i` 只处理下三角；如果改为从 `j = 0` 遍历到 `n-1`，非对角线元素会交换两次，回到原状。
-- Python 版转置从 `j = i` 出发走「上三角」——对角线元素自交换是 no-op，与 C++ 的下三角写法等价，核心都是每对 (i,j)/(j,i) 恰好交换一次。
-- 方阵中 m == n，使用一个边长变量即可。Python 可对每一行调用 `row.reverse()`；此处显式交换 `j` 与 `n-1-j`，便于展示行反转的过程。
-- 另一条路线：按圈四点轮转，直接用下标公式 `(i,j) → (j, n-1-i)` 一圈圈转，同样是 O(1) 空间。
+- C++ 遍历严格下三角，Python 遍历严格上三角。两者都让每对非对角线元素只交换一次，对角线元素保持原位。
+- `std::reverse` 和 `row.reverse()` 都直接反转当前行。两种实现都使用常数额外空间。
+- 若要逆时针旋转，可先转置，再反转行的排列顺序，也就是交换顶行和底行，并依次向中间处理。
 
 ## 测试用例
 
@@ -108,7 +102,8 @@ TEST(Daily, 48) {
     Solution s;
     auto matrix = vector<vector<int>>{{1,2,3},{4,5,6},{7,8,9}};
     s.rotate(matrix);
-    EXPECT_EQ(matrix[0][0], 7);
+    const vector<vector<int>> expected{{7, 4, 1}, {8, 5, 2}, {9, 6, 3}};
+    EXPECT_EQ(matrix, expected);
 }
 ```
 {% endraw %}
@@ -144,7 +139,6 @@ def test_solution() -> None:
 
 ## 总结
 
-1. 旋转 90° = 转置 + 行反转；
-2. 转置只遍历一个三角（上/下皆可，对角线是 no-op）；
-3. 全程原地，O(1) 空间；
-4. 逆时针 90° 则是转置 + 上下镜像，两次翻转的组合方向决定旋转方向。
+1. 顺时针旋转 90° 可以拆成沿主对角线转置和逐行反转。
+2. 转置只处理严格上三角或严格下三角，每对元素交换一次。
+3. 两步都直接修改矩阵。时间为 O(n²)，额外空间为 O(1)。

@@ -5,7 +5,7 @@ categories: LeetCode
 tags: [中等, 矩阵, 哈希表]
 ---
 
-> 用第一行第一列本身做标记位，先标记再置零；但两个标记位会互相污染，需额外两个 bool 记录它们自身是否有零。
+> 用第一行记录哪些列要置零，用第一列记录哪些行要置零。因为两者共用左上角，再用两个布尔值单独记录首行和首列原本是否含零。
 
 ## 题目
 
@@ -13,7 +13,7 @@ LeetCode 73. Set Matrix Zeroes（矩阵置零）
 
 Difficulty: **Medium**
 
-给定 m × n 矩阵，若某元素为 0，则将其所在行和列全部置零。要求原地算法。
+给定 m × n 矩阵，若某元素为 0，则将其所在行和列全部置零。直接在输入矩阵上完成修改，进阶要求使用常数额外空间。
 
 ### 示例
 
@@ -26,20 +26,19 @@ Difficulty: **Medium**
 
 ### 首行首列标记法
 
-1. 遍历矩阵，遇到 0 时把该行首列 `matrix[i][0]`、该列首行 `matrix[0][j]` 标记为 0；同时用 row、col 两个 bool 记录第一行、第一列自身是否出现零。
-2. 从下标 (1,1) 开始第二遍遍历，只要行首或列首标记为 0，就把当前元素置零。
-3. 最后根据 row、col 决定是否把第一行、第一列整体置零。
+1. 确定首行、首列原本是否含零，用两个布尔值保存。
+2. 对其余单元格，若 `matrix[i][j]` 原本为零，则将行首 `matrix[i][0]` 和列首 `matrix[0][j]` 写成零。首行与首列原有的零可以直接作为标记。
+3. 根据标记处理其余单元格，最后按两个布尔值决定是否将首行和首列置零。
 
-顺序很重要：必须先完成标记，再从第二行第二列开始置零，否则标记会被提前污染。
+标记期间只向首行和首列写零，其余单元格还保留原值。所有标记完成后，才能按标记批量置零。
 
 ### 复杂度分析
 
-- **C++ 首行首列标记法**：时间 O(mn)，额外空间 O(1)。
-- **Python 坐标收集法**：设原矩阵有 k 个零，时间 O(mn + k(m+n))，额外空间 O(k+1)。全零矩阵下，时间达到 O(mn(m+n))、空间达到 O(mn)。
+两种实现都只遍历矩阵常数次，时间为 O(mn)，额外空间为 O(1)。
 
 ## 代码实现
 
-C++ 用首行首列标记法（O(1) 空间），Python 为先收集后置零的直观实现，点击标签切换查看：
+C++ 将首行首列的判断并入标记遍历，Python 先单独读取首行和首列。两个版本都使用常数额外空间。
 
 <div class="lang-tabs">
   <input type="radio" id="lt73-cpp" name="lt73" checked>
@@ -52,32 +51,27 @@ C++ 用首行首列标记法（O(1) 空间），Python 为先收集后置零的�
     <div class="lang-tab-panel">
 {% highlight cpp %}
 class Solution {
-public:
+   public:
     void setZeroes(vector<vector<int>>& matrix) {
         if (matrix.empty()) return;
         int m = matrix.size();
         int n = matrix[0].size();
         bool row = false, col = false;
-
-        for (int i = 0; i < m; ++i) {
-            for (int j = 0; j < n; j++) {
+        for (int i = 0; i < m; ++i)
+            for (int j = 0; j < n; j++)
                 if (matrix[i][j] == 0) {
                     if (i == 0) row = true;
                     if (j == 0) col = true;
                     matrix[i][0] = 0;
                     matrix[0][j] = 0;
                 }
-            }
-        }
-
-        for (int i = 1; i < m; ++i) {
-            for (int j = 1; j < n; j++) {
+        for (int i = 1; i < m; ++i)
+            for (int j = 1; j < n; j++)
                 if (matrix[i][0] == 0 || matrix[0][j] == 0) matrix[i][j] = 0;
-            }
-        }
-
-        if (row) for (int j = 0; j < n; ++j) matrix[0][j] = 0;
-        if (col) for (int i = 0; i < m; ++i) matrix[i][0] = 0;
+        if (row)
+            for (int j = 0; j < n; ++j) matrix[0][j] = 0;
+        if (col)
+            for (int i = 0; i < m; ++i) matrix[i][0] = 0;
     }
 };
 {% endhighlight %}
@@ -87,14 +81,25 @@ public:
 class Solution:
     def setZeroes(self, matrix: list[list[int]]) -> None:
         m, n = len(matrix), len(matrix[0])
-        zeros = [(i, j) for i in range(m) for j in range(n) if matrix[i][j] == 0]
+        first_row_zero = 0 in matrix[0]
+        first_col_zero = any(row[0] == 0 for row in matrix)
 
-        # 先收集后置零：新写入的 0 不会再触发置零
-        for r, c in zeros:
-            for j in range(n):  # 整行置零
-                matrix[r][j] = 0
-            for i in range(m):  # 整列置零
-                matrix[i][c] = 0
+        for i in range(1, m):
+            for j in range(1, n):
+                if matrix[i][j] == 0:
+                    matrix[i][0] = matrix[0][j] = 0
+
+        for i in range(1, m):
+            for j in range(1, n):
+                if matrix[i][0] == 0 or matrix[0][j] == 0:
+                    matrix[i][j] = 0
+
+        if first_row_zero:
+            for j in range(n):
+                matrix[0][j] = 0
+        if first_col_zero:
+            for i in range(m):
+                matrix[i][0] = 0
 {% endhighlight %}
     </div>
   </div>
@@ -102,10 +107,9 @@ class Solution:
 
 ### 代码解析
 
-- C++ 版把第一行/第一列复用为标记数组，额外空间只有 row、col 两个 bool，满足进阶的 O(1) 要求。
-- Python 版（仓库 hot100 目录）先用列表收集所有 0 的坐标，再统一置零——每个零都要遍历整行、整列，同一行或列可能被反复处理。因此除了保存坐标所需的 O(k+1) 额外空间，还要计入 O(k(m+n)) 的置零时间。
-- 两个版本共享同一个关键点：**不能边扫边置零**，否则新写入的 0 会级联触发整行整列置零；C++ 靠「先标记、从 (1,1) 开始置零」避免污染，Python 靠「先收集、后置零」。
-- 介于两者之间的等价做法：用两个集合分别记录含 0 的行号和列号，第二遍扫描按集合置零，时间 O(mn)、额外空间 O(m+n)，可避免逐个零重复遍历整行整列。
+- C++ 按行扫描，先访问首行，每一行也先访问第一列。因此读取原有的首行、首列状态时，后面单元格产生的标记还没有覆盖它们。
+- Python 在写入任何标记前计算 `first_row_zero` 和 `first_col_zero`，随后只扫描从 `(1,1)` 开始的区域。
+- 首行和首列要最后处理，提前清零会抹掉用来判断其他行列的标记。
 
 ## 测试用例
 
@@ -122,7 +126,7 @@ TEST(Daily, 73) {
 ```
 {% endraw %}
 
-Python 侧（hot100 版，先收集后置零）：
+Python 用例覆盖原有零出现在内部、首行或首列，以及矩阵全零或无零的情况。
 
 ```python
 def test_solution() -> None:
@@ -150,11 +154,17 @@ def test_solution() -> None:
     m5 = [[0, 0], [0, 0]]
     solution.setZeroes(m5)
     assert m5 == [[0, 0], [0, 0]]
+
+    first_row_only = [[1, 0, 3], [4, 5, 6]]
+    solution.setZeroes(first_row_only)
+    assert first_row_only == [[0, 0, 0], [4, 0, 6]]
+
+    first_col_only = [[1, 2], [0, 4], [5, 6]]
+    solution.setZeroes(first_col_only)
+    assert first_col_only == [[0, 2], [0, 0], [0, 6]]
 ```
 
 ## 总结
 
-1. 首行首列复用为标记数组，省掉 O(m+n) 空间；
-2. 两个 bool 单独记录标记行/列自身的零；
-3. 置零从 (1,1) 开始，避免标记被提前覆盖；
-4. Python 坐标收集版便于理解，但会重复遍历行列；需要提高效率时，可用行列集合或首行首列标记法。
+1. 用首行、首列保存标记，并独立记录它们原本是否含零。
+2. 先完成标记，再处理其余单元格，最后处理首行和首列。

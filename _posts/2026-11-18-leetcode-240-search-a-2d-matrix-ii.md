@@ -2,10 +2,10 @@
 author: SnailTowardThesun
 title: "LeetCode刷题的日子--No.240: 搜索二维矩阵 II"
 categories: LeetCode
-tags: [中等, 矩阵, 二分查找]
+tags: [中等, 矩阵, 查找]
 ---
 
-> 从右上角出发做阶梯搜索：右上角是行内最大、列内最小，比 target 大就排除整列左移，比 target 小就排除整行下移，每步排除一行或一列。
+> 在行列分别有序的矩阵里，剩余区域的右上角是同行最大值、同列最小值。一次比较就能排除一行或一列。
 
 ## 题目
 
@@ -13,7 +13,7 @@ LeetCode 240. Search a 2D Matrix II（搜索二维矩阵 II）
 
 Difficulty: **Medium**
 
-给定一个 m × n 矩阵，每行从左到右升序、每列从上到下升序，判断目标值 target 是否存在于矩阵中。
+给定一个 m × n 矩阵，每行从左到右非递减、每列从上到下非递减，判断目标值 target 是否存在于矩阵中。
 
 ### 示例
 
@@ -29,17 +29,15 @@ Difficulty: **Medium**
 
 ### 右上角阶梯搜索
 
-从右上角 (0, n-1) 出发——它是**所在行的最大值、所在列的最小值**，向左数值不增、向下数值不减，因此能确定下一步移动方向：
+从 `(0,n-1)` 开始，每一步都位于剩余搜索区域的右上角。它左侧的候选值不大于它，下方的候选值不小于它。
 
-1. 当前值 **大于** target：本列往下不会更小，目标不在此列，**排除整列**，左移一列；
-2. 当前值 **小于** target：本行往左不会更大，目标不在此行，**排除整行**，下移一行；
-3. 相等则找到；走出边界则不存在。
+1. 若当前值大于 `target`，这列剩余的值也都大于 `target`，排除该列并左移。
+2. 若当前值小于 `target`，这行剩余的值也都小于 `target`，排除该行并下移。
+3. 若当前值等于 `target`，返回 `true`。越界说明剩余区域已为空，返回 `false`。
 
-每步至少排除一行或一列，最多 **m + n** 步出结果。
+也可以从左下角出发，此时大于目标就上移，小于目标就右移。
 
-**阶梯搜索为什么选择右上或左下角**：在剩余搜索区域中，右上角的左侧元素不大于它、下方元素不小于它，因此可以根据比较结果排除一行或一列。左下角同理。左上角的两个方向都不减、右下角的两个方向都不增，无法沿用这种仅靠当前值决定移动方向的规则。
-
-**与 74 题的区别**：74 题保证下一行首元素大于上一行末元素，可以按行展开成一维有序数组；240 题仅保证各行、各列有序，不满足这一条件。逐行二分为 O(m log(n+1))，阶梯搜索为 O(m+n)，两者优劣取决于矩阵形状。例如单行矩阵中，二分为 O(log(n+1))，阶梯搜索最坏为 O(n)。
+第 74 题额外保证下一行首元素大于上一行末元素，因此可以在按行展开的序列中做一次二分。本题的行与列分别有序，按行展开后不一定有序。逐行二分仍然可行，时间为 O(m log(n+1))。例如在单行矩阵中，二分的最坏时间为 O(log(n+1))，阶梯搜索为 O(n)。
 
 ### 复杂度分析
 
@@ -52,22 +50,23 @@ Difficulty: **Medium**
 class Solution:
     def searchMatrix(self, matrix: list[list[int]], target: int) -> bool:
         m, n = len(matrix), len(matrix[0])
-        x, y = 0, n - 1  # 从右上角出发：行内最大、列内最小，两向单调性相反
-        while x < m and y >= 0:
-            if matrix[x][y] == target:
+        row, col = 0, n - 1
+        while row < m and col >= 0:
+            value = matrix[row][col]
+            if value == target:
                 return True
 
-            if matrix[x][y] > target:
-                y -= 1  # 本列往下更大 → 整列排除，左移
+            if value > target:
+                col -= 1
             else:
-                x += 1  # 本行往左更小 → 整行排除，下移
+                row += 1
 
         return False
 ```
 
 ### 代码解析
 
-- 循环条件 `x < m and y >= 0`：从右上往左下走，越界即搜索空间耗尽。
+- 循环条件 `row < m and col >= 0`：从右上往左下走，越界即搜索空间耗尽。
 - 搜索过程中只会左移或下移，最多访问 m+n−1 个位置。若 target 小于所有元素，会连续左移 n 次后退出；若大于所有元素，会连续下移 m 次后退出。
 - 对称写法：从左下角 (m-1, 0) 出发，大于则上移、小于则右移，逻辑完全对称。
 
@@ -86,7 +85,7 @@ def test_solution() -> None:
     assert solution.searchMatrix(mx, 1) is True   # 左上最小
     assert solution.searchMatrix(mx, 30) is True  # 右下最大
     assert solution.searchMatrix(mx, 0) is False  # 小于最小
-    assert solution.searchMatrix(mx, 31) is False # 大于最大
+    assert solution.searchMatrix(mx, 31) is False  # 大于最大
 
     # ---- 单行 / 单列 / 单元素 ----
     assert solution.searchMatrix([[1, 3, 5]], 5) is True
@@ -97,7 +96,4 @@ def test_solution() -> None:
 
 ## 总结
 
-1. 行列双升序的矩阵，从右上或左下出发，每步可排除一整行或一整列；
-2. 右上或左下角允许根据当前值排除一侧，比较范围随之缩小；
-3. 阶梯搜索为 O(m+n) 时间、O(1) 空间，与逐行二分的优劣取决于矩阵形状；
-4. 74 题可按行展开为有序数组做一次二分；本题可用阶梯搜索，也可逐行二分。
+从右上角或左下角出发，每次比较排除一行或一列。阶梯搜索使用 O(m+n) 时间和 O(1) 额外空间。
