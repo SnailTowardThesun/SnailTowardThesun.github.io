@@ -20,17 +20,17 @@ n = 1  → False。Alice 第一手就取不够 10 颗。
 
 ## 解题思路
 
-用 `take` 记录本手必须取的石头数，初始为 10。剩余石头足够时，扣掉 `take`，把下一手的取石数减一，并给成功手数 `moves` 加一。轮到 Alice 时，之前两人各完成了相同的手数，所以 `moves` 为偶数。轮到 Bob 时，Alice 比他多完成一手，所以 `moves` 为奇数。循环在当前玩家无法继续时结束，因此只要看 `moves` 是否为奇数就知道 Alice 是否赢了。
+先判断 Alice 能否完成第一手，再用 `helpers` 保存每手要取的数量，从 10 递减到 1。遍历到下标 `i` 时，前面已经成功取了 `i` 手。如果剩余石头少于 `helpers[i]`，当前玩家输。偶数下标轮到 Alice，奇数下标轮到 Bob，因此在奇数下标取不够时返回真。
 
-例如，18 颗和 19 颗石头只差一颗，却足以改变胜负。18 颗时，Alice 取走 10 颗，Bob 面前只剩 8 颗。19 颗时，Bob 刚好能取走 9 颗，轮到 Alice 时已无石可取。判断能否出手要用 `n >= take`，这样刚好取尽也算成功。
+例如，18 颗和 19 颗石头只差一颗，却足以改变胜负。18 颗时，Alice 取走 10 颗，Bob 面前只剩 8 颗。19 颗时，Bob 刚好能取走 9 颗，轮到 Alice 时已无石可取。只有 `n < helpers[i]` 才表示取不够，因此刚好取尽也算成功。
 
 ### 复杂度分析
 
-前七手总共消耗 `10 + 9 + 8 + 7 + 6 + 5 + 4 = 49` 颗，完成第八手要累计 52 颗。给定的 50 颗上限只允许最多七手成功，时间和额外空间都是 `O(1)`。
+前七手总共消耗 `10 + 9 + 8 + 7 + 6 + 5 + 4 = 49` 颗，完成第八手要累计 52 颗。给定的 50 颗上限只允许最多七手成功，`helpers` 的长度固定为 10，所以时间和额外空间都是 `O(1)`。
 
 ## 代码实现
 
-C++ 和 Python 都只记录剩余石数、本手取石数和已完成手数。
+C++ 用 `vector` 构造取石序列，Python 用 `list(range(10, 0, -1))` 构造相同的序列。
 
 <div class="lang-tabs">
   <input type="radio" id="lt3360-cpp" name="lt3360-lang" checked>
@@ -42,17 +42,30 @@ C++ 和 Python 都只记录剩余石数、本手取石数和已完成手数。
   <div class="lang-tab-panels">
     <div class="lang-tab-panel">
 {% highlight cpp %}
+#include <vector>
+
+using namespace std;
+
 class Solution {
    public:
     bool canAliceWin(int n) {
-        int take = 10;
-        int moves = 0;
-        while (take > 0 && n >= take) {
-            n -= take;
-            --take;
-            ++moves;
+        if (n < 10) {
+            return false;
         }
-        return moves % 2 == 1;
+
+        vector<int> helpers;
+        for (int i = 10; i > 0; i--) {
+            helpers.emplace_back(i);
+        }
+
+        for (int i = 0; i < helpers.size(); i++) {
+            if (n < helpers[i]) {
+                return i % 2 == 1 ? true : false;
+            }
+
+            n = n - helpers[i];
+        }
+        return false;
     }
 };
 {% endhighlight %}
@@ -61,13 +74,16 @@ class Solution {
 {% highlight python %}
 class Solution:
     def canAliceWin(self, n: int) -> bool:
-        take = 10
-        moves = 0
-        while take > 0 and n >= take:
-            n -= take
-            take -= 1
-            moves += 1
-        return moves % 2 == 1
+        if n < 10:
+            return False
+
+        helpers =list(range(10, 0, -1))
+        for i in range(len(helpers)):
+            if n < helpers[i]:
+                return True if i % 2 == 1 else False
+            n = n - helpers[i]
+
+        return False
 {% endhighlight %}
     </div>
   </div>
@@ -75,7 +91,7 @@ class Solution:
 
 ### 代码解析
 
-`moves` 只在成功取石之后递增。比如开局少于 10 颗时，循环一次也不执行，此时 `moves = 0`，自然得到 Alice 失败。
+开局少于 10 颗时直接返回假。以 12 颗为例，下标 0 对应 Alice 取 10 颗，剩余 2 颗；下标 1 对应 Bob 取 9 颗，此时取不够，返回真。
 
 ## 测试用例
 
