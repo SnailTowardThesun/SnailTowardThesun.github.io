@@ -49,10 +49,14 @@ class Solution:
     def detectCycle(self, head: ListNode | None) -> ListNode | None:
         slow = fast = head
         while fast is not None and fast.next is not None:
+            # 快指针仍能前进两步，走得更慢的 slow 必然还在链表上。
+            assert slow is not None
             slow = slow.next
             fast = fast.next.next
             if slow is fast:
                 while head is not slow:
+                    # 已确认有环，从头节点或环内出发都不会走到 None。
+                    assert head is not None and slow is not None
                     head = head.next
                     slow = slow.next
                 return head
@@ -62,6 +66,8 @@ class Solution:
 ### 代码解析
 
 循环条件 `fast is not None and fast.next is not None` 保证快指针可以安全执行 `fast.next.next`。单节点无环时，快指针一开始就在尾部，函数直接返回 `None`。单节点自环时，两个指针走完第一轮都回到了头节点，函数返回该节点。
+
+代码中的两个断言写明了指针的位置关系：快指针还能前进两步时，慢指针仍在链表上；确认环存在后，沿 `next` 会一直留在这条有环链表中。类型检查器也能据此确认后续节点访问有效。
 
 两个阶段都使用 `is` 判断节点身份，因此多个节点可以有相同的值。给局部变量 `head` 重新赋值只会移动指针，链表中的 `next` 保持原样。
 
